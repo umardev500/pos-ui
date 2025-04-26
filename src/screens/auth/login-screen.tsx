@@ -1,4 +1,5 @@
 import {authService} from '@app/services/auth';
+import {mmkvStorage} from '@app/storage';
 import {LoginSchema} from '@app/validations/auth';
 import {useMutation} from '@tanstack/react-query';
 import {Formik} from 'formik';
@@ -9,7 +10,9 @@ export const LoginScreen = () => {
   const {mutate} = useMutation({
     mutationFn: (values: {email: string; password: string}) =>
       authService.login(values.email, values.password),
-    onSuccess: data => console.log(data),
+    onSuccess: data => {
+      mmkvStorage.set('user.token', data.access_token);
+    },
     onError: error => console.log(error),
   });
 
