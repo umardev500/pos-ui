@@ -76,13 +76,7 @@ type Props = {
   style?: StyleProp<TextStyle>;
 };
 
-export const Icon = ({
-  fill = false,
-  name,
-  size = 24,
-  color = 'black',
-  style,
-}: Props) => {
+export const Icon = ({fill = false, name, size = 24, color = 'black', style}: Props) => {
   return fill ? (
     <IconFill name={name} size={size} color={color} style={style} />
   ) : (

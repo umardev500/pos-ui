@@ -8,8 +8,7 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const LoginScreen = () => {
   const {mutate} = useMutation({
-    mutationFn: (values: {email: string; password: string}) =>
-      authService.login(values.email, values.password),
+    mutationFn: (values: {email: string; password: string}) => authService.login(values.email, values.password),
     onSuccess: data => {
       mmkvStorage.set('user.token', data.access_token);
     },
@@ -24,15 +23,7 @@ export const LoginScreen = () => {
         onSubmit={values => {
           mutate(values);
         }}>
-        {({
-          handleChange,
-          handleBlur,
-          handleSubmit,
-          errors,
-          touched,
-          isValid,
-          values,
-        }) => (
+        {({handleChange, handleBlur, handleSubmit, errors, touched, isValid, values}) => (
           <>
             <TextInput
               placeholder="Email"
@@ -40,11 +31,7 @@ export const LoginScreen = () => {
               onBlur={handleBlur('email')}
               value={values.email}
             />
-            {errors.email && touched.email && (
-              <Text style={{color: 'red', marginBottom: 8}}>
-                {errors.email}
-              </Text>
-            )}
+            {errors.email && touched.email && <Text style={{color: 'red', marginBottom: 8}}>{errors.email}</Text>}
 
             <TextInput
               placeholder="Password"
@@ -53,16 +40,10 @@ export const LoginScreen = () => {
               value={values.password}
             />
             {errors.password && touched.password && (
-              <Text style={{color: 'red', marginBottom: 8}}>
-                {errors.password}
-              </Text>
+              <Text style={{color: 'red', marginBottom: 8}}>{errors.password}</Text>
             )}
 
-            <Button
-              title="Login"
-              onPress={handleSubmit as any}
-              disabled={!isValid}
-            />
+            <Button title="Login" onPress={handleSubmit as any} disabled={!isValid} />
           </>
         )}
       </Formik>

@@ -1,7 +1,12 @@
 module.exports = {
   root: true,
-  extends: '@react-native',
+  extends: [
+    '@react-native', // React Native lint rules
+    'plugin:prettier/recommended', // Prettier lint rules
+  ],
+  plugins: ['prettier'], // Make sure prettier plugin is loaded
   rules: {
-    'react-native/no-inline-styles': 'off',
+    'prettier/prettier': 'error', // <-- This shows prettier problems as ESLint errors
+    'react-native/no-inline-styles': 'off', // your custom rule
   },
 };
