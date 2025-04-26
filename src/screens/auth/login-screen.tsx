@@ -1,7 +1,8 @@
 import {authService} from '@app/services/auth';
+import {LoginSchema} from '@app/validations/auth';
 import {useMutation} from '@tanstack/react-query';
 import {Formik} from 'formik';
-import {Button, TextInput} from 'react-native';
+import {Button, Text, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const LoginScreen = () => {
@@ -16,10 +17,19 @@ export const LoginScreen = () => {
     <SafeAreaView>
       <Formik
         initialValues={{email: '', password: ''}}
+        validationSchema={LoginSchema}
         onSubmit={values => {
           mutate(values);
         }}>
-        {({handleChange, handleBlur, handleSubmit, values}) => (
+        {({
+          handleChange,
+          handleBlur,
+          handleSubmit,
+          errors,
+          touched,
+          isValid,
+          values,
+        }) => (
           <>
             <TextInput
               placeholder="Email"
@@ -27,13 +37,29 @@ export const LoginScreen = () => {
               onBlur={handleBlur('email')}
               value={values.email}
             />
+            {errors.email && touched.email && (
+              <Text style={{color: 'red', marginBottom: 8}}>
+                {errors.email}
+              </Text>
+            )}
+
             <TextInput
               placeholder="Password"
               onChangeText={handleChange('password')}
               onBlur={handleBlur('password')}
               value={values.password}
             />
-            <Button title="Login" onPress={handleSubmit as any} />
+            {errors.password && touched.password && (
+              <Text style={{color: 'red', marginBottom: 8}}>
+                {errors.password}
+              </Text>
+            )}
+
+            <Button
+              title="Login"
+              onPress={handleSubmit as any}
+              disabled={!isValid}
+            />
           </>
         )}
       </Formik>
