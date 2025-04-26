@@ -9,8 +9,9 @@ import {SafeAreaView} from 'react-native-safe-area-context';
 export const LoginScreen = () => {
   const {mutate} = useMutation({
     mutationFn: (values: {email: string; password: string}) => authService.login(values.email, values.password),
-    onSuccess: data => {
+    onSuccess: async data => {
       mmkvStorage.set('user.token', data.access_token);
+      const user = await authService.getMe();
     },
     onError: error => console.log(error),
   });

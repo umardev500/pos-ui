@@ -1,5 +1,1 @@
-import {login} from './login.auth.service';
-
-export const authService = {
-  login,
-};
+export * from './login.auth.service';
