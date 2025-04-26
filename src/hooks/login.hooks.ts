@@ -1,3 +1,4 @@
+import {USER_TOKEN_KEY} from '@app/constants';
 import {authService} from '@app/services/auth';
 import {mmkvStorage} from '@app/storage';
 import {useUserStore} from '@app/stores';
@@ -9,7 +10,7 @@ const useLogin = () => {
   return useMutation({
     mutationFn: (values: {email: string; password: string}) => authService.login(values.email, values.password),
     onSuccess: async data => {
-      mmkvStorage.set('user.token', data.access_token);
+      mmkvStorage.set(USER_TOKEN_KEY, data.access_token);
       const user = await authService.getMe();
       setUser(user);
     },

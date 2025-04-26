@@ -1,13 +1,12 @@
+import {USER_TOKEN_KEY} from '@app/constants';
 import {authService} from '@app/services/auth';
 import {mmkvStorage} from '@app/storage';
 import {useUserStore} from '@app/stores';
 import {useQuery} from '@tanstack/react-query';
 
-const TOKEN_KEY = 'user.token';
-
 // Fetch user data from API
 const fetchUserData = async () => {
-  const token = mmkvStorage.getString(TOKEN_KEY);
+  const token = mmkvStorage.getString(USER_TOKEN_KEY);
   if (!token) {
     throw new Error('No token found');
   }

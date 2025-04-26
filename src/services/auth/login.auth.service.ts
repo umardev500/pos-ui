@@ -1,3 +1,4 @@
+import {USER_TOKEN_KEY} from '@app/constants';
 import {mmkvStorage} from '@app/storage';
 import {LoginResponse, User} from '@app/types';
 import Config from 'react-native-config';
@@ -19,7 +20,7 @@ const login = async (email: string, password: string): Promise<LoginResponse> =>
 };
 
 const getMe = async (): Promise<User> => {
-  const token = mmkvStorage.getString('user.token');
+  const token = mmkvStorage.getString(USER_TOKEN_KEY);
 
   const res = await fetch(`${API_URL}/users/me`, {
     method: 'GET',
