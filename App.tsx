@@ -1,6 +1,13 @@
-import {HomeScreen} from '@app/screens';
+import {LoginScreen} from '@app/screens';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import './global.css';
 
+const queryClient = new QueryClient();
+
 export default function App() {
-  return <HomeScreen />;
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LoginScreen />
+    </QueryClientProvider>
+  );
 }
