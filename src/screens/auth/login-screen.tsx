@@ -1,24 +1,11 @@
-import {authService} from '@app/services/auth';
-import {mmkvStorage} from '@app/storage';
-import {useUserStore} from '@app/stores';
+import {authHooks} from '@app/hooks';
 import {LoginSchema} from '@app/validations/auth';
-import {useMutation} from '@tanstack/react-query';
 import {Formik} from 'formik';
 import {Button, Text, TextInput} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const LoginScreen = () => {
-  const setUser = useUserStore(state => state.setUser);
-
-  const {mutate} = useMutation({
-    mutationFn: (values: {email: string; password: string}) => authService.login(values.email, values.password),
-    onSuccess: async data => {
-      mmkvStorage.set('user.token', data.access_token);
-      const user = await authService.getMe();
-      setUser(user);
-    },
-    onError: error => console.log(error),
-  });
+  const {mutate} = authHooks.useLogin();
 
   return (
     <SafeAreaView>
