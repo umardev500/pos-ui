@@ -16,12 +16,19 @@ type Props = {
   onChangeText?: (text: string) => void;
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
   value?: string;
-  size?: 'md' | 'lg';
+  size?: 'sm' | 'md' | 'lg';
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
   leadingIcon?: IconName;
   trailingIcon?: IconName;
 };
+
+// Size configuration
+const SIZE_STYLES = {
+  sm: {height: 'h-10', icon: 18, paddingHorizontal: 'px-3', text: 'text-sm'},
+  md: {height: 'h-12', icon: 22, paddingHorizontal: 'px-4', text: 'text-base'},
+  lg: {height: 'h-14', icon: 26, paddingHorizontal: 'px-5', text: 'text-lg'},
+} as const;
 
 export const Input: React.FC<Props> = ({
   placeholder,
@@ -47,31 +54,29 @@ export const Input: React.FC<Props> = ({
     setIsSecure(prev => !prev);
   }, []);
 
+  const {height, icon, paddingHorizontal, text} = SIZE_STYLES[size];
+
   return (
     <View
-      className={clsx('flex-1 flex-row items-center border rounded-xl px-4', {
+      className={clsx('flex-1 flex-row items-center border rounded-xl', height, paddingHorizontal, {
         'border-gray-400': !isFocused,
         'border-gray-500': isFocused,
-        'h-12': size === 'md',
-        'h-14': size === 'lg',
       })}>
       {leadingIcon && (
         <View className="mr-2">
-          <Icon name={leadingIcon} size={size === 'md' ? 22 : 24} color={colors.gray[500]} />
+          <Icon name={leadingIcon} size={icon} color={colors.gray[500]} />
         </View>
       )}
 
       <TextInput
         value={value}
-        className="p-0 h-full flex-1"
+        className={clsx('p-0 h-full flex-1', text)}
         placeholder={placeholder}
         onChangeText={e => {
           setHasValue(!!e);
           onChangeText?.(e);
         }}
-        onFocus={() => {
-          setIsFocused(true);
-        }}
+        onFocus={() => setIsFocused(true)}
         onBlur={e => {
           setIsFocused(false);
           onBlur?.(e);
@@ -81,16 +86,16 @@ export const Input: React.FC<Props> = ({
       />
 
       {trailingIcon && (
-        <View className="">
-          <Icon name={trailingIcon} size={size === 'md' ? 22 : 24} color={colors.gray[500]} />
+        <View className="ml-2">
+          <Icon name={trailingIcon} size={icon} color={colors.gray[500]} />
         </View>
       )}
 
       {secureTextEntry && hasValue && (
-        <Pressable onPress={toggleSecure}>
+        <Pressable onPress={toggleSecure} className="ml-2">
           <Icon
             name={isSecure ? 'visibility_off' : 'visibility'}
-            size={24}
+            size={icon}
             color={isSecure ? colors.gray[400] : colors.gray[600]}
           />
         </Pressable>

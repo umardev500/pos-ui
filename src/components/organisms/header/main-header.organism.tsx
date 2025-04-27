@@ -17,7 +17,7 @@ export const MainHeader: React.FC<Props> = ({}) => {
       <View className="flex-row items-center justify-between px-4 py-4 gap-6">
         <View className="flex-1 flex-row items-center gap-4">
           <Icon name="menu" />
-          <Input onChangeText={handleChange} trailingIcon="search" placeholder="Search" size="md" />
+          <Input onChangeText={handleChange} trailingIcon="search" placeholder="Search" size="sm" />
         </View>
 
         <View className="flex-row items-center gap-4">
