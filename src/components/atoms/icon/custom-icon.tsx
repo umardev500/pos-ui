@@ -7,6 +7,9 @@ const glyphMap = {
   visibility_off: 0xe902,
   alternate_email: 0xe903,
   lock: 0xe904,
+  favorite: 0xe905,
+  layers: 0xe906,
+  style: 0xe907,
 };
 
 export type IconName = keyof typeof glyphMap;
