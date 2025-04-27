@@ -11,6 +11,7 @@ const glyphMap = {
   layers: 0xe906,
   style: 0xe907,
   add: 0xe908,
+  expand_content: 0xe909,
 };
 
 export type IconName = keyof typeof glyphMap;
