@@ -1,7 +1,8 @@
 import {Icon} from '@app/components/atoms';
 import {colors} from '@app/styles';
 import {Product} from '@app/types';
-import {View, Image, ImageSourcePropType, Pressable} from 'react-native';
+import {getImageSource} from '@app/utils';
+import {Image, Pressable, View} from 'react-native';
 
 export const ProductImage = ({product}: {product: Product}) => {
   const {photo} = product;
@@ -12,7 +13,7 @@ export const ProductImage = ({product}: {product: Product}) => {
 
   return (
     <View className="bg-gray-300 h-40 rounded-tl-lg rounded-tr-lg">
-      <Image className="w-full h-full" source={photo as ImageSourcePropType} />
+      <Image className="w-full h-full" source={getImageSource(photo)} />
 
       <Pressable
         className="absolute right-2 top-2 p-1 rounded-lg"
