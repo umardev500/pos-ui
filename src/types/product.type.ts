@@ -1,3 +1,5 @@
+import {ImageSourcePropType} from 'react-native';
+
 type Variant = {
   price: number;
   stock: number;
@@ -8,7 +10,7 @@ export type Product = {
   id: number;
   name: string;
   description: string;
-  photo: string;
+  photo: ImageSourcePropType | string;
   quantity: number;
   capital: number;
   price: number;

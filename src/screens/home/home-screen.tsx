@@ -9,10 +9,8 @@ export const HomeScreen = () => {
   return (
     <>
       <SystemBars style={'dark'} />
-      <View style={{paddingTop: top}}>
-        <View className="px-4">
-          <ListProducts />
-        </View>
+      <View className="bg-gray-100 flex-1" style={{paddingTop: top + 16}}>
+        <ListProducts />
       </View>
     </>
   );

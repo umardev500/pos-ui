@@ -10,5 +10,6 @@ module.exports = {
     'react-native/no-inline-styles': 'off', // your custom rule
     'react-hooks/exhaustive-deps': 'off',
     '@typescript-eslint/no-unused-vars': 'warn',
+    'react/no-unstable-nested-components': 'off',
   },
 };
