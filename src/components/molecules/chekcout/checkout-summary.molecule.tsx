@@ -14,8 +14,8 @@ export const CheckoutSummary: React.FC<Props> = () => {
       style={{bottom: bottom + 8}}>
       <View>
         <Icon name="local_mall" size={24} color="white" />
-        <View className="absolute items-center justify-center rounded-full bg-orange-400 w-6 h-6 -top-1.5 -right-3">
-          <Text className="text-xs text-white leading-tight" numberOfLines={1}>
+        <View className="absolute items-center justify-center rounded-full bg-white w-6 h-6 -top-1.5 -right-3">
+          <Text className="text-xs text-gray-800 leading-tight" numberOfLines={1}>
             3+
           </Text>
         </View>
