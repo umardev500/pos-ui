@@ -10,6 +10,7 @@ const glyphMap = {
   favorite: 0xe905,
   layers: 0xe906,
   style: 0xe907,
+  add: 0xe908,
 };
 
 export type IconName = keyof typeof glyphMap;
