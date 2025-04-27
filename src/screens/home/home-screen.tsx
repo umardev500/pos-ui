@@ -1,9 +1,19 @@
-import {Text, View} from 'react-native';
+import {ListProducts} from '@app/components/organisms';
+import {View} from 'react-native';
+import {SystemBars} from 'react-native-edge-to-edge';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const HomeScreen = () => {
+  const {top} = useSafeAreaInsets();
+
   return (
-    <View className="bg-red-200">
-      <Text>Home</Text>
-    </View>
+    <>
+      <SystemBars style={'dark'} />
+      <View style={{paddingTop: top}}>
+        <View className="px-4">
+          <ListProducts />
+        </View>
+      </View>
+    </>
   );
 };
