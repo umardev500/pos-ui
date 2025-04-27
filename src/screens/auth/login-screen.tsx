@@ -9,7 +9,7 @@ import {Image, ScrollView, StatusBar, Text, View} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 
 export const LoginScreen = () => {
-  const {mutate} = authHooks.useLogin();
+  const {mutate, isPending} = authHooks.useLogin();
 
   return (
     <SafeAreaView className="flex-1">
@@ -54,6 +54,7 @@ export const LoginScreen = () => {
                 />
 
                 <Button
+                  isLoading={isPending}
                   onPress={handleSubmit}
                   title="Submit"
                   containerColor={colors.sky[500]}

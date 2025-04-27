@@ -1,11 +1,17 @@
 import {USER_TOKEN_KEY} from '@app/constants';
 import {mmkvStorage} from '@app/storage';
 import {LoginResponse, User} from '@app/types';
+import {sleep} from '@app/utils';
 import Config from 'react-native-config';
 
 const API_URL = Config.API_URL;
 
 const login = async (email: string, password: string): Promise<LoginResponse> => {
+  // Simulate a delay for development
+  if (__DEV__) {
+    await sleep(2000);
+  }
+
   const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
