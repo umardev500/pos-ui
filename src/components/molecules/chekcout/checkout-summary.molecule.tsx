@@ -21,7 +21,7 @@ export const CheckoutSummary: React.FC<Props> = () => {
         </View>
       </View>
       <Text className="text-white text-base">Continue to checkout</Text>
-      <Text className="text-white text-base">Rp 25.500</Text>
+      <Text className="text-white text-base font-semibold">Rp 25.500</Text>
     </View>
   );
 };
