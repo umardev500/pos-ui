@@ -4,21 +4,22 @@ import {authHooks} from '@app/hooks';
 import {colors} from '@app/styles';
 import {LoginSchema} from '@app/validations/auth';
 import {Formik} from 'formik';
-import {Image, StatusBar, Text, View} from 'react-native';
+import React from 'react';
+import {Image, Text, View} from 'react-native';
+import {SystemBars} from 'react-native-edge-to-edge';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
-import {SafeAreaView} from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const LoginScreen = () => {
+  const {top} = useSafeAreaInsets();
   const {mutate, isPending} = authHooks.useLogin();
 
   return (
-    <SafeAreaView>
-      <StatusBar backgroundColor="transparent" barStyle="dark-content" />
-
-      <KeyboardAwareScrollView bottomOffset={50}>
-        <View className="p-4 flex-1 pt-32">
-          {/* Top */}
-          <View className="justify-center items-center mb-8">
+    <>
+      <SystemBars style={'dark'} />
+      <View style={{paddingTop: top, paddingHorizontal: 16}}>
+        <KeyboardAwareScrollView bottomOffset={50}>
+          <View className="justify-center items-center mb-8 pt-32">
             <Image className="w-40 h-40" source={logo2} />
             <View className="gap-1 items-center">
               <Text className="text-3xl font-jost font-bold text-gray-800">TomSir</Text>
@@ -26,7 +27,6 @@ export const LoginScreen = () => {
             </View>
           </View>
 
-          {/* Form */}
           <Formik
             initialValues={{email: '', password: ''}}
             validationSchema={LoginSchema}
@@ -63,8 +63,8 @@ export const LoginScreen = () => {
               </View>
             )}
           </Formik>
-        </View>
-      </KeyboardAwareScrollView>
-    </SafeAreaView>
+        </KeyboardAwareScrollView>
+      </View>
+    </>
   );
 };
