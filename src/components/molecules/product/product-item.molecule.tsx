@@ -1,6 +1,7 @@
 import {Icon} from '@app/components/atoms';
 import {colors} from '@app/styles';
 import {Product} from '@app/types';
+import {numberUtils} from '@app/utils';
 import React from 'react';
 import {Image, ImageSourcePropType, Pressable, Text, View} from 'react-native';
 
@@ -43,7 +44,7 @@ export const ProductItem: React.FC<Props> = props => {
 
                   <View className="flex-row items-end">
                     <Text className="text-xs font-medium text-gray-700 mb-0.5">Rp</Text>
-                    <Text className="text-sm font-medium text-gray-700">{price}</Text>
+                    <Text className="text-sm font-medium text-gray-700">{numberUtils.toDecimal(price)}</Text>
                   </View>
                 </View>
                 <Pressable onPress={() => {}} className="bg-orange-500 rounded-lg w-7 h-7 items-center justify-center">
