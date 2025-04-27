@@ -1,5 +1,6 @@
 import {
   product1,
+  product10,
   product2,
   product3,
   product4,
@@ -8,14 +9,13 @@ import {
   product7,
   product8,
   product9,
-  product10,
 } from '@app/assets/images';
 import {ProductsResponse} from '@app/types';
 
 export const products: ProductsResponse = [
   {
     id: 1,
-    name: 'Pizza',
+    name: 'Italian Pizza Set Bundling',
     description: 'Delicious pizza from Italy with a lot of toppings',
     photo: product1,
     quantity: 130,
@@ -41,6 +41,8 @@ export const products: ProductsResponse = [
     variants: [
       {size: 'Single', bun: 'Sesame', price: 8.99, stock: 40},
       {size: 'Double', bun: 'Brioche', price: 12.99, stock: 30},
+      {size: 'Triple', bun: 'Brioche', price: 16.99, stock: 20},
+      {size: 'Quadruple', bun: 'Sesame', price: 20.99, stock: 10},
     ],
   },
   {
@@ -56,6 +58,7 @@ export const products: ProductsResponse = [
     variants: [
       {type: 'Classic', servings: '10 pieces', price: 19.99, stock: 25},
       {type: 'Premium', servings: '15 pieces', price: 29.99, stock: 15},
+      {type: 'Deluxe', servings: '20 pieces', price: 39.99, stock: 10},
     ],
   },
   {
@@ -69,8 +72,8 @@ export const products: ProductsResponse = [
     discount: 7,
     barcode: '321654987',
     variants: [
-      {size: 'Regular', sauce: 'Tomato', price: 10.99, stock: 60},
-      {size: 'Large', sauce: 'Meat', price: 14.99, stock: 40},
+      // {size: 'Regular', sauce: 'Tomato', price: 10.99, stock: 60},
+      // {size: 'Large', sauce: 'Meat', price: 14.99, stock: 40},
     ],
   },
   {
@@ -83,10 +86,7 @@ export const products: ProductsResponse = [
     price: 56000,
     discount: 0,
     barcode: '789123456',
-    variants: [
-      {size: 'Small', filling: 'Beef', price: 5.99, stock: 30},
-      {size: 'Large', filling: 'Chicken', price: 7.99, stock: 20},
-    ],
+    variants: [{size: 'Small', filling: 'Beef', price: 5.99, stock: 30}],
   },
   {
     id: 6,
@@ -101,6 +101,9 @@ export const products: ProductsResponse = [
     variants: [
       {flavor: 'Vanilla', size: 'Medium', price: 3.99, stock: 100},
       {flavor: 'Chocolate', size: 'Large', price: 5.99, stock: 80},
+      {flavor: 'Strawberry', size: 'Small', price: 2.99, stock: 60},
+      {flavor: 'Mint', size: 'Large', price: 4.99, stock: 40},
+      {flavor: 'Raspberry', size: 'Medium', price: 4.99, stock: 20},
     ],
   },
   {
