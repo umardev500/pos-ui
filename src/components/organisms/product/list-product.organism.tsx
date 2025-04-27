@@ -17,7 +17,7 @@ export const ListProducts = () => {
   return (
     <>
       <FlatList
-        contentContainerStyle={{paddingHorizontal: PADDING_X / 2, paddingBottom: 45}}
+        contentContainerStyle={{paddingHorizontal: PADDING_X / 2, paddingBottom: 45, paddingTop: 16}}
         ItemSeparatorComponent={() => <View className="h-4" />}
         numColumns={2}
         keyExtractor={item => `${item.id}`}

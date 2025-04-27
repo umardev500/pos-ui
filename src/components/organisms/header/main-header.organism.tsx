@@ -13,8 +13,8 @@ export const MainHeader: React.FC<Props> = ({}) => {
   };
 
   return (
-    <View style={{paddingTop: top}}>
-      <View className="flex-row items-center justify-between px-4 pt-4 pb-6 gap-6">
+    <View className="bg-white" style={{paddingTop: top}}>
+      <View className="flex-row items-center justify-between px-4 py-4 gap-6">
         <View className="flex-1 flex-row items-center gap-4">
           <Icon name="menu" />
           <Input onChangeText={handleChange} trailingIcon="search" placeholder="Search" size="md" />

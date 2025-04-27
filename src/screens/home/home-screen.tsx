@@ -7,7 +7,7 @@ export const HomeScreen = () => {
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
-      <View className="bg-gray-100 flex-1 ">
+      <View className="bg-gray-100 flex-1">
         <ListProducts />
       </View>
     </>
