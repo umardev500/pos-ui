@@ -18,6 +18,13 @@ export const ProductItem: React.FC<Props> = props => {
       <View className="bg-white rounded-lg gap-0 overflow-hidden">
         <View className="bg-gray-300 h-40 rounded-tl-lg rounded-tr-lg">
           <Image className="w-full h-full" source={photo as ImageSourcePropType} />
+
+          <Pressable
+            className="absolute right-2 top-2 p-1 rounded-lg"
+            style={{backgroundColor: 'rgba(0, 0, 0, 0.2)'}}
+            onPress={() => {}}>
+            <Icon name="expand_content" size={24} color={colors.white} />
+          </Pressable>
         </View>
 
         <View className="pt-2 pb-2 px-2.5">
