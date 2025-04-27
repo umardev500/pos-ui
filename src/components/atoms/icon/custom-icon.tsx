@@ -13,6 +13,11 @@ const glyphMap = {
   add: 0xe908,
   expand_content: 0xe909,
   local_mall: 0xe90a,
+  assigment: 0xe90b,
+  menu: 0xe90c,
+  receipt: 0xe90d,
+  search: 0xe90e,
+  notification: 0xe90f,
 };
 
 export type IconName = keyof typeof glyphMap;
