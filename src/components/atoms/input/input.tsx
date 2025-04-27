@@ -79,7 +79,7 @@ export const Input: React.FC<Props> = ({
             <Icon
               name={isSecure ? 'visibility_off' : 'visibility'}
               size={24}
-              color={isSecure ? colors.gray[600] : colors.gray[400]}
+              color={isSecure ? colors.gray[400] : colors.gray[600]}
             />
           </Pressable>
         )}
