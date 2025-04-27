@@ -1,5 +1,6 @@
 import {logo2} from '@app/assets/images';
 import {Button, Input} from '@app/components/atoms';
+import {Loading} from '@app/components/atoms/loading';
 import {authHooks} from '@app/hooks';
 import {colors} from '@app/styles';
 import {LoginSchema} from '@app/validations/auth';
@@ -25,6 +26,7 @@ export const LoginScreen = () => {
           </View>
 
           {/* Form */}
+          <Loading />
 
           <Formik
             initialValues={{email: '', password: ''}}
