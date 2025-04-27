@@ -1,14 +1,44 @@
-import {ListProducts, MainHeader} from '@app/components/organisms';
+import {ListProducts, MainHeader, TabView} from '@app/components/organisms';
+import {drinkProducts, foodProducts, snackProducts} from '@app/mocks';
+import {RenderScene} from '@app/types';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
+import {Route, SceneMap} from 'react-native-tab-view';
 
 export const HomeScreen = () => {
+  const routes: Route[] = [
+    {
+      key: 'all',
+      title: 'All',
+    },
+    {
+      key: 'food',
+      title: 'Food',
+    },
+    {
+      key: 'drink',
+      title: 'Drink',
+    },
+    {
+      key: 'snack',
+      title: 'Snack',
+    },
+  ];
+
+  const renderScene: RenderScene = SceneMap({
+    all: () => <ListProducts products={[...foodProducts, ...drinkProducts, ...snackProducts]} />,
+    food: () => <ListProducts products={foodProducts} />,
+    drink: () => <ListProducts products={drinkProducts} />,
+    snack: () => <ListProducts products={snackProducts} />,
+  });
+
   return (
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
       <View className="bg-gray-100 flex-1">
-        <ListProducts />
+        <TabView routes={routes} renderScene={renderScene} />
+        {/* <ListProducts products={products} /> */}
       </View>
     </>
   );
