@@ -20,6 +20,7 @@ type Props = {
   keyboardType?: KeyboardTypeOptions;
   secureTextEntry?: boolean;
   leadingIcon?: IconName;
+  trailingIcon?: IconName;
 };
 
 export const Input: React.FC<Props> = ({
@@ -31,6 +32,7 @@ export const Input: React.FC<Props> = ({
   keyboardType = 'default',
   secureTextEntry = false,
   leadingIcon,
+  trailingIcon,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSecure, setIsSecure] = useState(false);
@@ -77,6 +79,12 @@ export const Input: React.FC<Props> = ({
         keyboardType={keyboardType}
         secureTextEntry={isSecure}
       />
+
+      {trailingIcon && (
+        <View className="">
+          <Icon name={trailingIcon} size={size === 'md' ? 22 : 24} color={colors.gray[500]} />
+        </View>
+      )}
 
       {secureTextEntry && hasValue && (
         <Pressable onPress={toggleSecure}>
