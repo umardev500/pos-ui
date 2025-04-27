@@ -18,7 +18,7 @@ export const LoginScreen = () => {
     <>
       <SystemBars style={'dark'} />
       <View style={{paddingTop: top, paddingHorizontal: 16}}>
-        <KeyboardAwareScrollView bottomOffset={50}>
+        <KeyboardAwareScrollView showsVerticalScrollIndicator={false} bottomOffset={50}>
           <View className="justify-center items-center mb-8 pt-32">
             <Image className="w-40 h-40" source={logo2} />
             <View className="gap-1 items-center">
