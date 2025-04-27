@@ -7,7 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export const AppNavator = () => {
+export const AppNavigator = () => {
   const user = useUserStore(state => state.user);
 
   return (
