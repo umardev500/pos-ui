@@ -1,7 +1,7 @@
 import {Icon, IconName} from '@app/components/atoms/icon';
 import {colors} from '@app/styles';
 import clsx from 'clsx';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
@@ -33,8 +33,13 @@ export const Input: React.FC<Props> = ({
   leadingIcon,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
-  const [isSecure, setIsSecure] = useState(secureTextEntry);
-  const [hasValue, setHasValue] = useState(!!value);
+  const [isSecure, setIsSecure] = useState(false);
+  const [hasValue, setHasValue] = useState(false);
+
+  useEffect(() => {
+    setHasValue(!!value);
+    setIsSecure(secureTextEntry);
+  }, []);
 
   const toggleSecure = useCallback(() => {
     setIsSecure(prev => !prev);
@@ -73,17 +78,15 @@ export const Input: React.FC<Props> = ({
         secureTextEntry={isSecure}
       />
 
-      <View className="items-center justify-center">
-        {secureTextEntry && hasValue && (
-          <Pressable onPress={toggleSecure}>
-            <Icon
-              name={isSecure ? 'visibility_off' : 'visibility'}
-              size={24}
-              color={isSecure ? colors.gray[400] : colors.gray[600]}
-            />
-          </Pressable>
-        )}
-      </View>
+      {secureTextEntry && hasValue && (
+        <Pressable onPress={toggleSecure}>
+          <Icon
+            name={isSecure ? 'visibility_off' : 'visibility'}
+            size={24}
+            color={isSecure ? colors.gray[400] : colors.gray[600]}
+          />
+        </Pressable>
+      )}
     </View>
   );
 };

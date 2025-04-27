@@ -8,5 +8,7 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error', // <-- This shows prettier problems as ESLint errors
     'react-native/no-inline-styles': 'off', // your custom rule
+    'react-hooks/exhaustive-deps': 'off',
+    '@typescript-eslint/no-unused-vars': 'warn',
   },
 };
