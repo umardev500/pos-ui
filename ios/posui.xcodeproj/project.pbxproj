@@ -11,8 +11,9 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		57D51EAFE4304DECBD0CCA90 /* ms.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1E27908A7405438AB2E7D795 /* ms.ttf */; };
-		CD56F5A5BB81425BA62110E1 /* ms_fill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 173BEE676EF145ADB0235A8F /* ms_fill.ttf */; };
+		6616746D1C2D46C0A595B19D /* ms.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 204C4F55D2DA4B2D8D40F924 /* ms.ttf */; };
+		364C1109DB064353A1B139BA /* ms_fill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C48606C664F468BA5BB95A4 /* ms_fill.ttf */; };
+		F4F1B31EC33D4B3987E1F6CC /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D3B4DBFA8B9B46339361824A /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,8 +38,9 @@
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = posui/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = posui/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		1E27908A7405438AB2E7D795 /* ms.ttf */ = {isa = PBXFileReference; name = "ms.ttf"; path = "../src/assets/fonts/ms.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		173BEE676EF145ADB0235A8F /* ms_fill.ttf */ = {isa = PBXFileReference; name = "ms_fill.ttf"; path = "../src/assets/fonts/ms_fill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		204C4F55D2DA4B2D8D40F924 /* ms.ttf */ = {isa = PBXFileReference; name = "ms.ttf"; path = "../src/assets/fonts/ms.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6C48606C664F468BA5BB95A4 /* ms_fill.ttf */ = {isa = PBXFileReference; name = "ms_fill.ttf"; path = "../src/assets/fonts/ms_fill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		D3B4DBFA8B9B46339361824A /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,8 +126,9 @@
 		C5A7C77277F845478E272C07 /* Resources */ = {
 			isa = "PBXGroup";
 			children = (
-				1E27908A7405438AB2E7D795 /* ms.ttf */,
-				173BEE676EF145ADB0235A8F /* ms_fill.ttf */,
+				204C4F55D2DA4B2D8D40F924 /* ms.ttf */,
+				6C48606C664F468BA5BB95A4 /* ms_fill.ttf */,
+				D3B4DBFA8B9B46339361824A /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -200,8 +203,9 @@
 			files = (
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
-				57D51EAFE4304DECBD0CCA90 /* ms.ttf in Resources */,
-				CD56F5A5BB81425BA62110E1 /* ms_fill.ttf in Resources */,
+				6616746D1C2D46C0A595B19D /* ms.ttf in Resources */,
+				364C1109DB064353A1B139BA /* ms_fill.ttf in Resources */,
+				F4F1B31EC33D4B3987E1F6CC /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

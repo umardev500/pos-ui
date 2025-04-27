@@ -12,6 +12,7 @@ const useLogin = () => {
     onSuccess: async data => {
       mmkvStorage.set(USER_TOKEN_KEY, data.access_token);
       const user = await authService.getMe();
+      console.log(user);
       setUser(user);
     },
     onError: error => {

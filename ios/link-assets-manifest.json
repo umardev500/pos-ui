@@ -2,12 +2,16 @@
   "migIndex": 1,
   "data": [
     {
+      "path": "src/assets/fonts/icomoon.ttf",
+      "sha1": "cf7485baf079902237d557d9d2cee9807b7ed34c"
+    },
+    {
       "path": "src/assets/fonts/ms.ttf",
-      "sha1": "dd8811990961f81f5c16c795f18814ab606ecf6f"
+      "sha1": "a08eaa02825dfb6c0fcdaa39140c16b374580e09"
     },
     {
       "path": "src/assets/fonts/ms_fill.ttf",
-      "sha1": "778c56067784cacc70ee7d4eabfae54844577c41"
+      "sha1": "442cde806fa756fb8eee56f23f99a3dd6b633f41"
     }
   ]
 }
