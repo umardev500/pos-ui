@@ -1,3 +1,4 @@
+import {CategoryDetailHeaderRight} from '@app/components/molecules';
 import {ManageProductScreen, MaterialScreen, RecipeScreen, VariantScreen} from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {ProductsScreen} from '@app/screens/products';
@@ -27,7 +28,14 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
 
       {/* Subscreen of category */}
-      <Stack.Screen options={{title: 'Detail Kategori'}} name="CategoryDetail" component={CategoryDetailScreen} />
+      <Stack.Screen
+        options={{
+          title: 'Detail Kategori',
+          headerRight: () => <CategoryDetailHeaderRight />,
+        }}
+        name="CategoryDetail"
+        component={CategoryDetailScreen}
+      />
     </Stack.Navigator>
   );
 };

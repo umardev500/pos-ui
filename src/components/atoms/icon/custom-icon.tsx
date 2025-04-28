@@ -3,6 +3,7 @@ import {createIconSet} from '@react-native-vector-icons/common';
 const glyphMapFill = {
   power_setting: 0xe923,
   setting: 0xe924,
+  check: 0xe925,
 };
 
 const glyphMap = {
