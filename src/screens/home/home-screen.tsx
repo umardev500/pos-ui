@@ -1,12 +1,22 @@
+import {Button} from '@app/components/atoms';
 import {CheckoutSummary} from '@app/components/molecules';
-import {ListProducts, MainHeader, TabView} from '@app/components/organisms';
+import {
+  ListProducts,
+  MainHeader,
+  QuantityBoottomSheet,
+  QuantityBottomSheetRef,
+  TabView,
+} from '@app/components/organisms';
 import {dessertProducts, drinkProducts, foodProducts, snackProducts} from '@app/mocks';
-import {RenderScene} from '@app/types';
+import {Product, RenderScene} from '@app/types';
+import {useRef} from 'react';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {Route, SceneMap} from 'react-native-tab-view';
 
 export const HomeScreen = () => {
+  const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
+
   const routes: Route[] = [
     {
       key: 'all',
@@ -38,14 +48,25 @@ export const HomeScreen = () => {
     dessert: () => <ListProducts products={dessertProducts} />,
   });
 
+  // Handler when add to cart button is pressed
+  const handleAddCart = (selectedProduct: Product) => {
+    bottomSheetRef.current?.open(selectedProduct, 0);
+  };
+
+  // Handler when quantity is confirmed
+  const handleOnQuantityConfirmed = (qty: number, product: Product) => {
+    console.log(qty, product);
+  };
+
   return (
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
+      <Button title="Add to cart" onPress={() => handleAddCart(foodProducts[0])} />
       <View className="bg-gray-100 flex-1">
         <TabView routes={routes} renderScene={renderScene} />
-        {/* <ListProducts products={products} /> */}
         <CheckoutSummary />
+        <QuantityBoottomSheet onConfirm={handleOnQuantityConfirmed} ref={bottomSheetRef} />
       </View>
     </>
   );

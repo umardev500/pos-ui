@@ -1,3 +1,4 @@
+export * from './bottom-sheets';
 export * from './header';
 export * from './product';
 export * from './tab-view';
