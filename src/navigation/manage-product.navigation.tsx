@@ -1,5 +1,5 @@
 import {ManageProductScreen, MaterialScreen, RecipeScreen, VariantScreen} from '@app/screens';
-import {CategoriesScreen} from '@app/screens/categories';
+import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {ProductsScreen} from '@app/screens/products';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
@@ -25,6 +25,9 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen options={{title: 'Varian'}} name="Variant" component={VariantScreen} />
       <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
       <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
+
+      {/* Subscreen of category */}
+      <Stack.Screen options={{title: 'Detail Kategori'}} name="CategoryDetail" component={CategoryDetailScreen} />
     </Stack.Navigator>
   );
 };
