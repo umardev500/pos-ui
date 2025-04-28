@@ -11,7 +11,7 @@ const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = ({route}) => {
   return (
-    <Stack.Navigator initialRouteName={route.params.screen} screenOptions={{headerShown: false}}>
+    <Stack.Navigator initialRouteName={route.params?.screen} screenOptions={{headerShown: false}}>
       <Stack.Screen name="ManageProduct" component={ManageProductScreen} />
       <Stack.Screen name="Products" component={ProductsScreen} />
       <Stack.Screen name="Categories" component={CategoriesScreen} />
