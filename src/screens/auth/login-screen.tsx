@@ -35,29 +35,31 @@ export const LoginScreen = () => {
             }}>
             {({handleChange, handleBlur, handleSubmit, errors, touched, isValid, values}) => (
               <View className="gap-4">
-                <Input
-                  leadingIcon="alternate_email"
-                  size="md"
-                  onBlur={handleBlur('email')}
-                  onChangeText={handleChange('email')}
-                  placeholder="Email"
-                />
+                <View className="mb-2 gap-4">
+                  <Input
+                    leadingIcon="alternate_email"
+                    size="md"
+                    onBlur={handleBlur('email')}
+                    onChangeText={handleChange('email')}
+                    placeholder="Email"
+                  />
 
-                <Input
-                  leadingIcon="lock"
-                  size="md"
-                  secureTextEntry
-                  onBlur={handleBlur('password')}
-                  onChangeText={handleChange('password')}
-                  placeholder="Enter your password"
-                />
+                  <Input
+                    leadingIcon="lock"
+                    size="md"
+                    secureTextEntry
+                    onBlur={handleBlur('password')}
+                    onChangeText={handleChange('password')}
+                    placeholder="Enter your password"
+                  />
+                </View>
 
                 <Button
                   anim={require('@app/assets/anim/loading-white-com.json')}
                   isLoading={isPending}
                   onPress={handleSubmit}
                   title="Submit"
-                  containerColor={colors.sky[500]}
+                  containerColor={colors.orange[500]}
                   textColor="white"
                   textSize={18}
                 />
