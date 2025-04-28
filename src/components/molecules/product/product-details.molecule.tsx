@@ -2,14 +2,15 @@ import {Icon} from '@app/components/atoms';
 import {colors} from '@app/styles';
 import {Product} from '@app/types';
 import {numberUtils} from '@app/utils';
-import {View, Text, Pressable} from 'react-native';
+import {Pressable, Text, View} from 'react-native';
 
-export const ProductDetails = ({product}: {product: Product}) => {
+type Props = {
+  product: Product;
+  onAddToCart?: () => void;
+};
+
+export const ProductDetails: React.FC<Props> = ({product, onAddToCart}) => {
   const {name, price, variants} = product;
-
-  const handleAddToCart = () => {
-    // TODO: add product to cart
-  };
 
   return (
     <View className="pt-2 pb-2 px-2.5">
@@ -31,9 +32,7 @@ export const ProductDetails = ({product}: {product: Product}) => {
                 <Text className="text-sm font-medium text-gray-700">{numberUtils.toDecimal(price)}</Text>
               </View>
             </View>
-            <Pressable
-              onPress={handleAddToCart}
-              className="bg-orange-500 rounded-lg w-7 h-7 items-center justify-center">
+            <Pressable onPress={onAddToCart} className="bg-orange-500 rounded-lg w-7 h-7 items-center justify-center">
               <Icon name="add" size={24} color="white" />
             </Pressable>
           </View>

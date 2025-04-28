@@ -8,15 +8,16 @@ const NUM_COL = 2;
 
 type Props = {
   products: Product[];
+  onAddToCart?: (product: Product) => void;
 };
 
 export const ListProducts: React.FC<Props> = props => {
-  const {products} = props;
+  const {products, onAddToCart} = props;
   const {width} = useWindowDimensions();
   const itemWidth = (width - PADDING_X) / NUM_COL;
 
   const renderItem: ListRenderItem<Product> = ({item}) => {
-    return <ProductItem width={itemWidth} product={item} />;
+    return <ProductItem onAddToCart={onAddToCart} width={itemWidth} product={item} />;
   };
 
   return (

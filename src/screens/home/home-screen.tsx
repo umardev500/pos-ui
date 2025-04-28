@@ -1,4 +1,3 @@
-import {Button} from '@app/components/atoms';
 import {CheckoutSummary} from '@app/components/molecules';
 import {
   ListProducts,
@@ -40,21 +39,24 @@ export const HomeScreen = () => {
     },
   ];
 
+  // Handler when add to cart button is pressed
+  const handleAddCart = (selectedProduct: Product) => {
+    bottomSheetRef.current?.open(selectedProduct, 0);
+  };
+
   const renderScene: RenderScene = SceneMap({
-    all: () => <ListProducts products={[...foodProducts, ...drinkProducts, ...snackProducts]} />,
+    all: () => (
+      <ListProducts onAddToCart={handleAddCart} products={[...foodProducts, ...drinkProducts, ...snackProducts]} />
+    ),
     food: () => <ListProducts products={foodProducts} />,
     drink: () => <ListProducts products={drinkProducts} />,
     snack: () => <ListProducts products={snackProducts} />,
     dessert: () => <ListProducts products={dessertProducts} />,
   });
 
-  // Handler when add to cart button is pressed
-  const handleAddCart = (selectedProduct: Product) => {
-    bottomSheetRef.current?.open(selectedProduct, 0);
-  };
-
   // Handler when quantity is confirmed
   const handleOnQuantityConfirmed = (qty: number, product: Product) => {
+    // TODO: Add to cart
     console.log(qty, product);
   };
 
@@ -62,7 +64,6 @@ export const HomeScreen = () => {
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
-      <Button title="Add to cart" onPress={() => handleAddCart(foodProducts[0])} />
       <View className="bg-gray-100 flex-1">
         <TabView routes={routes} renderScene={renderScene} />
         <CheckoutSummary />
