@@ -1,1 +1,1 @@
-export * from './header-right.molecule';
+export * from './category-form-header-right.molecule';

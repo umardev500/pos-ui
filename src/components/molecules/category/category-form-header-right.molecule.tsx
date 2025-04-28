@@ -5,7 +5,7 @@ import {TouchableOpacity, View} from 'react-native';
 
 type Props = {};
 
-export const CategoryDetailHeaderRight: React.FC<Props> = ({}) => {
+export const CategoryFormHeaderRight: React.FC<Props> = ({}) => {
   // TODO: check the category data form from the store
 
   return (
