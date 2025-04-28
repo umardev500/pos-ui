@@ -58,7 +58,7 @@ export const Input: React.FC<Props> = ({
 
   return (
     <View
-      className={clsx('flex-1 flex-row items-center border rounded-xl', height, paddingHorizontal, {
+      className={clsx('flex-row w-full items-center border rounded-xl', height, paddingHorizontal, {
         'border-gray-400': !isFocused,
         'border-gray-500': isFocused,
       })}>
