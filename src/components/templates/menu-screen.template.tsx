@@ -1,6 +1,5 @@
 import {ListMenu} from '@app/components/organisms';
 import {MenuItem} from '@app/types';
-import {Header} from '@react-navigation/elements';
 import React from 'react';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
@@ -13,7 +12,6 @@ export const MenuScreenTemplate = <T extends Record<string, any>>({menus}: Props
   return (
     <>
       <SystemBars style={'dark'} />
-      <Header title="Manage product" />
 
       <View className="flex-1 bg-white">
         <ListMenu menus={menus} />

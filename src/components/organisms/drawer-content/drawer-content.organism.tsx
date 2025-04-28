@@ -1,6 +1,7 @@
 import {avatar} from '@app/assets/images/avatars';
 import {DrawerMenu} from '@app/components/molecules';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -8,6 +9,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 type Props = DrawerContentComponentProps;
 
 export const DrawerContent: React.FC<Props> = ({}) => {
+  const navigation = useNavigation();
   const {top} = useSafeAreaInsets();
 
   return (
@@ -26,11 +28,17 @@ export const DrawerContent: React.FC<Props> = ({}) => {
         </View>
 
         <View className="px-4 py-4">
-          <DrawerMenu label="Katalog" icon="package" />
-          <DrawerMenu label="Laporan" icon="finance_mode" />
-          <DrawerMenu label="Kelola Produk" icon="deployed_code_update" />
-          <DrawerMenu label="Kelola Toko" icon="store_front" />
-          <DrawerMenu label="Keluar" icon="power_setting" />
+          <DrawerMenu onPress={() => {}} label="Katalog" icon="package" />
+          <DrawerMenu onPress={() => {}} label="Laporan" icon="finance_mode" />
+          <DrawerMenu
+            onPress={() => {
+              navigation.navigate('ManageProductStack', {screen: 'ManageProduct'});
+            }}
+            label="Kelola Produk"
+            icon="deployed_code_update"
+          />
+          <DrawerMenu onPress={() => {}} label="Kelola Toko" icon="store_front" />
+          <DrawerMenu onPress={() => {}} label="Keluar" icon="power_setting" />
         </View>
       </View>
     </>
