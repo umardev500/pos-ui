@@ -15,9 +15,8 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
     <Stack.Navigator
       initialRouteName={props.route.params?.screen}
       screenOptions={{
-        headerShown: false,
         header: ({back, route, options}) => (
-          <Header {...options} back={back} title={getHeaderTitle(options, route.name)} />
+          <Header {...options} headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
         ),
       }}>
       <Stack.Screen name="ManageProduct" component={ManageProductScreen} />
