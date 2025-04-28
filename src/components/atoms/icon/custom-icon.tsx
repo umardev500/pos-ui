@@ -1,5 +1,9 @@
 import {createIconSet} from '@react-native-vector-icons/common';
-import {StyleProp, TextStyle} from 'react-native';
+
+const glyphMapFill = {
+  power_setting: 0xe923,
+  setting: 0xe924,
+};
 
 const glyphMap = {
   x: 0xe900,
@@ -22,32 +26,27 @@ const glyphMap = {
   remove: 0xe911,
   chevron_left: 0xe912,
   chevron_right: 0xe913,
+  arrow_back: 0xe914,
+  arrow_forward: 0xe915,
+  close_small: 0xe916,
+  delete: 0xe917,
+  deployed_code_update: 0xe918,
+  description: 0xe919,
+  finance_mode: 0xe91a,
+  history: 0xe91b,
+  inventory: 0xe91c,
+  lock_open_circle: 0xe91d,
+  logout: 0xe91e,
+  package: 0xe91f,
+  shopping_bag: 0xe920,
+  show_chart: 0xe921,
+  store_front: 0xe922,
+  ...glyphMapFill,
 };
 
 export type IconName = keyof typeof glyphMap;
 
-const IconRegular = createIconSet(glyphMap, {
+export const Icon = createIconSet(glyphMap, {
   postScriptName: 'icomoon',
   fontFileName: 'icomoon.ttf',
 });
-
-const IconFill = createIconSet(glyphMap, {
-  postScriptName: 'icomoon',
-  fontFileName: 'icomoon.ttf',
-});
-
-type Props = {
-  fill?: boolean;
-  name: keyof typeof glyphMap;
-  size?: number;
-  color?: string;
-  style?: StyleProp<TextStyle>;
-};
-
-export const Icon = ({fill = false, name, size = 24, color = 'black', style}: Props) => {
-  return fill ? (
-    <IconFill name={name} size={size} color={color} style={style} />
-  ) : (
-    <IconRegular name={name} size={size} color={color} style={style} />
-  );
-};

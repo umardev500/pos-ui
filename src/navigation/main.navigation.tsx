@@ -11,8 +11,8 @@ export const MainNavigation = () => {
       screenOptions={{
         headerShown: false,
       }}>
-      <Stack.Screen name="ManageProductStack" component={ManageProductStackNavigator} />
       <Stack.Screen name="Drawer" component={DrawerNavigation} />
+      <Stack.Screen name="ManageProductStack" component={ManageProductStackNavigator} />
     </Stack.Navigator>
   );
 };
