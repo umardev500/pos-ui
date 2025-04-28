@@ -1,5 +1,5 @@
 import {ListProducts, MainHeader, TabView} from '@app/components/organisms';
-import {drinkProducts, foodProducts, snackProducts} from '@app/mocks';
+import {dessertProducts, drinkProducts, foodProducts, snackProducts} from '@app/mocks';
 import {RenderScene} from '@app/types';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
@@ -23,6 +23,10 @@ export const HomeScreen = () => {
       key: 'snack',
       title: 'Snack',
     },
+    {
+      key: 'dessert',
+      title: 'Dessert',
+    },
   ];
 
   const renderScene: RenderScene = SceneMap({
@@ -30,6 +34,7 @@ export const HomeScreen = () => {
     food: () => <ListProducts products={foodProducts} />,
     drink: () => <ListProducts products={drinkProducts} />,
     snack: () => <ListProducts products={snackProducts} />,
+    dessert: () => <ListProducts products={dessertProducts} />,
   });
 
   return (
