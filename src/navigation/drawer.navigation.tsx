@@ -8,7 +8,6 @@ export const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
       drawerContent={props => <DrawerContent {...props} />}
-      defaultStatus="open"
       screenOptions={{
         headerShown: false,
         drawerStyle: {

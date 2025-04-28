@@ -33,10 +33,10 @@ export const MainHeader: React.FC<Props> = ({}) => {
 
         <View className="flex-row items-center gap-4">
           <Pressable onPress={() => {}}>
-            <Icon name="assigment" />
+            <Icon name="assigment" size={24} color={colors.gray[700]} />
           </Pressable>
           <Pressable onPress={() => {}}>
-            <Icon name="notification" />
+            <Icon name="notification" size={24} color={colors.gray[700]} />
           </Pressable>
         </View>
       </View>
