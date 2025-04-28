@@ -24,11 +24,13 @@ export const MainHeader: React.FC<Props> = ({}) => {
   return (
     <View className="bg-white" style={{paddingTop: top}}>
       <View className="flex-row items-center justify-between px-4 py-4 gap-6">
-        <View className="flex-1 flex-row items-center gap-4">
+        <View className="flex-1 flex-row items-center gap-4 ">
           <Pressable onPress={handleToggleDrawer}>
             <Icon name="menu" size={24} color={colors.gray[600]} />
           </Pressable>
-          <Input onChangeText={handleChange} trailingIcon="search" placeholder="Search" size="sm" />
+          <View className="flex-1">
+            <Input onChangeText={handleChange} trailingIcon="search" placeholder="Search" size="sm" />
+          </View>
         </View>
 
         <View className="flex-row items-center gap-4">
