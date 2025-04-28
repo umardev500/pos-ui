@@ -5,4 +5,5 @@ export * from './manage-product';
 export * from './material';
 export * from './products';
 export * from './recipe';
+export * from './unit';
 export * from './variant';
