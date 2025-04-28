@@ -2,7 +2,7 @@ import {colors} from '@app/styles';
 import {RenderScene} from '@app/types';
 import clsx from 'clsx';
 import React, {useState} from 'react';
-import {Text, useWindowDimensions, View} from 'react-native';
+import {Pressable, Text, useWindowDimensions, View} from 'react-native';
 import {NavigationState, TabView as ReactNativeTabView, Route, TabBar, TabBarProps} from 'react-native-tab-view';
 
 type Props = {
@@ -35,20 +35,22 @@ export const TabView: React.FC<Props> = props => {
         color: 'rgba(0, 0, 0, 0)',
       }}
       renderTabBarItem={tabItemProps => {
-        const {route, activeColor, inactiveColor, navigationState} = tabItemProps;
+        const {route, activeColor, inactiveColor, navigationState, onPress} = tabItemProps;
         const activeRoute = navigationState.routes[navigationState.index];
         const isActive = route.key === activeRoute.key;
 
         return (
-          <View className="flex-row items-center justify-center h-12 " style={{width: TAB_ITEM_W}}>
-            <Text
-              style={{color: isActive ? activeColor : inactiveColor}}
-              className={clsx('text-sm font-medium text-center', {})}
-              numberOfLines={1}
-              ellipsizeMode="tail">
-              {route.title}
-            </Text>
-          </View>
+          <Pressable onPress={onPress}>
+            <View className="flex-row items-center justify-center h-12 " style={{width: TAB_ITEM_W}}>
+              <Text
+                style={{color: isActive ? activeColor : inactiveColor}}
+                className={clsx('text-sm font-medium text-center', {})}
+                numberOfLines={1}
+                ellipsizeMode="tail">
+                {route.title}
+              </Text>
+            </View>
+          </Pressable>
         );
       }}
     />
