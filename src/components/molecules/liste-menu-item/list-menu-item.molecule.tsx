@@ -6,13 +6,13 @@ import {Text, TouchableOpacity, View} from 'react-native';
 
 type Props<T extends Record<string, any>> = {
   menu: MenuItem<T>;
-  onPress?: () => void;
+  onPress?: (menu: MenuItem<T>) => void;
 };
 
 export const ListMenuItem = <T extends Record<string, any>>({menu, onPress}: Props<T>) => {
   return (
     <View>
-      <TouchableOpacity onPress={onPress}>
+      <TouchableOpacity onPress={() => onPress?.(menu)}>
         <View className="flex-row items-center justify-between py-4 px-4">
           <Text className="text-base font-medium text-gray-800">{menu.label}</Text>
           <Icon name="chevron_right" size={24} color={colors.gray[500]} />

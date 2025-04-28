@@ -19,12 +19,12 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           <Header {...options} headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
         ),
       }}>
-      <Stack.Screen name="ManageProduct" component={ManageProductScreen} />
-      <Stack.Screen name="Products" component={ProductsScreen} />
-      <Stack.Screen name="Categories" component={CategoriesScreen} />
-      <Stack.Screen name="Variant" component={VariantScreen} />
-      <Stack.Screen name="Material" component={MaterialScreen} />
-      <Stack.Screen name="Recipe" component={RecipeScreen} />
+      <Stack.Screen options={{title: 'Kelola Produk'}} name="ManageProduct" component={ManageProductScreen} />
+      <Stack.Screen options={{title: 'Daftar Produk'}} name="Products" component={ProductsScreen} />
+      <Stack.Screen options={{title: 'Kategori'}} name="Categories" component={CategoriesScreen} />
+      <Stack.Screen options={{title: 'Varian'}} name="Variant" component={VariantScreen} />
+      <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
+      <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
     </Stack.Navigator>
   );
 };
