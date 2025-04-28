@@ -1434,6 +1434,11 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
+"@lodev09/react-native-true-sheet@^2.0.5":
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/@lodev09/react-native-true-sheet/-/react-native-true-sheet-2.0.5.tgz#4741ae23a14838aa4f7c85b576782a072e31c40c"
+  integrity sha512-io836GkxMDL48/oHiSvo0/WeiaOrCBwGTsCxVaydF6aHcbewDD/gFcLvJKLIZ7raQqiymZLiSKGWLwNAPKlIrw==
+
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
   resolved "https://registry.yarnpkg.com/@nicolo-ribaudo/eslint-scope-5-internals/-/eslint-scope-5-internals-5.1.1-v1.tgz#dbf733a965ca47b1973177dc0bb6c889edcfb129"
