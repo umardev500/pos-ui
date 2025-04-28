@@ -53,6 +53,7 @@ export const LoginScreen = () => {
                 />
 
                 <Button
+                  anim={require('@app/assets/anim/loading-white-com.json')}
                   isLoading={isPending}
                   onPress={handleSubmit}
                   title="Submit"

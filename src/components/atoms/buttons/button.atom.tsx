@@ -1,5 +1,6 @@
 import {Loading} from '@app/components/atoms/loading';
 import clsx from 'clsx';
+import {AnimationObject} from 'lottie-react-native';
 import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 
@@ -12,6 +13,12 @@ type Props = {
   isLoading?: boolean;
   loadingType?: 'single' | 'beside' | 'beside-right';
   onPress?: () => void;
+  anim?:
+    | string
+    | AnimationObject
+    | {
+        uri: string;
+      };
 };
 
 export const Button: React.FC<Props> = ({
@@ -22,6 +29,7 @@ export const Button: React.FC<Props> = ({
   textSize,
   isLoading = false,
   loadingType = 'beside',
+  anim = require('@app/assets/anim/loading-primary.json'),
   onPress,
 }) => {
   const renderText = () => (
@@ -39,14 +47,14 @@ export const Button: React.FC<Props> = ({
     if (!isLoading) return renderText();
 
     if (loadingType === 'single') {
-      return <Loading size={22} />;
+      return <Loading source={anim} size={22} />;
     }
 
     return (
       <View className="flex-row items-center gap-2">
-        {loadingType === 'beside' && <Loading size={22} />}
+        {loadingType === 'beside' && <Loading source={anim} size={22} />}
         {renderText()}
-        {loadingType === 'beside-right' && <Loading size={22} />}
+        {loadingType === 'beside-right' && <Loading source={anim} size={22} />}
       </View>
     );
   };
