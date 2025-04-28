@@ -60,7 +60,7 @@ export const Input: React.FC<Props> = ({
     <View
       className={clsx('flex-row w-full items-center border rounded-xl', height, paddingHorizontal, {
         'border-gray-400': !isFocused,
-        'border-gray-500': isFocused,
+        'border-orange-500': isFocused,
       })}>
       {leadingIcon && (
         <View className="mr-2">
