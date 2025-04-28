@@ -1,3 +1,4 @@
+import {CheckoutSummary} from '@app/components/molecules';
 import {ListProducts, MainHeader, TabView} from '@app/components/organisms';
 import {dessertProducts, drinkProducts, foodProducts, snackProducts} from '@app/mocks';
 import {RenderScene} from '@app/types';
@@ -44,6 +45,7 @@ export const HomeScreen = () => {
       <View className="bg-gray-100 flex-1">
         <TabView routes={routes} renderScene={renderScene} />
         {/* <ListProducts products={products} /> */}
+        <CheckoutSummary />
       </View>
     </>
   );

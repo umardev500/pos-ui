@@ -1,4 +1,4 @@
-import {CheckoutSummary, ProductItem} from '@app/components/molecules';
+import {ProductItem} from '@app/components/molecules';
 import {Product} from '@app/types';
 import React from 'react';
 import {FlatList, ListRenderItem, useWindowDimensions, View} from 'react-native';
@@ -29,7 +29,6 @@ export const ListProducts: React.FC<Props> = props => {
         data={products}
         renderItem={renderItem}
       />
-      <CheckoutSummary />
     </>
   );
 };
