@@ -1,5 +1,5 @@
 import {AuthNavigator} from '@app/navigation/auth.navigation';
-import {HomeScreen} from '@app/screens';
+import {MainNavigation} from '@app/navigation/main.navigation';
 import {useUserStore} from '@app/stores';
 import {RootStackParamList} from '@app/types';
 import {NavigationContainer} from '@react-navigation/native';
@@ -17,7 +17,7 @@ export const AppNavigator = () => {
           headerShown: false,
         }}>
         {user ? (
-          <Stack.Screen name="Main" component={HomeScreen} />
+          <Stack.Screen name="Main" component={MainNavigation} />
         ) : (
           <Stack.Screen name="Auth" component={AuthNavigator} />
         )}

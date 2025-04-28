@@ -13,7 +13,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		6616746D1C2D46C0A595B19D /* ms.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 204C4F55D2DA4B2D8D40F924 /* ms.ttf */; };
 		364C1109DB064353A1B139BA /* ms_fill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6C48606C664F468BA5BB95A4 /* ms_fill.ttf */; };
-		4738DC18595346CBB9C61318 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A237F2D752B14E4FA4664BE7 /* icomoon.ttf */; };
+		8F64A8FE54AC4ECDB9F2B332 /* icomoon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 6E0E04EBDA96489E95D6E160 /* icomoon.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,7 +40,7 @@
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		204C4F55D2DA4B2D8D40F924 /* ms.ttf */ = {isa = PBXFileReference; name = "ms.ttf"; path = "../src/assets/fonts/ms.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 		6C48606C664F468BA5BB95A4 /* ms_fill.ttf */ = {isa = PBXFileReference; name = "ms_fill.ttf"; path = "../src/assets/fonts/ms_fill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		A237F2D752B14E4FA4664BE7 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
+		6E0E04EBDA96489E95D6E160 /* icomoon.ttf */ = {isa = PBXFileReference; name = "icomoon.ttf"; path = "../src/assets/fonts/icomoon.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,7 +128,7 @@
 			children = (
 				204C4F55D2DA4B2D8D40F924 /* ms.ttf */,
 				6C48606C664F468BA5BB95A4 /* ms_fill.ttf */,
-				A237F2D752B14E4FA4664BE7 /* icomoon.ttf */,
+				6E0E04EBDA96489E95D6E160 /* icomoon.ttf */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -205,7 +205,7 @@
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				6616746D1C2D46C0A595B19D /* ms.ttf in Resources */,
 				364C1109DB064353A1B139BA /* ms_fill.ttf in Resources */,
-				4738DC18595346CBB9C61318 /* icomoon.ttf in Resources */,
+				8F64A8FE54AC4ECDB9F2B332 /* icomoon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

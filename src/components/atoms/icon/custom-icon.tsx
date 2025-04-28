@@ -20,6 +20,8 @@ const glyphMap = {
   notification: 0xe90f,
   check_intermediate_small: 0xe910,
   remove: 0xe911,
+  chevron_left: 0xe912,
+  chevron_right: 0xe913,
 };
 
 export type IconName = keyof typeof glyphMap;
