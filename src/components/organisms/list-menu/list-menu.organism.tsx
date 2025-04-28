@@ -3,12 +3,12 @@ import {MenuItem} from '@app/types';
 import React from 'react';
 import {FlatList, ListRenderItem} from 'react-native';
 
-type Props = {
-  menus: MenuItem[];
+type Props<T extends Record<string, any>> = {
+  menus: MenuItem<T>[];
 };
 
-export const ListMenu: React.FC<Props> = ({menus}) => {
-  const renderItem: ListRenderItem<MenuItem> = ({item}) => {
+export const ListMenu = <T extends Record<string, any>>({menus}: Props<T>) => {
+  const renderItem: ListRenderItem<MenuItem<T>> = ({item}) => {
     return <ListMenuItem menu={item} />;
   };
 

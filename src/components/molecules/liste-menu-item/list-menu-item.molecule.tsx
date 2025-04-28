@@ -4,18 +4,21 @@ import {MenuItem} from '@app/types';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
-type Props = {
-  menu: MenuItem;
+type Props<T extends Record<string, any>> = {
+  menu: MenuItem<T>;
   onPress?: () => void;
 };
 
-export const ListMenuItem: React.FC<Props> = ({menu, onPress}) => {
+export const ListMenuItem = <T extends Record<string, any>>({menu, onPress}: Props<T>) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <View className="flex-row items-center justify-between py-2 px-4">
-        <Text className="text-base font-medium text-gray-800">{menu.label}</Text>
-        <Icon name="chevron_right" size={24} color={colors.gray[600]} />
-      </View>
-    </TouchableOpacity>
+    <View>
+      <TouchableOpacity onPress={onPress}>
+        <View className="flex-row items-center justify-between py-4 px-4">
+          <Text className="text-base font-medium text-gray-800">{menu.label}</Text>
+          <Icon name="chevron_right" size={24} color={colors.gray[500]} />
+        </View>
+      </TouchableOpacity>
+      <View className="h-[1px] bg-gray-200 mx-4" />
+    </View>
   );
 };

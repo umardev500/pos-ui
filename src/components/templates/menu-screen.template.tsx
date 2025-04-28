@@ -4,11 +4,11 @@ import {Header} from '@react-navigation/elements';
 import React from 'react';
 import {View} from 'react-native';
 
-type Props = {
-  menus: MenuItem[];
+type Props<T extends Record<string, any>> = {
+  menus: MenuItem<T>[];
 };
 
-export const MenuScreenTemplate: React.FC<Props> = ({menus}) => {
+export const MenuScreenTemplate = <T extends Record<string, any>>({menus}: Props<T>) => {
   return (
     <>
       <Header title="Manage product" />
