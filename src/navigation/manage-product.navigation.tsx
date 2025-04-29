@@ -7,6 +7,7 @@ import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
 import React from 'react';
+import {View} from 'react-native';
 
 type Props = StackScreenProps<MainStackParamList, 'ManageProductStack'>;
 
@@ -70,10 +71,23 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       />
 
       <Stack.Screen
-        options={{
+        options={() => ({
           title: 'Tambah variasi',
+          headerRight: () => {
+            return (
+              <View className="mr-2">
+                <IconButton
+                  icon="check"
+                  onPress={() => {
+                    // TODO: handle save
+                  }}
+                  size="sm"
+                />
+              </View>
+            );
+          },
           ...TransitionPresets.ModalPresentationIOS,
-        }}
+        })}
         name="AddProductVariant"
         component={AddProductVariant}
       />
