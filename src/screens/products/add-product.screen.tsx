@@ -39,7 +39,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
             </View>
             <View className="flex-1 gap-2">
               <Text className={clsx('text-gray-800', labelSize)}>Satuan</Text>
-              <Input trailingIcon="chevron_right" onChangeText={() => {}} placeholder="Pilih kategori" size={size} />
+              <Input trailingIcon="chevron_right" onChangeText={() => {}} placeholder="Pilih satuan" size={size} />
             </View>
           </View>
 
