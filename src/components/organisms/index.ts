@@ -4,3 +4,4 @@ export * from './header';
 export * from './list-menu';
 export * from './product';
 export * from './tab-view';
+export * from './variant-list';
