@@ -20,7 +20,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         header: ({back, route, options}) => (
           <Header {...options} headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
         ),
-        ...TransitionPresets.SlideFromRightIOS,
+        ...TransitionPresets.ModalSlideFromBottomIOS,
       }}>
       <Stack.Screen options={{title: 'Kelola Produk'}} name="ManageProduct" component={ManageProductScreen} />
       <Stack.Screen
@@ -72,7 +72,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen
         options={{
           title: 'Tambah variasi',
-          ...TransitionPresets.ModalSlideFromBottomIOS,
+          ...TransitionPresets.ModalPresentationIOS,
         }}
         name="AddProductVariant"
         component={AddProductVariant}

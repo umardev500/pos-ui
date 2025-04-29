@@ -1,5 +1,5 @@
 import {MainStackParamList} from '@app/types';
-import {createStackNavigator} from '@react-navigation/stack';
+import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
 import {DrawerNavigation} from './drawer.navigation';
 import {ManageProductStackNavigator} from './manage-product.navigation';
 
@@ -10,6 +10,7 @@ export const MainNavigation = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        ...TransitionPresets.ModalSlideFromBottomIOS,
       }}>
       <Stack.Screen name="Drawer" component={DrawerNavigation} />
       <Stack.Screen name="ManageProductStack" component={ManageProductStackNavigator} />
