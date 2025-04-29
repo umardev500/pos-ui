@@ -1,8 +1,10 @@
 import {Input} from '@app/components/atoms';
+import {ManageProductStackParamList} from '@app/types';
+import {StackScreenProps} from '@react-navigation/stack';
 import React from 'react';
 import {Text, View} from 'react-native';
 
-type Props = {};
+type Props = StackScreenProps<ManageProductStackParamList, 'CategoryDetail'>;
 
 export const CategoryDetailScreen: React.FC<Props> = ({}) => {
   return (

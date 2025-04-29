@@ -41,9 +41,13 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
 
       {/* Subscreen of category */}
       <Stack.Screen
-        options={{
-          title: 'Detail Kategori',
-          headerRight: () => <CategoryFormHeaderRight />,
+        options={({route}) => {
+          const id = route.params?.id;
+
+          return {
+            title: id ? 'Ubah Kategori' : 'Tambah Kategori',
+            headerRight: () => <CategoryFormHeaderRight />,
+          };
         }}
         name="CategoryDetail"
         component={CategoryDetailScreen}
