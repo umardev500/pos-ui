@@ -1,7 +1,7 @@
 import {colors} from '@app/styles';
 import {RenderScene} from '@app/types';
 import clsx from 'clsx';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Pressable, Text, useWindowDimensions, View} from 'react-native';
 import {NavigationState, TabView as ReactNativeTabView, Route, TabBar, TabBarProps} from 'react-native-tab-view';
 
@@ -16,11 +16,24 @@ export const TabView: React.FC<Props> = props => {
   const {routes, renderScene} = props;
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
+  const [cache, setCache] = useState(Date.now());
+
+  // Fix key undefined because we remove the tab routes
+  if (index >= routes.length) {
+    setIndex(prev => prev - 1);
+  }
 
   const tabState: NavigationState<Route> = {
     index,
     routes,
   };
+
+  // Invalidate cache
+  useEffect(() => {
+    setTimeout(() => {
+      setCache(Date.now());
+    }, 1000);
+  }, [routes]);
 
   const renderTabBar = (tabProps: TabBarProps<Route>) => (
     <TabBar
@@ -58,6 +71,7 @@ export const TabView: React.FC<Props> = props => {
 
   return (
     <ReactNativeTabView
+      key={cache.toString()}
       navigationState={tabState}
       renderScene={renderScene}
       onIndexChange={setIndex}

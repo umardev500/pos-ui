@@ -12,6 +12,11 @@ export const VariantItem: React.FC<Props> = ({item, onDelete}) => {
   const fixedKeys = ['price', 'stock'];
   const dynamicFields = Object.keys(item).filter(key => !fixedKeys.includes(key));
 
+  const handleDelete = () => {
+    console.log(item.price);
+    onDelete();
+  };
+
   return (
     <View className="bg-white border border-dashed border-gray-400 rounded-2xl  px-4 py-2.5 mb-4">
       <View className="">
@@ -39,7 +44,7 @@ export const VariantItem: React.FC<Props> = ({item, onDelete}) => {
         </View>
 
         <View className="flex-row items-center gap-2">
-          <IconButton onPress={onDelete} color={colors.red[500]} icon="delete" size="xs" />
+          <IconButton onPress={handleDelete} color={colors.red[500]} icon="delete" size="xs" />
         </View>
       </View>
     </View>
