@@ -4,7 +4,6 @@ import {VariantInput} from '@app/types';
 import clsx from 'clsx';
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 type Props = {};
 
@@ -70,7 +69,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
   return (
     <View className="flex-1 bg-white">
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
+      <ScrollView contentContainerStyle={{paddingBottom: 25}}>
         <View className="px-4 pt-8">
           <View className="mb-4 gap-2">
             <Text className="text-sm text-gray-800">Pilih satuan</Text>
@@ -97,6 +96,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
             <View className="flex-1">
               <Text className={clsx('text-gray-800', labelSize)}>Detail</Text>
             </View>
+            <IconButton disabled color={'transparent'} icon="delete" size={'xs'} />
           </View>
 
           {variants.slice(0, -1).map((item, _) => {
@@ -125,14 +125,14 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
             />
           </View>
 
-          <View className="py-6 gap-2">
-            <View className="flex-1 gap-2">
+          <View className="mt-6 gap-2">
+            <View className="gap-2">
               <Text className={clsx('text-gray-800', labelSize)}>Harga varian</Text>
               <Input leadingIcon="attch_money" onChangeText={() => {}} placeholder="3.500" size={inputSize} />
             </View>
           </View>
         </View>
-      </KeyboardAwareScrollView>
+      </ScrollView>
     </View>
   );
 };
