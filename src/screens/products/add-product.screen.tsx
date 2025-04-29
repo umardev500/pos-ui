@@ -106,7 +106,11 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
             </View>
 
             <View>
-              <TouchableOpacity className="mb-2">
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('AddProdcutVariantList');
+                }}
+                className="mb-2">
                 <Text className="text-gray-600">2 variasi</Text>
               </TouchableOpacity>
               <TouchableOpacity

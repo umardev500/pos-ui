@@ -102,19 +102,6 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen
         options={() => ({
           title: 'Variasi Terpilih',
-          headerRight: () => {
-            return (
-              <View className="mr-2">
-                <IconButton
-                  icon="check"
-                  onPress={() => {
-                    // TODO: handle save
-                  }}
-                  size="sm"
-                />
-              </View>
-            );
-          },
           ...TransitionPresets.ModalPresentationIOS,
         })}
         name="AddProdcutVariantList"
