@@ -23,11 +23,10 @@ export type ManageProductStackParamList = {
   Material: undefined;
   Recipe: undefined;
 
-  // Sub screen of categories
+  // Sub screen rest
   CategoryDetail: {
     id?: string;
   };
-
-  // Subscreen of products
   AddProduct: undefined;
+  AddProductVariant: undefined;
 };

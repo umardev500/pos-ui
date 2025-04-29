@@ -1,11 +1,11 @@
 import {IconButton} from '@app/components/atoms';
 import {CategoryFormHeaderRight} from '@app/components/molecules';
-import {ManageProductScreen, MaterialScreen, RecipeScreen, VariantScreen} from '@app/screens';
+import {AddProductVariant, ManageProductScreen, MaterialScreen, RecipeScreen, VariantScreen} from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
-import {createStackNavigator, StackScreenProps} from '@react-navigation/stack';
+import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
 import React from 'react';
 
 type Props = StackScreenProps<MainStackParamList, 'ManageProductStack'>;
@@ -20,6 +20,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         header: ({back, route, options}) => (
           <Header {...options} headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
         ),
+        ...TransitionPresets.SlideFromRightIOS,
       }}>
       <Stack.Screen options={{title: 'Kelola Produk'}} name="ManageProduct" component={ManageProductScreen} />
       <Stack.Screen
@@ -46,7 +47,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
       <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
 
-      {/* Subscreen of category */}
+      {/* Subscreen rest */}
       <Stack.Screen
         options={({route}) => {
           const id = route.params?.id;
@@ -60,13 +61,21 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         component={CategoryDetailScreen}
       />
 
-      {/* Subscreen of product */}
       <Stack.Screen
         options={{
           title: 'Tambah Produk',
         }}
         name="AddProduct"
         component={AddProductScreen}
+      />
+
+      <Stack.Screen
+        options={{
+          title: 'Tambah variasi',
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
+        name="AddProductVariant"
+        component={AddProductVariant}
       />
     </Stack.Navigator>
   );
