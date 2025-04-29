@@ -1,4 +1,4 @@
-export * from './add-product-variant';
+export * from './add-product';
 export * from './auth';
 export * from './categories';
 export * from './home';
