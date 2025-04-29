@@ -4,6 +4,7 @@ import {VariantInput} from '@app/types';
 import clsx from 'clsx';
 import React from 'react';
 import {ScrollView, Text, View} from 'react-native';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 type Props = {};
 
@@ -69,7 +70,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
   return (
     <View className="flex-1 bg-white">
-      <ScrollView contentContainerStyle={{paddingBottom: 25}}>
+      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
         <View className="px-4 pt-8">
           <View className="mb-4 gap-2">
             <Text className="text-sm text-gray-800">Pilih satuan</Text>
@@ -136,7 +137,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
             </View>
           </View>
         </View>
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </View>
   );
 };
