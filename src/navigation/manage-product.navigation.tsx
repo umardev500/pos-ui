@@ -1,6 +1,13 @@
 import {IconButton} from '@app/components/atoms';
 import {CategoryFormHeaderRight} from '@app/components/molecules';
-import {AddProductVariant, ManageProductScreen, MaterialScreen, RecipeScreen, VariantScreen} from '@app/screens';
+import {
+  AddProductVariant,
+  AddProductVariantListScreen,
+  ManageProductScreen,
+  MaterialScreen,
+  RecipeScreen,
+  VariantScreen,
+} from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
@@ -90,6 +97,28 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         })}
         name="AddProductVariant"
         component={AddProductVariant}
+      />
+
+      <Stack.Screen
+        options={() => ({
+          title: 'Variasi Terpilih',
+          headerRight: () => {
+            return (
+              <View className="mr-2">
+                <IconButton
+                  icon="check"
+                  onPress={() => {
+                    // TODO: handle save
+                  }}
+                  size="sm"
+                />
+              </View>
+            );
+          },
+          ...TransitionPresets.ModalPresentationIOS,
+        })}
+        name="AddProdcutVariantList"
+        component={AddProductVariantListScreen}
       />
     </Stack.Navigator>
   );
