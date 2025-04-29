@@ -1,11 +1,20 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View} from 'react-native';
 import {Route, SceneMap} from 'react-native-tab-view';
 
 import {TabView, VariantList} from '@app/components/organisms';
 import {RenderScene} from '@app/types';
 
-const allVariants = [
+// ✅ Define Variant type with flexible keys
+type Variant = {
+  unit: string;
+  stock: number;
+  price: number;
+  [key: string]: any; // dynamic fields like size, color, crust
+};
+
+// ✅ Sample data
+const allVariants: Variant[] = [
   {size: 'M', crust: 'Thin', color: 'White', price: 11.99, stock: 80, unit: 'kiloan'},
   {size: 'L', crust: 'Thick', color: 'Black', price: 15.99, stock: 50, unit: 'kiloan'},
   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 25.99, stock: 24, unit: 'kiloan'},
@@ -17,8 +26,9 @@ const allVariants = [
   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 1.99, stock: 124, unit: 'pack'},
 ];
 
-const groupByUnit = (variants: typeof allVariants) => {
-  return variants.reduce<Record<string, typeof allVariants>>((acc, curr) => {
+// ✅ Utility to group by unit
+const groupByUnit = (variants: Variant[]) => {
+  return variants.reduce<Record<string, Variant[]>>((acc, curr) => {
     const {unit} = curr;
     if (!acc[unit]) acc[unit] = [];
     acc[unit].push(curr);
@@ -27,7 +37,22 @@ const groupByUnit = (variants: typeof allVariants) => {
 };
 
 export const AddProductVariantListScreen: React.FC = () => {
-  const groupedVariants = groupByUnit(allVariants);
+  const [variantList, setVariantList] = useState<Variant[]>(allVariants);
+
+  // ✅ Handle delete for a given unit and index
+  const handleDelete = (unit: string, index: number) => {
+    const groupedVariants = groupByUnit(variantList);
+    const updatedGroup = [...groupedVariants[unit]];
+    updatedGroup.splice(index, 1); // Remove the item at index
+
+    const updatedVariantList: Variant[] = Object.entries(groupedVariants).flatMap(([key, group]) =>
+      key === unit ? updatedGroup : group,
+    );
+
+    setVariantList(updatedVariantList);
+  };
+
+  const groupedVariants = groupByUnit(variantList);
 
   const routes: Route[] = Object.keys(groupedVariants).map(unit => ({
     key: unit,
@@ -36,7 +61,10 @@ export const AddProductVariantListScreen: React.FC = () => {
 
   const renderScene: RenderScene = SceneMap(
     Object.fromEntries(
-      Object.entries(groupedVariants).map(([unit, data]) => [unit, () => <VariantList data={data} />]),
+      Object.entries(groupedVariants).map(([unit, data]) => [
+        unit,
+        () => <VariantList data={data} onDelete={(index: number) => handleDelete(unit, index)} />,
+      ]),
     ),
   );
 

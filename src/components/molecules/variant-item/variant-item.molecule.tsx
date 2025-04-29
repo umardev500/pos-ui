@@ -1,12 +1,14 @@
-import {Icon} from '@app/components/atoms';
+import {Icon, IconButton} from '@app/components/atoms';
+import {colors} from '@app/styles';
 import React from 'react';
 import {Text, View} from 'react-native';
 
 type Props = {
   item: any;
+  onDelete: () => void;
 };
 
-export const VariantItem: React.FC<Props> = ({item}) => {
+export const VariantItem: React.FC<Props> = ({item, onDelete}) => {
   const fixedKeys = ['price', 'stock'];
   const dynamicFields = Object.keys(item).filter(key => !fixedKeys.includes(key));
 
@@ -24,14 +26,20 @@ export const VariantItem: React.FC<Props> = ({item}) => {
         ))}
       </View>
 
-      <View className="flex-row items-center gap-4">
-        <View className="flex-row items-center gap-2 mt-2">
-          <Icon name="deployed_code_update" size={18} color="gray" />
-          <Text className="text-sm text-gray-600">Stok: {item.stock}</Text>
+      <View className="flex-row items-center justify-between">
+        <View className="flex-row items-center gap-4">
+          <View className="flex-row items-center gap-2">
+            <Icon name="deployed_code_update" size={18} color="gray" />
+            <Text className="text-sm text-gray-600">Stok: {item.stock}</Text>
+          </View>
+          <View className="flex-row items-center gap-2">
+            <Icon name="finance_mode" size={18} color="gray" />
+            <Text className="text-sm text-gray-600">Harga: {item.price}</Text>
+          </View>
         </View>
-        <View className="flex-row items-center gap-2 mt-2">
-          <Icon name="finance_mode" size={18} color="gray" />
-          <Text className="text-sm text-gray-600">Harga: {item.price}</Text>
+
+        <View className="flex-row items-center gap-2">
+          <IconButton onPress={onDelete} color={colors.red[500]} icon="delete" size="xs" />
         </View>
       </View>
     </View>
