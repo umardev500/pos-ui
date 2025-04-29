@@ -25,6 +25,6 @@ export type ManageProductStackParamList = {
 
   // Sub screen of categories
   CategoryDetail: {
-    id: string;
+    id?: string;
   };
 };

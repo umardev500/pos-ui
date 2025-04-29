@@ -1,10 +1,11 @@
-import {Icon} from '@app/components/atoms/icon';
+import {Icon, IconName} from '@app/components/atoms/icon';
 import {colors} from '@app/styles';
 import clsx from 'clsx';
 import React from 'react';
-import {TouchableOpacity, TouchableOpacityProps, View} from 'react-native';
+import {TouchableOpacity, TouchableOpacityProps} from 'react-native';
 
-type Props = React.ForwardRefExoticComponent<TouchableOpacityProps & React.RefAttributes<View>> & {
+type Props = TouchableOpacityProps & {
+  icon: IconName;
   backgroundColor?: string;
   color?: string;
   size?: 'sm' | 'md' | 'lg';
@@ -12,26 +13,26 @@ type Props = React.ForwardRefExoticComponent<TouchableOpacityProps & React.RefAt
 
 // Size configuration
 const SIZE_STYLES = {
-  sm: {width: 'w-10', height: 'h-10', icon: 18},
-  md: {width: 'w-12', height: 'h-12', icon: 22},
-  lg: {width: 'w-14', height: 'h-14', icon: 26},
+  sm: {width: 'w-10', height: 'h-10', iconSize: 24},
+  md: {width: 'w-12', height: 'h-12', iconSize: 24},
+  lg: {width: 'w-14', height: 'h-14', iconSize: 24},
 } as const;
 
 export const IconButton: React.FC<Props> = ({
-  backgroundColor = colors.gray[300],
-  color = colors.gray[400],
+  icon,
+  backgroundColor = 'transparent',
+  color = colors.gray[700],
   size = 'md',
   ...props
 }) => {
-  const {width, height, icon} = SIZE_STYLES[size];
+  const {width, height, iconSize} = SIZE_STYLES[size];
   return (
     <TouchableOpacity
       {...props}
-      className={clsx('', width, height, {})}
-      onPress={() => {}}
-      disabled
+      className={clsx('items-center justify-center rounded-full', width, height, {})}
+      onPress={props.onPress}
       style={{backgroundColor}}>
-      <Icon name="check" size={icon} color={color} />
+      <Icon name={icon} size={iconSize} color={color} />
     </TouchableOpacity>
   );
 };
