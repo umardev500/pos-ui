@@ -21,13 +21,14 @@ type Props = {
   secureTextEntry?: boolean;
   leadingIcon?: IconName;
   trailingIcon?: IconName;
+  isTextArea?: boolean;
+  numberOfLines?: number;
 };
 
-// Size configuration
 const SIZE_STYLES = {
-  sm: {height: 'h-10', icon: 18, paddingHorizontal: 'px-3', text: 'text-sm'},
-  md: {height: 'h-12', icon: 22, paddingHorizontal: 'px-4', text: 'text-base'},
-  lg: {height: 'h-14', icon: 26, paddingHorizontal: 'px-5', text: 'text-lg'},
+  sm: {height: 'h-10', icon: 18, paddingHorizontal: 'px-3', text: 'text-sm', textAreaMinHeight: 'min-h-24'},
+  md: {height: 'h-12', icon: 22, paddingHorizontal: 'px-4', text: 'text-base', textAreaMinHeight: 'min-h-32'},
+  lg: {height: 'h-14', icon: 26, paddingHorizontal: 'px-5', text: 'text-lg', textAreaMinHeight: 'min-h-40'},
 } as const;
 
 export const Input: React.FC<Props> = ({
@@ -40,6 +41,8 @@ export const Input: React.FC<Props> = ({
   secureTextEntry = false,
   leadingIcon,
   trailingIcon,
+  isTextArea = false,
+  numberOfLines = 4,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSecure, setIsSecure] = useState(false);
@@ -48,29 +51,33 @@ export const Input: React.FC<Props> = ({
   useEffect(() => {
     setHasValue(!!value);
     setIsSecure(secureTextEntry);
-  }, []);
+  }, [value, secureTextEntry]);
 
   const toggleSecure = useCallback(() => {
     setIsSecure(prev => !prev);
   }, []);
 
-  const {height, icon, paddingHorizontal, text} = SIZE_STYLES[size];
+  const {height, icon, paddingHorizontal, text, textAreaMinHeight} = SIZE_STYLES[size];
 
   return (
     <View
-      className={clsx('flex-row w-full items-center border rounded-xl', height, paddingHorizontal, {
+      className={clsx('flex-row w-full border rounded-xl', isTextArea ? textAreaMinHeight : height, paddingHorizontal, {
+        'items-start': isTextArea,
+        'items-center': !isTextArea,
         'border-gray-400': !isFocused,
         'border-orange-500': isFocused,
       })}>
       {leadingIcon && (
-        <View className="mr-2">
+        <View className={clsx('mr-2', isTextArea && 'mt-3')}>
           <Icon name={leadingIcon} size={icon} color={colors.gray[500]} />
         </View>
       )}
 
       <TextInput
         value={value}
-        className={clsx('p-0 h-full flex-1', text)}
+        className={clsx('p-0 flex-1 h-full', text, {
+          'pt-3': isTextArea,
+        })}
         placeholder={placeholder}
         onChangeText={e => {
           setHasValue(!!e);
@@ -82,16 +89,19 @@ export const Input: React.FC<Props> = ({
           onBlur?.(e);
         }}
         keyboardType={keyboardType}
-        secureTextEntry={isSecure}
+        secureTextEntry={!isTextArea && isSecure}
+        multiline={isTextArea}
+        numberOfLines={isTextArea ? numberOfLines : 1}
+        textAlignVertical={isTextArea ? 'top' : 'center'}
       />
 
       {trailingIcon && (
-        <View className="ml-2">
+        <View className={clsx('ml-2', isTextArea && 'mt-3')}>
           <Icon name={trailingIcon} size={icon} color={colors.gray[500]} />
         </View>
       )}
 
-      {secureTextEntry && hasValue && (
+      {!isTextArea && secureTextEntry && hasValue && (
         <Pressable onPress={toggleSecure} className="ml-2">
           <Icon
             name={isSecure ? 'visibility_off' : 'visibility'}
