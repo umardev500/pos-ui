@@ -125,10 +125,14 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
             />
           </View>
 
-          <View className="mt-6 gap-2">
-            <View className="gap-2">
-              <Text className={clsx('text-gray-800', labelSize)}>Harga varian</Text>
+          <View className="flex-row gap-2 items-center mt-6">
+            <View className="flex-1 gap-2">
+              <Text className={clsx('text-gray-800', labelSize)}>Harga variasi</Text>
               <Input leadingIcon="attch_money" onChangeText={() => {}} placeholder="3.500" size={inputSize} />
+            </View>
+            <View className="flex-1 gap-2">
+              <Text className={clsx('text-gray-800', labelSize)}>Stok</Text>
+              <Input leadingIcon="deployed_code_update" onChangeText={() => {}} placeholder="45" size={inputSize} />
             </View>
           </View>
         </View>
