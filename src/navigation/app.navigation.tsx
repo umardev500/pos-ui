@@ -1,4 +1,3 @@
-import {AuthNavigator} from '@app/navigation/auth.navigation';
 import {MainNavigation} from '@app/navigation/main.navigation';
 import {useUserStore} from '@app/stores';
 import {RootStackParamList} from '@app/types';
@@ -19,7 +18,8 @@ export const AppNavigator = () => {
         {user ? (
           <Stack.Screen name="Main" component={MainNavigation} />
         ) : (
-          <Stack.Screen name="Auth" component={AuthNavigator} />
+          <Stack.Screen name="Main" component={MainNavigation} />
+          // <Stack.Screen name="Auth" component={AuthNavigator} />
         )}
       </Stack.Navigator>
     </NavigationContainer>
