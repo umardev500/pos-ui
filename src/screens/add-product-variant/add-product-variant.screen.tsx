@@ -124,6 +124,13 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
               icon="add"
             />
           </View>
+
+          <View className="py-6 gap-2">
+            <View className="flex-1 gap-2">
+              <Text className={clsx('text-gray-800', labelSize)}>Harga varian</Text>
+              <Input leadingIcon="attch_money" onChangeText={() => {}} placeholder="3.500" size={inputSize} />
+            </View>
+          </View>
         </View>
       </KeyboardAwareScrollView>
     </View>
