@@ -27,4 +27,7 @@ export type ManageProductStackParamList = {
   CategoryDetail: {
     id?: string;
   };
+
+  // Subscreen of products
+  AddProduct: undefined;
 };
