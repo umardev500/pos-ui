@@ -29,5 +29,5 @@ export type ManageProductStackParamList = {
   };
   AddProduct: undefined;
   AddProductVariant: undefined;
-  AddProdcutVariantList: undefined;
+  AddProductVariantList: undefined;
 };

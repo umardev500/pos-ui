@@ -114,7 +114,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           title: 'Variasi Terpilih',
           ...TransitionPresets.ModalPresentationIOS,
         })}
-        name="AddProdcutVariantList"
+        name="AddProductVariantList"
         component={AddProductVariantListScreen}
       />
     </Stack.Navigator>

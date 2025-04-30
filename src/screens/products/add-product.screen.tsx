@@ -26,7 +26,6 @@ export const AddProductScreen: React.FC<Props> = () => {
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(product?.category);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(product?.units || []);
 
-  const labelSize = 'text-sm';
   const inputSize = 'sm';
 
   useEffect(() => {
@@ -183,7 +182,7 @@ export const AddProductScreen: React.FC<Props> = () => {
                   />
 
                   <View>
-                    <TouchableOpacity onPress={() => navigation.navigate('AddProdcutVariantList')} className="mb-2">
+                    <TouchableOpacity onPress={() => navigation.navigate('AddProductVariantList')} className="mb-2">
                       <Text className="text-gray-600">2 variasi</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
