@@ -1,13 +1,13 @@
 import clsx from 'clsx';
 import {Formik, FormikHelpers, FormikProps, FormikValues} from 'formik';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 import {IconButton, Input} from '@app/components/atoms';
 import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {Unit, VariantInput} from '@app/types';
+import {VariantInput} from '@app/types';
 import {parseToVariant} from '@app/utils';
 import {AddProductVariantSchema} from '@app/validations';
 import {useNavigation} from '@react-navigation/native';
@@ -32,9 +32,6 @@ export const AddProductVariant: React.FC = () => {
 
   // Formik reference for triggering submit externally
   const formikRef = useRef<FormikProps<typeof initialValues>>(null);
-
-  // Local state for selected unit
-  const [selectedUnit, setSelectedUnit] = useState<Unit>();
 
   // Store hooks
   const {product, updateProduct} = useAddProductStore();
@@ -142,11 +139,10 @@ export const AddProductVariant: React.FC = () => {
                       <TouchableOpacity
                         key={item.id}
                         onPress={() => {
-                          setSelectedUnit(item);
                           setFieldValue('unit', item);
                         }}
                         className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                          'bg-gray-100': selectedUnit?.id === item.id,
+                          'bg-gray-100': values.unit.id === item.id,
                         })}>
                         <Text>{item.name}</Text>
                       </TouchableOpacity>
