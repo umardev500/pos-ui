@@ -6,6 +6,7 @@ import {
   KeyboardTypeOptions,
   NativeSyntheticEvent,
   Pressable,
+  Text,
   TextInput,
   TextInputFocusEventData,
   View,
@@ -23,6 +24,9 @@ type Props = {
   trailingIcon?: IconName;
   isTextArea?: boolean;
   numberOfLines?: number;
+  placeholderTextColor?: string;
+  isClickableOnly?: boolean;
+  onPress?: () => void;
 };
 
 const SIZE_STYLES = {
@@ -42,7 +46,10 @@ export const Input: React.FC<Props> = ({
   leadingIcon,
   trailingIcon,
   isTextArea = false,
+  placeholderTextColor = colors.gray[400],
   numberOfLines = 4,
+  isClickableOnly = false,
+  onPress,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [isSecure, setIsSecure] = useState(false);
@@ -73,27 +80,40 @@ export const Input: React.FC<Props> = ({
         </View>
       )}
 
-      <TextInput
-        value={value}
-        className={clsx('p-0 flex-1 h-full', text, {
-          'pt-3': isTextArea,
-        })}
-        placeholder={placeholder}
-        onChangeText={e => {
-          setHasValue(!!e);
-          onChangeText?.(e);
-        }}
-        onFocus={() => setIsFocused(true)}
-        onBlur={e => {
-          setIsFocused(false);
-          onBlur?.(e);
-        }}
-        keyboardType={keyboardType}
-        secureTextEntry={!isTextArea && isSecure}
-        multiline={isTextArea}
-        numberOfLines={isTextArea ? numberOfLines : 1}
-        textAlignVertical={isTextArea ? 'top' : 'center'}
-      />
+      {isClickableOnly ? (
+        <Pressable onPress={onPress} className={clsx('flex-1 justify-center h-full', text)}>
+          <Text
+            style={[placeholderTextColor ? {color: placeholderTextColor} : {}]}
+            className={clsx(text, {
+              'text-gray-800': value,
+            })}>
+            {value || placeholder}
+          </Text>
+        </Pressable>
+      ) : (
+        <TextInput
+          value={value}
+          className={clsx('p-0 flex-1 h-full text-gray-800', text, {
+            'pt-3': isTextArea,
+          })}
+          placeholderTextColor={placeholderTextColor}
+          placeholder={placeholder}
+          onChangeText={e => {
+            setHasValue(!!e);
+            onChangeText?.(e);
+          }}
+          onFocus={() => setIsFocused(true)}
+          onBlur={e => {
+            setIsFocused(false);
+            onBlur?.(e);
+          }}
+          keyboardType={keyboardType}
+          secureTextEntry={!isTextArea && isSecure}
+          multiline={isTextArea}
+          numberOfLines={isTextArea ? numberOfLines : 1}
+          textAlignVertical={isTextArea ? 'top' : 'center'}
+        />
+      )}
 
       {trailingIcon && (
         <View className={clsx('ml-2', isTextArea && 'mt-3')}>

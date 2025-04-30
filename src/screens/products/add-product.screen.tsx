@@ -90,11 +90,16 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                     <View className="flex-1 gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>Kategori</Text>
                       <Input
+                        isClickableOnly
+                        placeholderTextColor={selectedCategories.length > 0 ? colors.gray[800] : undefined}
                         trailingIcon="chevron_right"
                         placeholder={
                           selectedCategories.length > 0 ? `${selectedCategories.length} Terpilih` : 'Pilih kategori'
                         }
                         size={size}
+                        onPress={() => {
+                          sheet.current?.present();
+                        }}
                       />
                     </View>
                     <View className="flex-1 gap-2">
