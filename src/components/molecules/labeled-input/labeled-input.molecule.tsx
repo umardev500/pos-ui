@@ -28,7 +28,7 @@ export const LabeledInput = ({
   placeholderTextColor?: string;
   size?: 'sm' | 'md' | 'lg';
 }) => (
-  <View className="flex-1 gap-2">
+  <View className="gap-2 flex-grow">
     <Text className="text-sm text-gray-800">{label}</Text>
     <Input
       leadingIcon={icon}

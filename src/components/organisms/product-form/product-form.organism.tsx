@@ -57,7 +57,7 @@ export const ProductForm = ({
       initialValues={product || initialProductState}
       validationSchema={AddProductSchema}
       onSubmit={handleSubmit}>
-      {({handleBlur}) => (
+      {({handleBlur, resetForm}) => (
         <>
           <View className="gap-4">
             <LabeledInput
@@ -175,6 +175,10 @@ export const ProductForm = ({
                   <Text className="text-center text-gray-600 text-sm px-4 py-2.5">Tambah varian produk</Text>
                 </TouchableOpacity>
               </View>
+
+              <TouchableOpacity onPress={() => resetForm()} className="flex-row">
+                <Text className="text-center text-orange-400">Reset</Text>
+              </TouchableOpacity>
             </View>
           </View>
         </>
