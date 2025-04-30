@@ -1,5 +1,4 @@
 import {IconButton} from '@app/components/atoms';
-import {CategoryFormHeaderRight} from '@app/components/molecules';
 import {
   AddProductVariant,
   AddProductVariantListScreen,
@@ -11,6 +10,7 @@ import {
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
 import {useTriggerStore} from '@app/stores';
+import {colors} from '@app/styles';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
@@ -24,6 +24,8 @@ const Stack = createStackNavigator<ManageProductStackParamList>();
 export const ManageProductStackNavigator: React.FC<Props> = props => {
   const setSaveAddVariantPressed = useTriggerStore(state => state.setSaveAddVariantPressed);
   const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
+  const pressSaveAddCategory = useTriggerStore(state => state.pressSaveAddCategory);
+  const isSaveAddCategoryEnabled = useTriggerStore(state => state.isSaveAddCategoryEnabled);
 
   return (
     <Stack.Navigator
@@ -68,7 +70,17 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           const id = route.params?.id;
           return {
             title: id ? 'Ubah Kategori' : 'Tambah Kategori',
-            headerRight: () => <CategoryFormHeaderRight />,
+            headerRight: () => (
+              <View className="mr-2">
+                <IconButton
+                  icon="check"
+                  color={isSaveAddCategoryEnabled ? colors.gray[700] : colors.gray[400]}
+                  disabled={!isSaveAddCategoryEnabled}
+                  onPress={pressSaveAddCategory}
+                  size="sm"
+                />
+              </View>
+            ),
           };
         }}
         name="CategoryDetail"
