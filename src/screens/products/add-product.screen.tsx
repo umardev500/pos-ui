@@ -1,8 +1,9 @@
-import {Icon, Input} from '@app/components/atoms';
+import {Button, Icon, Input} from '@app/components/atoms';
 import {initialProductState, useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {ProductInput} from '@app/types';
 import {AddProductSchema} from '@app/validations';
+import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useNavigation} from '@react-navigation/native';
 import clsx from 'clsx';
 import {Formik, FormikProps} from 'formik';
@@ -14,6 +15,8 @@ import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 type Props = {};
 
 export const AddProductScreen: React.FC<Props> = ({}) => {
+  const sheet = useRef<TrueSheet>(null);
+
   const navigation = useNavigation();
   const {product, trigger, updateProduct} = useAddProductStore();
   const formikRef = useRef<FormikProps<ProductInput>>(null);
@@ -27,8 +30,6 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
   }, [trigger]);
 
   const handleSubmit = (values: ProductInput) => {
-    console.log('val:', values);
-
     updateProduct({
       ...values,
       capital: Number(values.capital),
@@ -41,6 +42,12 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
 
   return (
     <View className="flex-1 bg-white">
+      <Button
+        title="Open"
+        onPress={() => {
+          sheet.current?.present();
+        }}
+      />
       <KeyboardAwareScrollView
         bottomOffset={25}
         contentContainerStyle={{paddingHorizontal: 16, paddingTop: 16, paddingBottom: 150}}>
@@ -198,6 +205,25 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
           }}
         </Formik>
       </KeyboardAwareScrollView>
+
+      {/* Category bottom sheet */}
+      <TrueSheet edgeToEdge ref={sheet} sizes={['auto', 'large']}>
+        <View className="pt-8 px-4 pb-10">
+          <Text className="text-sm text-gray-800">Pilih Kategori</Text>
+
+          <View className="mt-4 gap-2">
+            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+              <Text className="text-sm text-gray-800 font-medium">Snack</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+              <Text className="text-sm text-gray-800 font-medium">Junk Food</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+              <Text className="text-sm text-gray-800 font-medium">Drink</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TrueSheet>
     </View>
   );
 };
