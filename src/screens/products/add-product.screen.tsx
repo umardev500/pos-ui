@@ -73,8 +73,6 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
     }
   }, [selectedCategory]);
 
-  console.log(product?.units, product?.category);
-
   return (
     <View className="flex-1 bg-white">
       <KeyboardAwareScrollView
