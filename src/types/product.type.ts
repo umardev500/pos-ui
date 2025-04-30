@@ -20,3 +20,19 @@ export type Product = {
 };
 
 export type ProductsResponse = Product[];
+
+// Input product
+export type ProductInput = {
+  category_id?: number;
+  name?: string;
+  description?: string;
+  photo?: ImageSourcePropType | string;
+  quantity?: number;
+  capital?: number;
+  price?: number;
+  discount?: number;
+  barcode?: string;
+  sku?: string;
+  units?: string[];
+  variants?: Variant[];
+};
