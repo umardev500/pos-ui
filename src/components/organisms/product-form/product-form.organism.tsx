@@ -52,8 +52,6 @@ export const ProductForm = ({
     });
   };
 
-  console.log('pdocut:', product);
-
   return (
     <Formik
       innerRef={formikRef}
