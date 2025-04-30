@@ -43,7 +43,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     );
   };
 
-  const renderVariant = (variant: VariantInput) => {
+  const renderVariantInput = (variant: VariantInput) => {
     return (
       <View className="flex-row gap-2 items-center mb-1.5 flex-1">
         <View className="flex-1 gap-2">
@@ -103,7 +103,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
           {variants.slice(0, -1).map((item, _) => {
             return (
               <View key={item.id} className="flex-row items-center gap-2">
-                {renderVariant(item)}
+                {renderVariantInput(item)}
                 <IconButton
                   color={colors.gray[500]}
                   onPress={() => handleRemoveVariant(item.id)}
@@ -115,7 +115,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
           })}
 
           <View className="flex-row items-center gap-2">
-            {renderVariant(variants.slice(-1)[0])}
+            {renderVariantInput(variants.slice(-1)[0])}
             <IconButton
               roundedSize={12}
               color="white"
