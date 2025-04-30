@@ -49,6 +49,8 @@ export const ProductForm = ({
     });
   };
 
+  console.log(product?.variants);
+
   return (
     <Formik
       innerRef={formikRef}

@@ -39,7 +39,7 @@ const groupByUnit = (variants: Variant[]) => {
 
 export const AddProductVariantListScreen: React.FC = () => {
   const [variantList, setVariantList] = useState<Variant[]>(allVariants);
-  const {product} = useAddProductStore();
+  const product = useAddProductStore(state => state.product);
   const units = product?.units ?? [];
 
   // ✅ Handle delete for a given unit and index
@@ -55,11 +55,12 @@ export const AddProductVariantListScreen: React.FC = () => {
     setVariantList(updatedVariantList);
   };
 
-  const groupedVariants = groupByUnit(variantList);
+  const variants = product?.variants ?? [];
+  const groupedVariants = groupByUnit(variants as Variant[]);
 
   // ✅ Create routes from units in store
   const routes: Route[] = units.map(unit => ({
-    key: unit.name.toLocaleLowerCase(),
+    key: unit.name,
     title: unit.name,
   }));
 
@@ -67,8 +68,9 @@ export const AddProductVariantListScreen: React.FC = () => {
   const renderScene: RenderScene = SceneMap(
     Object.fromEntries(
       units.map(unit => {
-        const unitName = unit.name.toLocaleLowerCase();
+        const unitName = unit.name;
         const data = groupedVariants[unitName] || [];
+
         return [
           unitName,
           () => <VariantList data={data} onDelete={(index: number) => handleDelete(unitName, index)} />,
