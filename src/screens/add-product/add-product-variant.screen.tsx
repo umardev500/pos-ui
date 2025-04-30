@@ -44,21 +44,21 @@ export const AddProductVariant: React.FC = () => {
   /**
    * Access save trigger state for external form submission
    */
-  const isSaveAddVariantEnabled = useTriggerStore(s => s.isSaveAddVariantEnabled);
-  const toggleSaveAddVariant = useTriggerStore(s => s.toggleSaveAddVariant);
+  const isSaveAddVariantPressed = useTriggerStore(s => s.isSaveAddVariantPressed);
+  const setSaveAddVariantPressed = useTriggerStore(s => s.setSaveAddVariantPressed);
 
   /**
    * Auto-submit form if triggered from external control
    */
   useEffect(() => {
-    if (formikRef.current && isSaveAddVariantEnabled) {
+    if (formikRef.current && isSaveAddVariantPressed) {
       formikRef.current.handleSubmit();
-      toggleSaveAddVariant(false);
+      setSaveAddVariantPressed(false);
 
       // Navigate back after a delay to ensure data submission
       setTimeout(() => navigation.goBack(), 300);
     }
-  }, [isSaveAddVariantEnabled, toggleSaveAddVariant]);
+  }, [isSaveAddVariantPressed, setSaveAddVariantPressed]);
 
   /**
    * Generate unique ID for each new variant

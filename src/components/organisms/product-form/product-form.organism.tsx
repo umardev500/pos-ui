@@ -37,18 +37,18 @@ export const ProductForm = ({
   const navigation = useNavigation();
   const resetProduct = useAddProductStore(state => state.resetProduct);
 
-  const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
-  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
+  const isSaveAddProductPressed = useTriggerStore(state => state.isSaveAddProductPressed);
+  const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
 
   /**
    * Auto-submit form when the trigger changes
    */
   useEffect(() => {
-    if (formikRef?.current && isSaveAddProductEnabled) {
+    if (formikRef?.current && isSaveAddProductPressed) {
       formikRef?.current.submitForm();
-      toggleSaveAddProduct(false); // Toggle back to false after submission
+      setSaveAddProductPressed(false); // Toggle back to false after submission
     }
-  }, [isSaveAddProductEnabled]);
+  }, [isSaveAddProductPressed]);
 
   /**
    * Sync input value changes with both Formik and external product state

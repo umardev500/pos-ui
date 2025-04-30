@@ -22,8 +22,8 @@ type Props = StackScreenProps<MainStackParamList, 'ManageProductStack'>;
 const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = props => {
-  const toggleSaveAddVariant = useTriggerStore(state => state.toggleSaveAddVariant);
-  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
+  const setSaveAddVariantPressed = useTriggerStore(state => state.setSaveAddVariantPressed);
+  const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
 
   return (
     <Stack.Navigator
@@ -81,7 +81,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           title: 'Tambah Produk',
           headerRight: () => (
             <View className="mr-2">
-              <IconButton icon="check" onPress={() => toggleSaveAddProduct(true)} size="sm" />
+              <IconButton icon="check" onPress={() => setSaveAddProductPressed(true)} size="sm" />
             </View>
           ),
         })}
@@ -95,7 +95,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           title: 'Tambah Variasi',
           headerRight: () => (
             <View className="mr-2">
-              <IconButton icon="check" onPress={() => toggleSaveAddVariant(true)} size="sm" />
+              <IconButton icon="check" onPress={() => setSaveAddVariantPressed(true)} size="sm" />
             </View>
           ),
           ...TransitionPresets.ModalPresentationIOS, // Modal transition

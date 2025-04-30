@@ -1,27 +1,33 @@
 import {create} from 'zustand';
 
 /**
- * State management for UI triggers like enabling/disabling save buttons.
+ * UI trigger state store to manage both enabled status and press events
+ * for actions like saving a product or a variant.
  */
 interface TriggerState {
-  // Controls whether the "Save" button is enabled on the Add Variant screen
+  // Save Variant Button
   isSaveAddVariantEnabled: boolean;
+  isSaveAddVariantPressed: boolean;
+  setSaveAddVariantEnabled: (enabled: boolean) => void;
+  setSaveAddVariantPressed: (pressed: boolean) => void;
 
-  // Toggles the "Save" button on the Add Variant screen
-  toggleSaveAddVariant: (enabled: boolean) => void;
-
-  // Controls whether the "Save" button is enabled on the Add Product screen
+  // Save Product Button
   isSaveAddProductEnabled: boolean;
-
-  // Toggles the "Save" button on the Add Product screen
-  toggleSaveAddProduct: (enabled: boolean) => void;
+  isSaveAddProductPressed: boolean;
+  setSaveAddProductEnabled: (enabled: boolean) => void;
+  setSaveAddProductPressed: (pressed: boolean) => void;
 }
 
-// Zustand store to manage UI state for trigger-based actions
 export const useTriggerStore = create<TriggerState>(set => ({
+  // Variant button states
   isSaveAddVariantEnabled: false,
-  toggleSaveAddVariant: enabled => set({isSaveAddVariantEnabled: enabled}),
+  isSaveAddVariantPressed: false,
+  setSaveAddVariantEnabled: enabled => set({isSaveAddVariantEnabled: enabled}),
+  setSaveAddVariantPressed: pressed => set({isSaveAddVariantPressed: pressed}),
 
+  // Product button states
   isSaveAddProductEnabled: false,
-  toggleSaveAddProduct: enabled => set({isSaveAddProductEnabled: enabled}),
+  isSaveAddProductPressed: false,
+  setSaveAddProductEnabled: enabled => set({isSaveAddProductEnabled: enabled}),
+  setSaveAddProductPressed: pressed => set({isSaveAddProductPressed: pressed}),
 }));
