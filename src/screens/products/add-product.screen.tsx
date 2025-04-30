@@ -1,5 +1,5 @@
 import {Icon, Input} from '@app/components/atoms';
-import {initialProductState} from '@app/stores/add-product.store';
+import {initialProductState, useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {ProductInput} from '@app/types';
 import {AddProductSchema} from '@app/validations';
@@ -15,19 +15,16 @@ type Props = {};
 
 export const AddProductScreen: React.FC<Props> = ({}) => {
   const navigation = useNavigation();
-
+  const trigger = useAddProductStore(state => state.trigger);
+  const formikRef = useRef<FormikProps<ProductInput>>(null);
   const size = 'sm';
   const labelSize = 'text-sm';
 
-  const formikRef = useRef<FormikProps<ProductInput>>(null);
-
   useEffect(() => {
-    navigation.setParams({
-      submitForm: () => {
-        formikRef.current?.submitForm();
-      },
-    });
-  }, [navigation]);
+    if (trigger > 0) {
+      formikRef.current?.submitForm();
+    }
+  }, [trigger]);
 
   return (
     <View className="flex-1 bg-white">

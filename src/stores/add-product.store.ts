@@ -16,12 +16,16 @@ export const initialProductState: ProductInput = {
   variants: [],
 };
 interface AddProductState {
+  trigger: number;
+  updateTrigger: () => void;
   product: ProductInput | null;
   updateProduct: (fields: Partial<ProductInput>) => void;
   resetProduct: () => void;
 }
 
 export const useAddProductStore = create<AddProductState>(set => ({
+  trigger: 0,
+  updateTrigger: () => set(state => ({trigger: state.trigger + 1})),
   product: initialProductState,
   updateProduct: fields =>
     set(state => {

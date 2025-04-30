@@ -10,6 +10,7 @@ import {
 } from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
+import {useAddProductStore} from '@app/stores';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
@@ -21,6 +22,8 @@ type Props = StackScreenProps<MainStackParamList, 'ManageProductStack'>;
 const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = props => {
+  const updateTrigger = useAddProductStore(state => state.updateTrigger);
+
   return (
     <Stack.Navigator
       initialRouteName={props.route.params?.screen}
@@ -34,9 +37,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen
         options={({navigation}) => ({
           title: 'Daftar Produk',
-          headerRight: () => (
-            <IconButton icon="add" onPress={() => navigation.navigate('AddProduct', {submitForm: undefined})} />
-          ),
+          headerRight: () => <IconButton icon="add" onPress={() => navigation.navigate('AddProduct')} />,
         })}
         name="Products"
         component={ProductsScreen}
@@ -72,19 +73,12 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       />
 
       <Stack.Screen
-        options={({route}) => ({
-          title: 'Tambah Produk',
+        options={({route, navigation}) => ({
+          title: 'Tambah Produks',
           headerRight: () => {
             return (
               <View className="mr-2">
-                <IconButton
-                  icon="check"
-                  onPress={() => {
-                    // TODO: handle save
-                    route.params.submitForm?.();
-                  }}
-                  size="sm"
-                />
+                <IconButton icon="check" onPress={updateTrigger} size="sm" />
               </View>
             );
           },
