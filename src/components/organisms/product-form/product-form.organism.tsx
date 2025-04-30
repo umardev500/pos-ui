@@ -1,3 +1,8 @@
+import {useNavigation} from '@react-navigation/native';
+import {Formik, FormikProps} from 'formik';
+import {useRef} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
+
 import {Icon} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
 import {useAddProductStore} from '@app/stores';
@@ -5,10 +10,6 @@ import {colors} from '@app/styles';
 import {Category, ProductInput, Unit} from '@app/types';
 import {AddProductSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
-import {useNavigation} from '@react-navigation/native';
-import {Formik, FormikProps} from 'formik';
-import {useRef} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
 
 const inputSize = 'sm';
 
@@ -32,16 +33,20 @@ export const ProductForm = ({
   selectedUnits,
 }: Props) => {
   const formikRef = useRef<FormikProps<ProductInput>>(null);
-
   const navigation = useNavigation();
-
   const resetProduct = useAddProductStore(state => state.resetProduct);
 
+  /**
+   * Sync input value changes with both Formik and external product state
+   */
   const handleSyncChange = (field: keyof ProductInput) => (text: string) => {
     updateProduct({[field]: text});
     formikRef.current?.setFieldValue(field, text);
   };
 
+  /**
+   * Format numeric fields and pass the result to updateProduct
+   */
   const handleSubmit = (values: ProductInput) => {
     updateProduct({
       ...values,
@@ -52,14 +57,18 @@ export const ProductForm = ({
     });
   };
 
+  console.log(product);
+
   return (
     <Formik
       innerRef={formikRef}
       initialValues={product || initialProductState}
       validationSchema={AddProductSchema}
-      onSubmit={handleSubmit}>
+      onSubmit={handleSubmit}
+      enableReinitialize>
       {({values, handleBlur, resetForm}) => (
         <>
+          {/* Main Product Information */}
           <View className="gap-4">
             <LabeledInput
               label="Nama Produk"
@@ -71,6 +80,7 @@ export const ProductForm = ({
               size={inputSize}
             />
 
+            {/* Category and Unit Selection */}
             <View className="flex-row gap-2">
               <LabeledInput
                 label="Kategori"
@@ -92,12 +102,13 @@ export const ProductForm = ({
               />
             </View>
 
+            {/* Pricing Inputs */}
             <View className="flex-row gap-2">
               <LabeledInput
                 label="Harga Pokok"
                 icon="attch_money"
                 placeholder="3.500"
-                value={values?.capital?.toString() === '0' ? '' : values?.capital?.toString()}
+                value={values.capital?.toString() === '0' ? '' : values.capital?.toString()}
                 onChange={handleSyncChange('capital')}
                 onBlur={handleBlur('capital')}
                 size={inputSize}
@@ -106,7 +117,7 @@ export const ProductForm = ({
                 label="Harga Jual"
                 icon="finance_mode"
                 placeholder="5.000"
-                value={values?.price?.toString() === '0' ? '' : values?.price?.toString()}
+                value={values.price?.toString() === '0' ? '' : values.price?.toString()}
                 onChange={handleSyncChange('price')}
                 onBlur={handleBlur('price')}
                 size={inputSize}
@@ -114,7 +125,7 @@ export const ProductForm = ({
             </View>
           </View>
 
-          {/* Additional Info */}
+          {/* Additional Product Data */}
           <View className="pt-6">
             <View className="flex-row items-center justify-between">
               <Text className="text-sm text-gray-800">Data Tambahan</Text>
@@ -137,13 +148,13 @@ export const ProductForm = ({
                 icon="barcode_scanner"
                 trailingIcon="barcode_reader"
                 placeholder="31245847"
-                value={values?.barcode}
+                value={values.barcode}
                 onChange={handleSyncChange('barcode')}
                 onBlur={handleBlur('barcode')}
                 size={inputSize}
               />
 
-              {/* Drop Zone */}
+              {/* Image Upload Placeholder */}
               <View className="border border-dashed border-gray-300 rounded-xl flex-row items-center gap-4 justify-between pr-4">
                 <View className="w-20 h-20 bg-gray-200 rounded-xl items-center justify-center">
                   <Icon name="deployed_code_update" size={24} color={colors.gray[500]} />
@@ -155,21 +166,24 @@ export const ProductForm = ({
                 </TouchableOpacity>
               </View>
 
+              {/* Product Description */}
               <LabeledInput
                 label="Deskripsi"
                 icon="description"
                 placeholder="Masukan deskripsi produk"
-                value={values?.description}
+                value={values.description}
                 onChange={handleSyncChange('description')}
                 onBlur={handleBlur('description')}
                 isTextArea
                 size={inputSize}
               />
 
+              {/* Product Variants */}
               <View>
                 <TouchableOpacity onPress={() => navigation.navigate('AddProductVariantList')} className="mb-2">
                   <Text className="text-gray-600">{product?.variants?.length} variasi</Text>
                 </TouchableOpacity>
+
                 <TouchableOpacity
                   onPress={() => navigation.navigate('AddProductVariant')}
                   className="border border-dashed border-gray-300 rounded-xl">
@@ -177,6 +191,7 @@ export const ProductForm = ({
                 </TouchableOpacity>
               </View>
 
+              {/* Reset Form Button */}
               <TouchableOpacity
                 onPress={() => {
                   resetProduct();
