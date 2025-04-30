@@ -1,7 +1,7 @@
 import {Button, Icon, Input} from '@app/components/atoms';
 import {initialProductState, useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {ProductInput} from '@app/types';
+import {Category, ProductInput} from '@app/types';
 import {AddProductSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useNavigation} from '@react-navigation/native';
@@ -16,6 +16,7 @@ type Props = {};
 
 export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
+  const [selectedCategories, setSelectedCategories] = React.useState<Category[]>([]);
 
   const navigation = useNavigation();
   const {product, trigger, updateProduct} = useAddProductStore();
@@ -37,6 +38,18 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
       quantity: Number(values.quantity),
       discount: Number(values.discount),
       category_id: Number(values.category_id),
+    });
+  };
+
+  const handleSelectCategory = (category: Category) => {
+    setSelectedCategories(prev => {
+      // If the category is already selected (present in the array)
+      if (prev.some(cat => cat.id === category.id)) {
+        // Deselect it by filtering out the category with the matching ID
+        return prev.filter(cat => cat.id !== category.id);
+      }
+      // If the category is not selected, add it to the array
+      return [...prev, category];
     });
   };
 
@@ -82,7 +95,13 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                   <View className="flex-row gap-2 items-center">
                     <View className="flex-1 gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>Kategori</Text>
-                      <Input trailingIcon="chevron_right" placeholder="Pilih kategori" size={size} />
+                      <Input
+                        trailingIcon="chevron_right"
+                        placeholder={
+                          selectedCategories.length > 0 ? `${selectedCategories.length} Terpilih` : 'Pilih kategori'
+                        }
+                        size={size}
+                      />
                     </View>
                     <View className="flex-1 gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>Satuan</Text>
@@ -212,13 +231,46 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
           <Text className="text-sm text-gray-800">Pilih Kategori</Text>
 
           <View className="mt-4 gap-2">
-            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+            <TouchableOpacity
+              onPress={() => {
+                const cat: Category = {
+                  id: 1,
+                  name: 'Snack',
+                };
+
+                handleSelectCategory(cat);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedCategories.some(cat => cat.id === 1),
+              })}>
               <Text className="text-sm text-gray-800 font-medium">Snack</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+            <TouchableOpacity
+              onPress={() => {
+                const cat: Category = {
+                  id: 2,
+                  name: 'Junk Food',
+                };
+
+                handleSelectCategory(cat);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedCategories.some(cat => cat.id === 2),
+              })}>
               <Text className="text-sm text-gray-800 font-medium">Junk Food</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => {}} className="border border-dashed border-gray-300 rounded-xl px-4 py-3">
+            <TouchableOpacity
+              onPress={() => {
+                const cat: Category = {
+                  id: 3,
+                  name: 'Drink',
+                };
+
+                handleSelectCategory(cat);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedCategories.some(cat => cat.id === 3),
+              })}>
               <Text className="text-sm text-gray-800 font-medium">Drink</Text>
             </TouchableOpacity>
           </View>
