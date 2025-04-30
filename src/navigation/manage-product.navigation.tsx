@@ -23,7 +23,7 @@ const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = props => {
   const updateTrigger = useAddProductStore(state => state.updateTrigger);
-  const setSaveProductVariantTrigger = useTriggerStore(state => state.setTriggerSaveAddVariant);
+  const toggleSaveAddVariant = useTriggerStore(state => state.toggleSaveAddVariant);
 
   return (
     <Stack.Navigator
@@ -97,7 +97,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
                 <IconButton
                   icon="check"
                   onPress={() => {
-                    setSaveProductVariantTrigger();
+                    toggleSaveAddVariant(true);
                   }}
                   size="sm"
                 />

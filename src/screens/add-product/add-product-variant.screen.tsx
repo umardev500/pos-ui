@@ -10,6 +10,7 @@ import {colors} from '@app/styles';
 import {Unit, VariantInput} from '@app/types';
 import {parseToVariant} from '@app/utils';
 import {AddProductVariantSchema} from '@app/validations';
+import {useNavigation} from '@react-navigation/native';
 
 // UI constants
 const inputSize = 'sm';
@@ -27,6 +28,8 @@ const initialValues = {
 };
 
 export const AddProductVariant: React.FC = () => {
+  const navigation = useNavigation();
+
   // Formik reference for triggering submit externally
   const formikRef = useRef<FormikProps<typeof initialValues>>(null);
 
@@ -36,12 +39,23 @@ export const AddProductVariant: React.FC = () => {
   // Store hooks
   const {product, updateProduct} = useAddProductStore();
   const units = product?.units;
-  const saveTrigger = useTriggerStore(state => state.triggerSaveAddVariant);
+  const isSaveAddVariantEnabled = useTriggerStore(state => state.isSaveAddVariantEnabled);
+  const toggleSaveAddVariant = useTriggerStore(state => state.toggleSaveAddVariant);
 
   // Automatically submit form when saveTrigger is updated
   useEffect(() => {
-    if (formikRef.current) formikRef.current.handleSubmit();
-  }, [saveTrigger]);
+    if (formikRef.current && isSaveAddVariantEnabled) {
+      formikRef.current.handleSubmit();
+
+      // Toggle isSaveAddVariantEnabled back to false after submission
+      toggleSaveAddVariant(false);
+
+      // Navigate after slight delay to ensure submission completes
+      setTimeout(() => {
+        navigation.goBack(); // or navigation.navigate('TargetScreenName');
+      }, 300); // adjust delay if needed
+    }
+  }, [isSaveAddVariantEnabled, toggleSaveAddVariant]);
 
   // Utility to generate a unique ID for variants
   const generateId = () => Date.now() + Math.floor(Math.random() * 1000);

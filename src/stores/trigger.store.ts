@@ -1,11 +1,11 @@
 import {create} from 'zustand';
 
 interface TriggerState {
-  triggerSaveAddVariant: number;
-  setTriggerSaveAddVariant: () => void;
+  isSaveAddVariantEnabled: boolean;
+  toggleSaveAddVariant: (enabled: boolean) => void;
 }
 
 export const useTriggerStore = create<TriggerState>(set => ({
-  triggerSaveAddVariant: 0,
-  setTriggerSaveAddVariant: () => set(state => ({triggerSaveAddVariant: state.triggerSaveAddVariant + 1})),
+  isSaveAddVariantEnabled: false,
+  toggleSaveAddVariant: (enabled: boolean) => set({isSaveAddVariantEnabled: enabled}),
 }));
