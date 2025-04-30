@@ -25,42 +25,9 @@ const initialValues = {
 };
 
 export const AddProductVariant: React.FC<Props> = ({}) => {
-  const [variants, setVariants] = React.useState<VariantInput[]>([
-    {
-      id: 0,
-      name: '',
-      value: '',
-    },
-    {
-      id: 1,
-      name: '',
-      value: '',
-    },
-  ]);
   const [selectedUnit, setSelectedUnit] = React.useState<Unit>();
   const {product, updateProduct} = useAddProductStore();
   const units = product?.units;
-
-  const handleAddVariant = () => {
-    setVariants(prev => [
-      ...prev,
-      {
-        id: Date.now(), // or a better unique ID generator if needed
-        name: '',
-        value: '',
-      },
-    ]);
-  };
-
-  const handleRemoveVariant = (id: number) => {
-    setVariants(prev => prev.filter(variant => variant.id !== id));
-  };
-
-  const handleChangeText = (id: number, field: 'name' | 'value', text: string) => {
-    setVariants(prevVariants =>
-      prevVariants.map(variant => (variant.id === id ? {...variant, [field]: text} : variant)),
-    );
-  };
 
   const generateId = () => Date.now() + Math.floor(Math.random() * 1000);
 
@@ -157,8 +124,6 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
       ...dynamicFields,
     };
   };
-
-  console.log('the producta:', product);
 
   return (
     <View className="flex-1 bg-white">
