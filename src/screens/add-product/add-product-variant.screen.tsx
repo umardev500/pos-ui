@@ -1,12 +1,16 @@
 import {IconButton, Input} from '@app/components/atoms';
+import {useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {VariantInput} from '@app/types';
+import {Unit, VariantInput} from '@app/types';
 import clsx from 'clsx';
 import React from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 type Props = {};
+
+const inputSize = 'sm';
+const labelSize = 'text-sm';
 
 export const AddProductVariant: React.FC<Props> = ({}) => {
   const [variants, setVariants] = React.useState<VariantInput[]>([
@@ -21,6 +25,9 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
       value: '',
     },
   ]);
+  const [selectedUnit, setSelectedUnit] = React.useState<Unit>();
+  const {product} = useAddProductStore();
+  const units = product?.units;
 
   const handleAddVariant = () => {
     setVariants(prev => [
@@ -65,8 +72,9 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     );
   };
 
-  const inputSize = 'sm';
-  const labelSize = 'text-sm';
+  const handleSelectUnit = (unit: Unit) => {
+    setSelectedUnit(unit);
+  };
 
   return (
     <View className="flex-1 bg-white">
@@ -77,15 +85,18 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
             <ScrollView horizontal showsHorizontalScrollIndicator={false}>
               <View className="flex-row gap-2">
-                <View className="border border-dashed border-gray-300 rounded-xl px-6 py-3">
-                  <Text>Kardus</Text>
-                </View>
-                <View className="border border-dashed border-gray-300 rounded-xl px-6 py-3">
-                  <Text>Pack</Text>
-                </View>
-                <View className="border border-dashed border-gray-300 rounded-xl px-6 py-3">
-                  <Text>Pieces</Text>
-                </View>
+                {units?.map(item => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      handleSelectUnit(item);
+                    }}
+                    key={item.id}
+                    className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                      'bg-gray-100': selectedUnit?.id === item.id,
+                    })}>
+                    <Text>{item.name}</Text>
+                  </TouchableOpacity>
+                ))}
               </View>
             </ScrollView>
           </View>
