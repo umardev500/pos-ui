@@ -6,50 +6,54 @@ import {TabView, VariantList} from '@app/components/organisms';
 import {useAddProductStore} from '@app/stores';
 import {RenderScene} from '@app/types';
 
-// ✅ Define Variant type with flexible keys
+/**
+ * Variant type with dynamic custom keys (e.g., size, color, crust)
+ */
 type Variant = {
   unit: string;
   stock: number;
   price: number;
-  [key: string]: any; // dynamic fields like size, color, crust
+  [key: string]: any;
 };
 
-// ✅ Utility to group by unit
-const groupByUnit = (variants: Variant[]) => {
-  return variants.reduce<Record<string, Variant[]>>((acc, curr) => {
+/**
+ * Utility: Groups variant data by unit name
+ */
+const groupByUnit = (variants: Variant[]) =>
+  variants.reduce<Record<string, Variant[]>>((acc, curr) => {
     const {unit} = curr;
     if (!acc[unit]) acc[unit] = [];
     acc[unit].push(curr);
     return acc;
   }, {});
-};
 
 export const AddProductVariantListScreen: React.FC = () => {
-  const product = useAddProductStore(state => state.product);
-  const updateProduct = useAddProductStore(state => state.updateProduct);
+  const {product, updateProduct} = useAddProductStore();
   const units = product?.units ?? [];
-
-  // ✅ Handle delete for a given unit and index
-  const handleDelete = (unit: string, index: number, item: any) => {
-    if (!product) return;
-
-    const updated = variants.filter(v => JSON.stringify(v) !== JSON.stringify(item));
-
-    updateProduct({
-      variants: updated,
-    });
-  };
-
   const variants = product?.variants ?? [];
   const groupedVariants = groupByUnit(variants as Variant[]);
 
-  // ✅ Create routes from units in store
+  /**
+   * Handle deletion of a variant from a specific unit
+   */
+  const handleDelete = (unit: string, index: number, item: Variant) => {
+    if (!product) return;
+
+    const updated = variants.filter(v => JSON.stringify(v) !== JSON.stringify(item));
+    updateProduct({variants: updated});
+  };
+
+  /**
+   * Map units to tab routes
+   */
   const routes: Route[] = units.map(unit => ({
     key: unit.name,
     title: unit.name,
   }));
 
-  // ✅ Create scenes for each route
+  /**
+   * Render a tab scene per unit
+   */
   const renderScene: RenderScene = SceneMap(
     Object.fromEntries(
       units.map(unit => {
