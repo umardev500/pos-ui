@@ -45,6 +45,7 @@ export const CategoryDetailScreen: React.FC<Props> = ({route}) => {
         innerRef={formikRef}
         validationSchema={AddCategorySchema}
         initialValues={initialValues}
+        validateOnMount
         onSubmit={onSubmit}>
         {({values, handleChange, isValid}) => {
           handleValidInputChange(isValid);
