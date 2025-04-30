@@ -1,7 +1,7 @@
 import {Button, IconButton, Input} from '@app/components/atoms';
 import {useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {Unit, VariantInput} from '@app/types';
+import {Unit, Variant, VariantInput} from '@app/types';
 import {AddProductVariantSchema} from '@app/validations';
 import clsx from 'clsx';
 import {Formik, FormikHelpers, FormikValues} from 'formik';
@@ -15,13 +15,13 @@ const inputSize = 'sm';
 const labelSize = 'text-sm';
 
 const initialValues = {
-  unit: null, // or ID if preferred
+  unit: {id: 0, name: ''}, // or ID if preferred
   variants: [
     {id: Date.now(), name: '', value: ''},
     {id: Date.now() + 1, name: '', value: ''},
   ],
-  price: '',
-  stock: '',
+  price: 0,
+  stock: 0,
 };
 
 export const AddProductVariant: React.FC<Props> = ({}) => {
@@ -38,7 +38,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     },
   ]);
   const [selectedUnit, setSelectedUnit] = React.useState<Unit>();
-  const {product} = useAddProductStore();
+  const {product, updateProduct} = useAddProductStore();
   const units = product?.units;
 
   const handleAddVariant = () => {
@@ -134,13 +134,41 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     setSelectedUnit(unit);
   };
 
+  const parseToVariant = (data: {
+    price: number;
+    stock: number;
+    unit?: {id: number; name: string};
+    variants: {name: string; value: string}[];
+  }): Variant => {
+    const dynamicFields = data.variants.reduce(
+      (acc, curr) => {
+        if (curr.name && curr.value) {
+          acc[curr.name] = curr.value;
+        }
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    return {
+      price: Number(data.price),
+      stock: Number(data.stock),
+      unit: data.unit?.name,
+      ...dynamicFields,
+    };
+  };
+
+  console.log('the producta:', product);
+
   return (
     <View className="flex-1 bg-white">
       <Formik
         initialValues={initialValues}
         validationSchema={AddProductVariantSchema}
         onSubmit={values => {
-          console.log('Submitted', values);
+          const variant = parseToVariant(values);
+
+          updateProduct({variants: [...(product?.variants || []), variant]});
         }}>
         {({values, handleChange, handleSubmit, setFieldValue, errors}) => {
           console.log('err:', errors);

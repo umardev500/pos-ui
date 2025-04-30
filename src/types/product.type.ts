@@ -2,7 +2,8 @@ import {Category} from '@app/types/category.type';
 import {Unit} from '@app/types/unit.type';
 import {ImageSourcePropType} from 'react-native';
 
-type Variant = {
+export type Variant = {
+  unit?: string;
   price: number;
   stock: number;
   [key: string]: any; // other dynamic fields (e.g., size, color, etc.)
