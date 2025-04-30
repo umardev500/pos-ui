@@ -15,7 +15,7 @@ type Props = {};
 
 export const AddProductScreen: React.FC<Props> = ({}) => {
   const navigation = useNavigation();
-  const trigger = useAddProductStore(state => state.trigger);
+  const {product, trigger, updateProduct} = useAddProductStore();
   const formikRef = useRef<FormikProps<ProductInput>>(null);
   const size = 'sm';
   const labelSize = 'text-sm';
@@ -26,6 +26,19 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
     }
   }, [trigger]);
 
+  const handleSubmit = (values: ProductInput) => {
+    console.log('val:', values);
+
+    updateProduct({
+      ...values,
+      capital: Number(values.capital),
+      price: Number(values.price),
+      quantity: Number(values.quantity),
+      discount: Number(values.discount),
+      category_id: Number(values.category_id),
+    });
+  };
+
   return (
     <View className="flex-1 bg-white">
       <KeyboardAwareScrollView
@@ -34,12 +47,14 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
         <Formik
           validationSchema={AddProductSchema}
           innerRef={formikRef}
-          initialValues={initialProductState}
-          onSubmit={values => {
-            console.log(values);
-          }}>
-          {({handleChange, handleBlur, errors}) => {
+          initialValues={product || initialProductState}
+          onSubmit={handleSubmit}>
+          {({handleBlur, errors, setFieldValue}) => {
             console.log(errors);
+            const handleSyncChange = (field: keyof ProductInput) => (text: string) => {
+              setFieldValue(field, text);
+              updateProduct({[field]: text});
+            };
 
             return (
               <>
@@ -49,10 +64,11 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                     <Text className={clsx('text-gray-800', labelSize)}>Nama Produk</Text>
                     <Input
                       leadingIcon="deployed_code_update"
-                      onChangeText={handleChange('name')}
+                      onChangeText={handleSyncChange('name')}
                       onBlur={handleBlur('name')}
                       placeholder="Masukan nama produk"
                       size={size}
+                      value={product?.name}
                     />
                   </View>
 
@@ -77,20 +93,22 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                       <Text className={clsx('text-gray-800', labelSize)}>Harga Pokok</Text>
                       <Input
                         leadingIcon="attch_money"
-                        onChangeText={handleChange('capital')}
+                        onChangeText={handleSyncChange('capital')}
                         onBlur={handleBlur('capital')}
                         placeholder="3.500"
                         size={size}
+                        value={product?.capital ? product.capital.toString() : ''}
                       />
                     </View>
                     <View className="flex-1 gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>Harga Jual</Text>
                       <Input
-                        onChangeText={handleChange('price')}
+                        onChangeText={handleSyncChange('price')}
                         onBlur={handleBlur('price')}
                         leadingIcon="finance_mode"
                         placeholder="5.000"
                         size={size}
+                        value={product?.price ? product.price.toString() : ''}
                       />
                     </View>
                   </View>
@@ -106,7 +124,14 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                   <View className="pt-4 gap-4">
                     <View className="gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>SKU</Text>
-                      <Input leadingIcon="style" onChangeText={() => {}} placeholder="XLM-0001" size={size} />
+                      <Input
+                        leadingIcon="style"
+                        onChangeText={handleSyncChange('sku')}
+                        onBlur={handleBlur('sku')}
+                        placeholder="XLM-0001"
+                        size={size}
+                        value={product?.sku}
+                      />
                     </View>
 
                     <View className="gap-2">
@@ -114,9 +139,11 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                       <Input
                         leadingIcon="barcode_scanner"
                         trailingIcon="barcode_reader"
-                        onChangeText={() => {}}
+                        onChangeText={handleSyncChange('barcode')}
+                        onBlur={handleBlur('barcode')}
                         placeholder="31245847"
                         size={size}
+                        value={product?.barcode}
                       />
                     </View>
 
@@ -140,9 +167,11 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                       <Input
                         isTextArea
                         leadingIcon="description"
-                        onChangeText={() => {}}
+                        onChangeText={handleSyncChange('description')}
+                        onBlur={handleBlur('description')}
                         placeholder="Masukan deskripsi produk"
                         size={size}
+                        value={product?.description}
                       />
                     </View>
 
