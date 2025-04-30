@@ -73,7 +73,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       />
 
       <Stack.Screen
-        options={({route, navigation}) => ({
+        options={() => ({
           title: 'Tambah Produks',
           headerRight: () => {
             return (
