@@ -1,4 +1,4 @@
-import {Button, Icon, Input} from '@app/components/atoms';
+import {Icon, Input} from '@app/components/atoms';
 import {initialProductState, useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Category, ProductInput} from '@app/types';
@@ -55,12 +55,6 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
 
   return (
     <View className="flex-1 bg-white">
-      <Button
-        title="Open"
-        onPress={() => {
-          sheet.current?.present();
-        }}
-      />
       <KeyboardAwareScrollView
         bottomOffset={25}
         contentContainerStyle={{paddingHorizontal: 16, paddingTop: 16, paddingBottom: 150}}>
