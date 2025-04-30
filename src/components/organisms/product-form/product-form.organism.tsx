@@ -165,7 +165,7 @@ export const ProductForm = ({
 
               <View>
                 <TouchableOpacity onPress={() => navigation.navigate('AddProductVariantList')} className="mb-2">
-                  <Text className="text-gray-600">2 variasi</Text>
+                  <Text className="text-gray-600">{product?.variants?.length} variasi</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => navigation.navigate('AddProductVariant')}
