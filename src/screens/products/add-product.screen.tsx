@@ -1,7 +1,7 @@
 import {Icon, Input} from '@app/components/atoms';
 import {initialProductState, useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {Category, ProductInput} from '@app/types';
+import {Category, ProductInput, Unit} from '@app/types';
 import {AddProductSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useNavigation} from '@react-navigation/native';
@@ -16,7 +16,9 @@ type Props = {};
 
 export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
+  const unitSheet = useRef<TrueSheet>(null);
   const [selectedCategories, setSelectedCategories] = React.useState<Category[]>([]);
+  const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>([]);
 
   const navigation = useNavigation();
   const {product, trigger, updateProduct} = useAddProductStore();
@@ -50,6 +52,18 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
       }
       // If the category is not selected, add it to the array
       return [...prev, category];
+    });
+  };
+
+  const handleSelectUnit = (unit: Unit) => {
+    setSelectedUnits(prev => {
+      // If the category is already selected (present in the array)
+      if (prev.some(cat => cat.id === unit.id)) {
+        // Deselect it by filtering out the category with the matching ID
+        return prev.filter(cat => cat.id !== unit.id);
+      }
+      // If the category is not selected, add it to the array
+      return [...prev, unit];
     });
   };
 
@@ -105,10 +119,15 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                     <View className="flex-1 gap-2">
                       <Text className={clsx('text-gray-800', labelSize)}>Satuan</Text>
                       <Input
+                        isClickableOnly
                         trailingIcon="chevron_right"
                         onChangeText={() => {}}
-                        placeholder="Pilih satuan"
+                        placeholderTextColor={selectedUnits.length > 0 ? colors.gray[800] : undefined}
+                        placeholder={selectedUnits.length > 0 ? `${selectedUnits.length} Terpilih` : 'Pilih satuan'}
                         size={size}
+                        onPress={() => {
+                          unitSheet.current?.present();
+                        }}
                       />
                     </View>
                   </View>
@@ -271,6 +290,58 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                 'bg-gray-100': selectedCategories.some(cat => cat.id === 3),
               })}>
               <Text className="text-sm text-gray-800 font-medium">Drink</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TrueSheet>
+
+      {/* Unit bottom sheet */}
+      <TrueSheet edgeToEdge ref={unitSheet} sizes={['auto', 'large']}>
+        <View className="pt-8 px-4 pb-10">
+          <Text className="text-sm text-gray-800">Pilih Satuan</Text>
+
+          <View className="mt-4 gap-2">
+            <TouchableOpacity
+              onPress={() => {
+                const unit: Unit = {
+                  id: 1,
+                  name: 'Pack',
+                };
+
+                handleSelectUnit(unit);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedUnits.some(cat => cat.id === 1),
+              })}>
+              <Text className="text-sm text-gray-800 font-medium">Pack</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const unit: Unit = {
+                  id: 2,
+                  name: 'Roll',
+                };
+
+                handleSelectUnit(unit);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedUnits.some(cat => cat.id === 2),
+              })}>
+              <Text className="text-sm text-gray-800 font-medium">Roll</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                const unit: Unit = {
+                  id: 3,
+                  name: 'Kilos',
+                };
+
+                handleSelectUnit(unit);
+              }}
+              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                'bg-gray-100': selectedUnits.some(cat => cat.id === 3),
+              })}>
+              <Text className="text-sm text-gray-800 font-medium">Kilos</Text>
             </TouchableOpacity>
           </View>
         </View>
