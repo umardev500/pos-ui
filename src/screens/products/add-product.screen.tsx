@@ -1,4 +1,5 @@
 import {FormikProps} from 'formik';
+import lodash from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
@@ -31,6 +32,13 @@ export const AddProductScreen: React.FC<Props> = () => {
   useEffect(() => {
     if (selectedCategory) updateProduct({category: selectedCategory});
   }, [selectedCategory]);
+
+  useEffect(() => {
+    if (lodash.isEqual(product, initialProductState)) {
+      setSelectedCategory(undefined);
+      setSelectedUnits([]);
+    }
+  }, [product]);
 
   const toggleCategory = (category: Category) => {
     setSelectedCategory(prev => (prev?.id === category.id ? undefined : category));

@@ -1,5 +1,6 @@
 import {Icon} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
+import {useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Category, ProductInput, Unit} from '@app/types';
 import {AddProductSchema} from '@app/validations';
@@ -34,6 +35,8 @@ export const ProductForm = ({
 
   const navigation = useNavigation();
 
+  const resetProduct = useAddProductStore(state => state.resetProduct);
+
   const handleSyncChange = (field: keyof ProductInput) => (text: string) => {
     updateProduct({[field]: text});
     formikRef.current?.setFieldValue(field, text);
@@ -49,7 +52,7 @@ export const ProductForm = ({
     });
   };
 
-  console.log(product);
+  console.log('pdocut:', product);
 
   return (
     <Formik
@@ -176,7 +179,12 @@ export const ProductForm = ({
                 </TouchableOpacity>
               </View>
 
-              <TouchableOpacity onPress={() => resetForm()} className="flex-row">
+              <TouchableOpacity
+                onPress={() => {
+                  resetProduct();
+                  resetForm();
+                }}
+                className="flex-row">
                 <Text className="text-center text-orange-400">Reset</Text>
               </TouchableOpacity>
             </View>
