@@ -1,4 +1,4 @@
-import {Button, IconButton, Input} from '@app/components/atoms';
+import {IconButton, Input} from '@app/components/atoms';
 import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Unit, Variant, VariantInput} from '@app/types';
@@ -231,16 +231,6 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
                         size={inputSize}
                       />
                     </View>
-                  </View>
-
-                  <View className="mt-4">
-                    <Button
-                      onPress={() => {
-                        formikRef.current?.submitForm();
-                      }}
-                      title="Submit"
-                      containerColor={colors.orange[500]}
-                    />
                   </View>
                 </>
               </View>
