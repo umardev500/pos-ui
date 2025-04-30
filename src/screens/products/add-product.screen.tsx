@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 import {CategorySheet, ProductForm, UnitSheet} from '@app/components/organisms';
-import {initialProductState, useAddProductStore, useTriggerStore} from '@app/stores';
+import {initialProductState, useAddProductStore} from '@app/stores';
 import {Category, ProductInput, Unit} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 
@@ -19,22 +19,10 @@ export const AddProductScreen: React.FC<Props> = () => {
 
   // Global state store
   const {product, updateProduct} = useAddProductStore();
-  const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
-  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
 
   // Local UI state
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(product?.category);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(product?.units || []);
-
-  /**
-   * Auto-submit form when the trigger changes
-   */
-  useEffect(() => {
-    if (formikRef.current && isSaveAddProductEnabled) {
-      formikRef.current.submitForm();
-      toggleSaveAddProduct(false); // Toggle back to false after submission
-    }
-  }, [isSaveAddProductEnabled]);
 
   /**
    * Update product units when selection changes
@@ -77,6 +65,8 @@ export const AddProductScreen: React.FC<Props> = () => {
   const toggleUnit = (unit: Unit) => {
     setSelectedUnits(prev => (prev.some(u => u.id === unit.id) ? prev.filter(u => u.id !== unit.id) : [...prev, unit]));
   };
+
+  console.log(product);
 
   return (
     <View className="flex-1 bg-white">

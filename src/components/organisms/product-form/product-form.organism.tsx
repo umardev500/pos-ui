@@ -4,11 +4,12 @@ import {Text, TouchableOpacity, View} from 'react-native';
 
 import {Icon} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
-import {useAddProductStore} from '@app/stores';
+import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Category, ProductInput, Unit} from '@app/types';
 import {AddProductSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
+import {useEffect} from 'react';
 
 const inputSize = 'sm';
 
@@ -35,6 +36,19 @@ export const ProductForm = ({
 }: Props) => {
   const navigation = useNavigation();
   const resetProduct = useAddProductStore(state => state.resetProduct);
+
+  const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
+  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
+
+  /**
+   * Auto-submit form when the trigger changes
+   */
+  useEffect(() => {
+    if (formikRef?.current && isSaveAddProductEnabled) {
+      formikRef?.current.submitForm();
+      toggleSaveAddProduct(false); // Toggle back to false after submission
+    }
+  }, [isSaveAddProductEnabled]);
 
   /**
    * Sync input value changes with both Formik and external product state
