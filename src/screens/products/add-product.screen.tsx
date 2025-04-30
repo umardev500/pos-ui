@@ -18,7 +18,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
   const unitSheet = useRef<TrueSheet>(null);
   const {product, trigger, updateProduct} = useAddProductStore();
-  const [selectedCategories, setSelectedCategories] = React.useState<Category[]>([]);
+  const [selectedCategory, setSelectedCategory] = React.useState<Category | null>(null);
   const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>(product?.units || []);
 
   const navigation = useNavigation();
@@ -44,15 +44,9 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
   };
 
   const handleSelectCategory = (category: Category) => {
-    setSelectedCategories(prev => {
-      // If the category is already selected (present in the array)
-      if (prev.some(cat => cat.id === category.id)) {
-        // Deselect it by filtering out the category with the matching ID
-        return prev.filter(cat => cat.id !== category.id);
-      }
-      // If the category is not selected, add it to the array
-      return [...prev, category];
-    });
+    setSelectedCategory(
+      prev => (prev?.id === category.id ? null : category), // Toggle selection
+    );
   };
 
   const handleSelectUnit = (unit: Unit) => {
@@ -114,11 +108,9 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                       <Text className={clsx('text-gray-800', labelSize)}>Kategori</Text>
                       <Input
                         isClickableOnly
-                        placeholderTextColor={selectedCategories.length > 0 ? colors.gray[800] : undefined}
+                        placeholderTextColor={selectedCategory ? colors.gray[800] : undefined}
                         trailingIcon="chevron_right"
-                        placeholder={
-                          selectedCategories.length > 0 ? `${selectedCategories.length} Terpilih` : 'Pilih kategori'
-                        }
+                        placeholder={selectedCategory ? `${selectedCategory.name} ` : 'Pilih kategori'}
                         size={size}
                         onPress={() => {
                           sheet.current?.present();
@@ -268,7 +260,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                 handleSelectCategory(cat);
               }}
               className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategories.some(cat => cat.id === 1),
+                'bg-gray-100': selectedCategory?.id === 1,
               })}>
               <Text className="text-sm text-gray-800 font-medium">Snack</Text>
             </TouchableOpacity>
@@ -282,7 +274,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                 handleSelectCategory(cat);
               }}
               className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategories.some(cat => cat.id === 2),
+                'bg-gray-100': selectedCategory?.id === 2,
               })}>
               <Text className="text-sm text-gray-800 font-medium">Junk Food</Text>
             </TouchableOpacity>
@@ -296,7 +288,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
                 handleSelectCategory(cat);
               }}
               className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategories.some(cat => cat.id === 3),
+                'bg-gray-100': selectedCategory?.id === 3,
               })}>
               <Text className="text-sm text-gray-800 font-medium">Drink</Text>
             </TouchableOpacity>
