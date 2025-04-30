@@ -18,7 +18,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
   const unitSheet = useRef<TrueSheet>(null);
   const {product, trigger, updateProduct} = useAddProductStore();
-  const [selectedCategory, setSelectedCategory] = React.useState<Category | null>(product?.category || null);
+  const [selectedCategory, setSelectedCategory] = React.useState<Category | undefined>(product?.category || undefined);
   const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>(product?.units || []);
 
   const navigation = useNavigation();
@@ -44,7 +44,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
 
   const handleSelectCategory = (category: Category) => {
     setSelectedCategory(
-      prev => (prev?.id === category.id ? null : category), // Toggle selection
+      prev => (prev?.id === category.id ? undefined : category), // Toggle selection
     );
   };
 
@@ -250,108 +250,75 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
       </KeyboardAwareScrollView>
 
       {/* Category bottom sheet */}
-      <TrueSheet edgeToEdge ref={sheet} sizes={['auto', 'large']}>
-        <View className="pt-8 px-4 pb-10">
-          <Text className="text-sm text-gray-800">Pilih Kategori</Text>
-
-          <View className="mt-4 gap-2">
-            <TouchableOpacity
-              onPress={() => {
-                const cat: Category = {
-                  id: 1,
-                  name: 'Snack',
-                };
-
-                handleSelectCategory(cat);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategory?.id === 1,
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Snack</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                const cat: Category = {
-                  id: 2,
-                  name: 'Junk Food',
-                };
-
-                handleSelectCategory(cat);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategory?.id === 2,
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Junk Food</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                const cat: Category = {
-                  id: 3,
-                  name: 'Drink',
-                };
-
-                handleSelectCategory(cat);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedCategory?.id === 3,
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Drink</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TrueSheet>
+      <CategorySheet ref={sheet} selected={selectedCategory} onSelect={handleSelectCategory} />
 
       {/* Unit bottom sheet */}
-      <TrueSheet edgeToEdge ref={unitSheet} sizes={['auto', 'large']}>
-        <View className="pt-8 px-4 pb-10">
-          <Text className="text-sm text-gray-800">Pilih Satuan</Text>
-
-          <View className="mt-4 gap-2">
-            <TouchableOpacity
-              onPress={() => {
-                const unit: Unit = {
-                  id: 1,
-                  name: 'Pack',
-                };
-
-                handleSelectUnit(unit);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedUnits.some(cat => cat.id === 1),
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Pack</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                const unit: Unit = {
-                  id: 2,
-                  name: 'Roll',
-                };
-
-                handleSelectUnit(unit);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedUnits.some(cat => cat.id === 2),
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Roll</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                const unit: Unit = {
-                  id: 3,
-                  name: 'Kilos',
-                };
-
-                handleSelectUnit(unit);
-              }}
-              className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                'bg-gray-100': selectedUnits.some(cat => cat.id === 3),
-              })}>
-              <Text className="text-sm text-gray-800 font-medium">Kilos</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TrueSheet>
+      <UnitSheet ref={unitSheet} selected={selectedUnits} onSelect={handleSelectUnit} />
     </View>
   );
 };
+
+// Reusable bottom sheets
+const CategorySheet = ({
+  selected,
+  onSelect,
+  ref,
+}: {
+  selected?: Category;
+  onSelect: (cat: Category) => void;
+  ref?: React.RefObject<TrueSheet | null>;
+}) => (
+  <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
+    <View className="pt-8 px-4 pb-10">
+      <Text className="text-sm text-gray-800">Pilih Kategori</Text>
+      <View className="mt-4 gap-2">
+        {[
+          {id: 1, name: 'Snack'},
+          {id: 2, name: 'Junk Food'},
+          {id: 3, name: 'Drink'},
+        ].map(cat => (
+          <TouchableOpacity
+            key={cat.id}
+            onPress={() => onSelect(cat)}
+            className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+              'bg-gray-100': selected?.id === cat.id,
+            })}>
+            <Text className="text-sm text-gray-800 font-medium">{cat.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  </TrueSheet>
+);
+
+const UnitSheet = ({
+  selected,
+  onSelect,
+  ref,
+}: {
+  selected: Unit[];
+  onSelect: (unit: Unit) => void;
+  ref?: React.RefObject<TrueSheet | null>;
+}) => (
+  <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
+    <View className="pt-8 px-4 pb-10">
+      <Text className="text-sm text-gray-800">Pilih Satuan</Text>
+      <View className="mt-4 gap-2">
+        {[
+          {id: 1, name: 'Pack'},
+          {id: 2, name: 'Roll'},
+          {id: 3, name: 'Kilos'},
+        ].map(unit => (
+          <TouchableOpacity
+            key={unit.id}
+            onPress={() => onSelect(unit)}
+            className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+              'bg-gray-100': selected.some(u => u.id === unit.id),
+            })}>
+            <Text className="text-sm text-gray-800 font-medium">{unit.name}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+    </View>
+  </TrueSheet>
+);
