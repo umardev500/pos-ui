@@ -18,7 +18,7 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
   const unitSheet = useRef<TrueSheet>(null);
   const {product, trigger, updateProduct} = useAddProductStore();
-  const [selectedCategory, setSelectedCategory] = React.useState<Category | null>(null);
+  const [selectedCategory, setSelectedCategory] = React.useState<Category | null>(product?.category || null);
   const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>(product?.units || []);
 
   const navigation = useNavigation();
@@ -39,7 +39,6 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
       price: Number(values.price),
       quantity: Number(values.quantity),
       discount: Number(values.discount),
-      category_id: Number(values.category_id),
     });
   };
 
@@ -68,7 +67,13 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
     }
   }, [selectedUnits]);
 
-  console.log(product?.units);
+  useEffect(() => {
+    if (selectedCategory) {
+      updateProduct({category: selectedCategory});
+    }
+  }, [selectedCategory]);
+
+  console.log(product?.units, product?.category);
 
   return (
     <View className="flex-1 bg-white">

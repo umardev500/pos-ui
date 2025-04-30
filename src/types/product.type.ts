@@ -1,3 +1,4 @@
+import {Category} from '@app/types/category.type';
 import {Unit} from '@app/types/unit.type';
 import {ImageSourcePropType} from 'react-native';
 
@@ -24,7 +25,7 @@ export type ProductsResponse = Product[];
 
 // Input product
 export type ProductInput = {
-  category_id?: number;
+  category?: Category;
   name?: string;
   description?: string;
   photo?: ImageSourcePropType | string;
