@@ -21,7 +21,7 @@ type CategorySheetProps = {
 /**
  * Category selection sheet
  */
-const CategorySheet: React.FC<CategorySheetProps> = ({selected, onSelect, ref}) => (
+export const CategorySheet: React.FC<CategorySheetProps> = ({selected, onSelect, ref}) => (
   <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
     <View className="pt-8 px-4 pb-10">
       {/* Title */}
@@ -43,5 +43,3 @@ const CategorySheet: React.FC<CategorySheetProps> = ({selected, onSelect, ref}) 
     </View>
   </TrueSheet>
 );
-
-export default CategorySheet;
