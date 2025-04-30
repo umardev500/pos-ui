@@ -57,14 +57,14 @@ export const ProductForm = ({
       initialValues={product || initialProductState}
       validationSchema={AddProductSchema}
       onSubmit={handleSubmit}>
-      {({handleBlur, resetForm}) => (
+      {({values, handleBlur, resetForm}) => (
         <>
           <View className="gap-4">
             <LabeledInput
               label="Nama Produk"
               icon="deployed_code_update"
               placeholder="Masukan nama produk"
-              value={product?.name}
+              value={values?.name}
               onChange={handleSyncChange('name')}
               onBlur={handleBlur('name')}
               size={inputSize}
@@ -96,7 +96,7 @@ export const ProductForm = ({
                 label="Harga Pokok"
                 icon="attch_money"
                 placeholder="3.500"
-                value={product?.capital?.toString() === '0' ? '' : product?.capital?.toString()}
+                value={values?.capital?.toString() === '0' ? '' : values?.capital?.toString()}
                 onChange={handleSyncChange('capital')}
                 onBlur={handleBlur('capital')}
                 size={inputSize}
@@ -105,7 +105,7 @@ export const ProductForm = ({
                 label="Harga Jual"
                 icon="finance_mode"
                 placeholder="5.000"
-                value={product?.price?.toString() === '0' ? '' : product?.price?.toString()}
+                value={values?.price?.toString() === '0' ? '' : values?.price?.toString()}
                 onChange={handleSyncChange('price')}
                 onBlur={handleBlur('price')}
                 size={inputSize}
@@ -125,7 +125,7 @@ export const ProductForm = ({
                 label="SKU"
                 icon="style"
                 placeholder="XLM-0001"
-                value={product?.sku}
+                value={values.sku}
                 onChange={handleSyncChange('sku')}
                 onBlur={handleBlur('sku')}
                 size={inputSize}
@@ -136,7 +136,7 @@ export const ProductForm = ({
                 icon="barcode_scanner"
                 trailingIcon="barcode_reader"
                 placeholder="31245847"
-                value={product?.barcode}
+                value={values?.barcode}
                 onChange={handleSyncChange('barcode')}
                 onBlur={handleBlur('barcode')}
                 size={inputSize}
@@ -158,7 +158,7 @@ export const ProductForm = ({
                 label="Deskripsi"
                 icon="description"
                 placeholder="Masukan deskripsi produk"
-                value={product?.description}
+                value={values?.description}
                 onChange={handleSyncChange('description')}
                 onBlur={handleBlur('description')}
                 isTextArea
