@@ -1,7 +1,8 @@
 import {IconButton, Input} from '@app/components/atoms';
 import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {Unit, Variant, VariantInput} from '@app/types';
+import {Unit, VariantInput} from '@app/types';
+import {parseToVariant} from '@app/utils';
 import {AddProductVariantSchema} from '@app/validations';
 import clsx from 'clsx';
 import {Formik, FormikHelpers, FormikProps, FormikValues} from 'formik';
@@ -100,30 +101,6 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
   const handleSelectUnit = (unit: Unit) => {
     setSelectedUnit(unit);
-  };
-
-  const parseToVariant = (data: {
-    price: number;
-    stock: number;
-    unit?: {id: number; name: string};
-    variants: {name: string; value: string}[];
-  }): Variant => {
-    const dynamicFields = data.variants.reduce(
-      (acc, curr) => {
-        if (curr.name && curr.value) {
-          acc[curr.name] = curr.value;
-        }
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
-
-    return {
-      price: Number(data.price),
-      stock: Number(data.stock),
-      unit: data.unit?.name,
-      ...dynamicFields,
-    };
   };
 
   const saveTrigger = useTriggerStore(state => state.triggerSaveAddVariant);

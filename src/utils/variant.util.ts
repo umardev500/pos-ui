@@ -1,5 +1,6 @@
 import {Variant} from '@app/types';
 
+// parse data to variant
 export const parseToVariant = (data: {
   price: number;
   stock: number;
