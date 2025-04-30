@@ -23,8 +23,6 @@ export const initialProductState: ProductInput = {
  * Store interface definition
  */
 interface AddProductState {
-  trigger: number; // Used to externally trigger form submissions
-  updateTrigger: () => void;
   product: ProductInput | null;
   updateProduct: (fields: Partial<ProductInput>) => void;
   resetProduct: () => void;
@@ -34,16 +32,6 @@ interface AddProductState {
  * Zustand store to manage product creation form state
  */
 export const useAddProductStore = create<AddProductState>(set => ({
-  trigger: 0,
-
-  /**
-   * Increments trigger to notify subscribers (like Formik) to submit
-   */
-  updateTrigger: () =>
-    set(state => ({
-      trigger: state.trigger + 1,
-    })),
-
   /**
    * Main product state, initialized to empty form
    */

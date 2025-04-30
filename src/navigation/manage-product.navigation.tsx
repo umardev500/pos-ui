@@ -10,7 +10,7 @@ import {
 } from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
-import {useAddProductStore, useTriggerStore} from '@app/stores';
+import {useTriggerStore} from '@app/stores';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
@@ -22,19 +22,22 @@ type Props = StackScreenProps<MainStackParamList, 'ManageProductStack'>;
 const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = props => {
-  const updateTrigger = useAddProductStore(state => state.updateTrigger);
   const toggleSaveAddVariant = useTriggerStore(state => state.toggleSaveAddVariant);
+  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
 
   return (
     <Stack.Navigator
       initialRouteName={props.route.params?.screen}
       screenOptions={{
+        // Customize the header with title and back button
         header: ({back, route, options}) => (
           <Header {...options} headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
         ),
-        ...TransitionPresets.ModalSlideFromBottomIOS,
+        ...TransitionPresets.ModalSlideFromBottomIOS, // Slide transition for modals
       }}>
+      {/* Main Screens */}
       <Stack.Screen options={{title: 'Kelola Produk'}} name="ManageProduct" component={ManageProductScreen} />
+
       <Stack.Screen
         options={({navigation}) => ({
           title: 'Daftar Produk',
@@ -43,27 +46,26 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         name="Products"
         component={ProductsScreen}
       />
+
       <Stack.Screen
         options={({navigation}) => ({
           title: 'Kategori',
-          headerRight: () => {
-            return (
-              <IconButton icon="add" onPress={() => navigation.navigate('CategoryDetail', {id: undefined})} size="sm" />
-            );
-          },
+          headerRight: () => (
+            <IconButton icon="add" onPress={() => navigation.navigate('CategoryDetail', {id: undefined})} size="sm" />
+          ),
         })}
         name="Categories"
         component={CategoriesScreen}
       />
+
       <Stack.Screen options={{title: 'Varian'}} name="Variant" component={VariantScreen} />
       <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
       <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
 
-      {/* Subscreen rest */}
+      {/* Category Detail Screen */}
       <Stack.Screen
         options={({route}) => {
           const id = route.params?.id;
-
           return {
             title: id ? 'Ubah Kategori' : 'Tambah Kategori',
             headerRight: () => <CategoryFormHeaderRight />,
@@ -73,47 +75,40 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         component={CategoryDetailScreen}
       />
 
+      {/* Add Product Screen */}
       <Stack.Screen
         options={() => ({
-          title: 'Tambah Produks',
-          headerRight: () => {
-            return (
-              <View className="mr-2">
-                <IconButton icon="check" onPress={updateTrigger} size="sm" />
-              </View>
-            );
-          },
+          title: 'Tambah Produk',
+          headerRight: () => (
+            <View className="mr-2">
+              <IconButton icon="check" onPress={() => toggleSaveAddProduct(true)} size="sm" />
+            </View>
+          ),
         })}
         name="AddProduct"
         component={AddProductScreen}
       />
 
+      {/* Add Product Variant Screen */}
       <Stack.Screen
         options={() => ({
-          title: 'Tambah variasi',
-          headerRight: () => {
-            return (
-              <View className="mr-2">
-                <IconButton
-                  icon="check"
-                  onPress={() => {
-                    toggleSaveAddVariant(true);
-                  }}
-                  size="sm"
-                />
-              </View>
-            );
-          },
-          ...TransitionPresets.ModalPresentationIOS,
+          title: 'Tambah Variasi',
+          headerRight: () => (
+            <View className="mr-2">
+              <IconButton icon="check" onPress={() => toggleSaveAddVariant(true)} size="sm" />
+            </View>
+          ),
+          ...TransitionPresets.ModalPresentationIOS, // Modal transition
         })}
         name="AddProductVariant"
         component={AddProductVariant}
       />
 
+      {/* Add Product Variant List Screen */}
       <Stack.Screen
         options={() => ({
           title: 'Variasi Terpilih',
-          ...TransitionPresets.ModalPresentationIOS,
+          ...TransitionPresets.ModalPresentationIOS, // Modal transition
         })}
         name="AddProductVariantList"
         component={AddProductVariantListScreen}

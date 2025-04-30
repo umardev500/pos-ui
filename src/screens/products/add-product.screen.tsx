@@ -5,7 +5,7 @@ import {View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
 import {CategorySheet, ProductForm, UnitSheet} from '@app/components/organisms';
-import {initialProductState, useAddProductStore} from '@app/stores';
+import {initialProductState, useAddProductStore, useTriggerStore} from '@app/stores';
 import {Category, ProductInput, Unit} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 
@@ -18,7 +18,9 @@ export const AddProductScreen: React.FC<Props> = () => {
   const formikRef = useRef<FormikProps<ProductInput>>(null);
 
   // Global state store
-  const {product, trigger, updateProduct} = useAddProductStore();
+  const {product, updateProduct} = useAddProductStore();
+  const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
+  const toggleSaveAddProduct = useTriggerStore(state => state.toggleSaveAddProduct);
 
   // Local UI state
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(product?.category);
@@ -28,10 +30,11 @@ export const AddProductScreen: React.FC<Props> = () => {
    * Auto-submit form when the trigger changes
    */
   useEffect(() => {
-    if (trigger > 0) {
-      formikRef.current?.submitForm();
+    if (formikRef.current && isSaveAddProductEnabled) {
+      formikRef.current.submitForm();
+      toggleSaveAddProduct(false); // Toggle back to false after submission
     }
-  }, [trigger]);
+  }, [isSaveAddProductEnabled]);
 
   /**
    * Update product units when selection changes
@@ -79,12 +82,9 @@ export const AddProductScreen: React.FC<Props> = () => {
     <View className="flex-1 bg-white">
       <KeyboardAwareScrollView
         bottomOffset={25}
-        contentContainerStyle={{
-          paddingHorizontal: 16,
-          paddingTop: 16,
-          paddingBottom: 150,
-        }}>
+        contentContainerStyle={{paddingHorizontal: 16, paddingTop: 16, paddingBottom: 150}}>
         <ProductForm
+          formikRef={formikRef}
           unitSheetRef={unitSheetRef}
           categorySheetRef={categorySheetRef}
           selectedCategory={selectedCategory}
