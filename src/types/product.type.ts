@@ -1,3 +1,4 @@
+import {Unit} from '@app/types/unit.type';
 import {ImageSourcePropType} from 'react-native';
 
 type Variant = {
@@ -33,6 +34,6 @@ export type ProductInput = {
   discount?: number;
   barcode?: string;
   sku?: string;
-  units?: string[];
+  units?: Unit[];
   variants?: Variant[];
 };

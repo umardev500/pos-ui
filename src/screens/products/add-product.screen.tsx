@@ -17,11 +17,11 @@ type Props = {};
 export const AddProductScreen: React.FC<Props> = ({}) => {
   const sheet = useRef<TrueSheet>(null);
   const unitSheet = useRef<TrueSheet>(null);
+  const {product, trigger, updateProduct} = useAddProductStore();
   const [selectedCategories, setSelectedCategories] = React.useState<Category[]>([]);
-  const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>([]);
+  const [selectedUnits, setSelectedUnits] = React.useState<Unit[]>(product?.units || []);
 
   const navigation = useNavigation();
-  const {product, trigger, updateProduct} = useAddProductStore();
   const formikRef = useRef<FormikProps<ProductInput>>(null);
   const size = 'sm';
   const labelSize = 'text-sm';
@@ -66,6 +66,15 @@ export const AddProductScreen: React.FC<Props> = ({}) => {
       return [...prev, unit];
     });
   };
+
+  // update units in store from selected unit
+  useEffect(() => {
+    if (selectedUnits.length > 0) {
+      updateProduct({units: selectedUnits});
+    }
+  }, [selectedUnits]);
+
+  console.log(product?.units);
 
   return (
     <View className="flex-1 bg-white">
