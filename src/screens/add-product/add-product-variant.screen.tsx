@@ -1,11 +1,11 @@
 import {Button, IconButton, Input} from '@app/components/atoms';
-import {useAddProductStore} from '@app/stores';
+import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Unit, Variant, VariantInput} from '@app/types';
 import {AddProductVariantSchema} from '@app/validations';
 import clsx from 'clsx';
-import {Formik, FormikHelpers, FormikValues} from 'formik';
-import React from 'react';
+import {Formik, FormikHelpers, FormikProps, FormikValues} from 'formik';
+import React, {useEffect, useRef} from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 
@@ -25,6 +25,7 @@ const initialValues = {
 };
 
 export const AddProductVariant: React.FC<Props> = ({}) => {
+  const formikRef = useRef<FormikProps<typeof initialValues>>(null);
   const [selectedUnit, setSelectedUnit] = React.useState<Unit>();
   const {product, updateProduct} = useAddProductStore();
   const units = product?.units;
@@ -125,9 +126,19 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     };
   };
 
+  const saveTrigger = useTriggerStore(state => state.triggerSaveAddVariant);
+
+  // Listen trigher save
+  useEffect(() => {
+    if (formikRef.current) {
+      formikRef.current.handleSubmit();
+    }
+  }, [saveTrigger]);
+
   return (
     <View className="flex-1 bg-white">
       <Formik
+        innerRef={formikRef}
         initialValues={initialValues}
         validationSchema={AddProductVariantSchema}
         onSubmit={values => {
@@ -135,7 +146,7 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
           updateProduct({variants: [...(product?.variants || []), variant]});
         }}>
-        {({values, handleChange, handleSubmit, setFieldValue, errors}) => {
+        {({values, handleChange, setFieldValue, errors}) => {
           console.log('err:', errors);
           return (
             <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
@@ -223,7 +234,13 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
                   </View>
 
                   <View className="mt-4">
-                    <Button onPress={handleSubmit} title="Submit" containerColor={colors.orange[500]} />
+                    <Button
+                      onPress={() => {
+                        formikRef.current?.submitForm();
+                      }}
+                      title="Submit"
+                      containerColor={colors.orange[500]}
+                    />
                   </View>
                 </>
               </View>

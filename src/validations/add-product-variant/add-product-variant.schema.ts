@@ -26,5 +26,5 @@ export const AddProductVariantSchema = Yup.object().shape({
     .typeError('Stok harus berupa angka')
     .required('Stok wajib diisi')
     .integer('Stok harus bilangan bulat')
-    .min(0, 'Stok minimal 0'),
+    .min(1, 'Stok minimal 1'),
 });

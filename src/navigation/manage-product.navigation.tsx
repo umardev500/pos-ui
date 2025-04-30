@@ -10,7 +10,7 @@ import {
 } from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
 import {AddProductScreen, ProductsScreen} from '@app/screens/products';
-import {useAddProductStore} from '@app/stores';
+import {useAddProductStore, useTriggerStore} from '@app/stores';
 import {MainStackParamList, ManageProductStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, StackScreenProps, TransitionPresets} from '@react-navigation/stack';
@@ -23,6 +23,7 @@ const Stack = createStackNavigator<ManageProductStackParamList>();
 
 export const ManageProductStackNavigator: React.FC<Props> = props => {
   const updateTrigger = useAddProductStore(state => state.updateTrigger);
+  const setSaveProductVariantTrigger = useTriggerStore(state => state.setTriggerSaveAddVariant);
 
   return (
     <Stack.Navigator
@@ -96,7 +97,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
                 <IconButton
                   icon="check"
                   onPress={() => {
-                    // TODO: handle save
+                    setSaveProductVariantTrigger();
                   }}
                   size="sm"
                 />
