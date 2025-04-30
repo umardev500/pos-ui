@@ -57,8 +57,6 @@ export const ProductForm = ({
     });
   };
 
-  console.log(product);
-
   return (
     <Formik
       innerRef={formikRef}
