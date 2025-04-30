@@ -49,7 +49,7 @@ export const ProductForm = ({
     });
   };
 
-  console.log(product?.variants);
+  console.log(product);
 
   return (
     <Formik
@@ -96,7 +96,7 @@ export const ProductForm = ({
                 label="Harga Pokok"
                 icon="attch_money"
                 placeholder="3.500"
-                value={product?.capital?.toString() || ''}
+                value={product?.capital?.toString() === '0' ? '' : product?.capital?.toString()}
                 onChange={handleSyncChange('capital')}
                 onBlur={handleBlur('capital')}
                 size={inputSize}
@@ -105,7 +105,7 @@ export const ProductForm = ({
                 label="Harga Jual"
                 icon="finance_mode"
                 placeholder="5.000"
-                value={product?.price?.toString() || ''}
+                value={product?.price?.toString() === '0' ? '' : product?.price?.toString()}
                 onChange={handleSyncChange('price')}
                 onBlur={handleBlur('price')}
                 size={inputSize}
