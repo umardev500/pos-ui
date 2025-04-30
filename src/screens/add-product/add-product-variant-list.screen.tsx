@@ -14,19 +14,6 @@ type Variant = {
   [key: string]: any; // dynamic fields like size, color, crust
 };
 
-// ✅ Sample data
-// const allVariants: Variant[] = [
-//   {size: 'M', crust: 'Thin', color: 'White', price: 11.99, stock: 80, unit: 'roll'},
-//   {size: 'L', crust: 'Thick', color: 'Black', price: 15.99, stock: 50, unit: 'roll'},
-//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 25.99, stock: 24, unit: 'kilos'},
-//   {size: 'M', crust: 'Thin', color: 'White', price: 13.99, stock: 50, unit: 'kilos'},
-//   {size: 'L', crust: 'Thick', color: 'Black', price: 22.99, stock: 10, unit: 'kilos'},
-//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 31.99, stock: 12, unit: 'kilos'},
-//   {size: 'M', crust: 'Thin', color: 'White', price: 3.99, stock: 800, unit: 'pack'},
-//   {size: 'L', crust: 'Thick', color: 'Black', price: 2.99, stock: 250, unit: 'pack'},
-//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 1.99, stock: 124, unit: 'pack'},
-// ];
-
 // ✅ Utility to group by unit
 const groupByUnit = (variants: Variant[]) => {
   return variants.reduce<Record<string, Variant[]>>((acc, curr) => {
