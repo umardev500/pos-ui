@@ -34,7 +34,9 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       <Stack.Screen
         options={({navigation}) => ({
           title: 'Daftar Produk',
-          headerRight: () => <IconButton icon="add" onPress={() => navigation.navigate('AddProduct')} />,
+          headerRight: () => (
+            <IconButton icon="add" onPress={() => navigation.navigate('AddProduct', {submitForm: undefined})} />
+          ),
         })}
         name="Products"
         component={ProductsScreen}
@@ -70,9 +72,23 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
       />
 
       <Stack.Screen
-        options={{
+        options={({route}) => ({
           title: 'Tambah Produk',
-        }}
+          headerRight: () => {
+            return (
+              <View className="mr-2">
+                <IconButton
+                  icon="check"
+                  onPress={() => {
+                    // TODO: handle save
+                    route.params.submitForm?.();
+                  }}
+                  size="sm"
+                />
+              </View>
+            );
+          },
+        })}
         name="AddProduct"
         component={AddProductScreen}
       />

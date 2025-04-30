@@ -27,7 +27,9 @@ export type ManageProductStackParamList = {
   CategoryDetail: {
     id?: string;
   };
-  AddProduct: undefined;
+  AddProduct: {
+    submitForm?: () => void;
+  };
   AddProductVariant: undefined;
   AddProdcutVariantList: undefined;
 };

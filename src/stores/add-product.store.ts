@@ -1,7 +1,7 @@
 import {ProductInput} from '@app/types';
 import {create} from 'zustand';
 
-const initialProductState: ProductInput = {
+export const initialProductState: ProductInput = {
   category_id: 0,
   name: '',
   description: '',
