@@ -119,101 +119,106 @@ export const AddProductVariant: React.FC = () => {
 
   return (
     <View className="flex-1 bg-white">
-      <Formik
-        innerRef={formikRef}
-        initialValues={initialValues}
-        validationSchema={AddProductVariantSchema}
-        onSubmit={values => {
-          const variant = parseToVariant(values);
-          updateProduct({variants: [...(product?.variants || []), variant]});
-        }}>
-        {({values, handleChange, setFieldValue}) => (
-          <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
-            <View className="px-4 pt-8">
-              {/* ----------- Unit Selector Section ----------- */}
-              <View className="mb-4 gap-2">
-                <Text className="text-sm text-gray-800">Pilih satuan</Text>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                  <View className="flex-row gap-2">
-                    {units?.map(item => (
-                      <TouchableOpacity
-                        key={item.id}
-                        onPress={() => {
-                          setFieldValue('unit', item);
-                        }}
-                        className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                          'bg-gray-100': values.unit.id === item.id,
-                        })}>
-                        <Text>{item.name}</Text>
-                      </TouchableOpacity>
-                    ))}
+      <View>
+        <Formik
+          innerRef={formikRef}
+          initialValues={initialValues}
+          validationSchema={AddProductVariantSchema}
+          onSubmit={values => {
+            const variant = parseToVariant(values);
+            updateProduct({variants: [...(product?.variants || []), variant]});
+          }}>
+          {({values, handleChange, setFieldValue, resetForm}) => (
+            <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
+              <View className="px-4 pt-8">
+                {/* ----------- Unit Selector Section ----------- */}
+                <View className="mb-4 gap-2">
+                  <Text className="text-sm text-gray-800">Pilih satuan</Text>
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <View className="flex-row gap-2">
+                      {units?.map(item => (
+                        <TouchableOpacity
+                          key={item.id}
+                          onPress={() => {
+                            setFieldValue('unit', item);
+                          }}
+                          className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                            'bg-gray-100': values.unit.id === item.id,
+                          })}>
+                          <Text>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </ScrollView>
+                </View>
+
+                {/* ----------- Variant Header ----------- */}
+                <View className="flex-row gap-2 items-center mb-2">
+                  <Text className={clsx('flex-1 text-gray-800', labelSize)}>Varian</Text>
+                  <Text className={clsx('flex-1 text-gray-800', labelSize)}>Detail</Text>
+                  {/* Spacer for delete icon column */}
+                  <IconButton disabled color="transparent" icon="delete" size="xs" />
+                </View>
+
+                {/* ----------- Variant Inputs ----------- */}
+                {/* Render all variants except the last one (which includes an add button) */}
+                {values.variants.slice(0, -1).map(variant => (
+                  <View key={variant.id} className="flex-row items-center gap-2">
+                    {renderVariantInputs(variant, values, setFieldValue)}
+                    <IconButton
+                      icon="delete"
+                      color={colors.gray[500]}
+                      size="xs"
+                      onPress={() => handleRemoveVariant(variant.id, setFieldValue, values)}
+                    />
                   </View>
-                </ScrollView>
-              </View>
+                ))}
 
-              {/* ----------- Variant Header ----------- */}
-              <View className="flex-row gap-2 items-center mb-2">
-                <Text className={clsx('flex-1 text-gray-800', labelSize)}>Varian</Text>
-                <Text className={clsx('flex-1 text-gray-800', labelSize)}>Detail</Text>
-                {/* Spacer for delete icon column */}
-                <IconButton disabled color="transparent" icon="delete" size="xs" />
-              </View>
-
-              {/* ----------- Variant Inputs ----------- */}
-              {/* Render all variants except the last one (which includes an add button) */}
-              {values.variants.slice(0, -1).map(variant => (
-                <View key={variant.id} className="flex-row items-center gap-2">
-                  {renderVariantInputs(variant, values, setFieldValue)}
+                {/* ----------- Last Variant Input + Add Button ----------- */}
+                <View className="flex-row items-center gap-2">
+                  {renderVariantInputs(values.variants.at(-1)!, values, setFieldValue)}
                   <IconButton
-                    icon="delete"
-                    color={colors.gray[500]}
+                    icon="add"
                     size="xs"
-                    onPress={() => handleRemoveVariant(variant.id, setFieldValue, values)}
-                  />
-                </View>
-              ))}
-
-              {/* ----------- Last Variant Input + Add Button ----------- */}
-              <View className="flex-row items-center gap-2">
-                {renderVariantInputs(values.variants.at(-1)!, values, setFieldValue)}
-                <IconButton
-                  icon="add"
-                  size="xs"
-                  color="white"
-                  backgroundColor={colors.orange[500]}
-                  roundedSize={12}
-                  onPress={() => handleAddVariant(setFieldValue, values)}
-                />
-              </View>
-
-              {/* ----------- Price and Stock Inputs ----------- */}
-              <View className="flex-row gap-2 items-center mt-6">
-                {/* Price input */}
-                <View className="flex-1 gap-2">
-                  <Text className={clsx('text-gray-800', labelSize)}>Harga variasi</Text>
-                  <Input
-                    leadingIcon="attch_money"
-                    onChangeText={handleChange('price')}
-                    placeholder="3.500"
-                    size={inputSize}
+                    color="white"
+                    backgroundColor={colors.orange[500]}
+                    roundedSize={12}
+                    onPress={() => handleAddVariant(setFieldValue, values)}
                   />
                 </View>
 
-                {/* Stock input */}
-                <View className="flex-1 gap-2">
-                  <Text className={clsx('text-gray-800', labelSize)}>Stok</Text>
-                  <Input
-                    leadingIcon="deployed_code_update"
-                    onChangeText={handleChange('stock')}
-                    placeholder="45"
-                    size={inputSize}
-                  />
+                {/* ----------- Price and Stock Inputs ----------- */}
+                <View className="flex-row gap-2 items-center mt-6">
+                  {/* Price input */}
+                  <View className="flex-1 gap-2">
+                    <Text className={clsx('text-gray-800', labelSize)}>Harga variasi</Text>
+                    <Input
+                      leadingIcon="attch_money"
+                      onChangeText={handleChange('price')}
+                      placeholder="3.500"
+                      size={inputSize}
+                    />
+                  </View>
+
+                  {/* Stock input */}
+                  <View className="flex-1 gap-2">
+                    <Text className={clsx('text-gray-800', labelSize)}>Stok</Text>
+                    <Input
+                      leadingIcon="deployed_code_update"
+                      onChangeText={handleChange('stock')}
+                      placeholder="45"
+                      size={inputSize}
+                    />
+                  </View>
                 </View>
               </View>
-            </View>
-          </KeyboardAwareScrollView>
-        )}
-      </Formik>
+              <TouchableOpacity onPress={() => resetForm()} className="flex-row px-4 mt-2">
+                <Text className="text-center text-orange-400">Reset</Text>
+              </TouchableOpacity>
+            </KeyboardAwareScrollView>
+          )}
+        </Formik>
+      </View>
     </View>
   );
 };
