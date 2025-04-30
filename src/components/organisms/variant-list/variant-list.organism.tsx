@@ -4,16 +4,16 @@ import {FlatList} from 'react-native';
 
 type Props = {
   data: any[];
-  onDelete: (index: number) => void;
+  onDelete: (index: number, data: any) => void;
 };
 
 export const VariantList: React.FC<Props> = ({data, onDelete}) => {
-  const handleDelete = (index: number) => {
-    onDelete(index);
+  const handleDelete = (index: number, item: any) => {
+    onDelete(index, item);
   };
 
   const renderItem: any = ({item, index}: any) => {
-    return <VariantItem item={item} onDelete={() => handleDelete(index)} />;
+    return <VariantItem item={item} onDelete={() => handleDelete(index, item)} />;
   };
   return (
     <FlatList

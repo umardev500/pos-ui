@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View} from 'react-native';
 import {Route, SceneMap} from 'react-native-tab-view';
 
@@ -15,17 +15,17 @@ type Variant = {
 };
 
 // ✅ Sample data
-const allVariants: Variant[] = [
-  {size: 'M', crust: 'Thin', color: 'White', price: 11.99, stock: 80, unit: 'roll'},
-  {size: 'L', crust: 'Thick', color: 'Black', price: 15.99, stock: 50, unit: 'roll'},
-  {size: 'XL', crust: 'Large', color: 'Rainbow', price: 25.99, stock: 24, unit: 'kilos'},
-  {size: 'M', crust: 'Thin', color: 'White', price: 13.99, stock: 50, unit: 'kilos'},
-  {size: 'L', crust: 'Thick', color: 'Black', price: 22.99, stock: 10, unit: 'kilos'},
-  {size: 'XL', crust: 'Large', color: 'Rainbow', price: 31.99, stock: 12, unit: 'kilos'},
-  {size: 'M', crust: 'Thin', color: 'White', price: 3.99, stock: 800, unit: 'pack'},
-  {size: 'L', crust: 'Thick', color: 'Black', price: 2.99, stock: 250, unit: 'pack'},
-  {size: 'XL', crust: 'Large', color: 'Rainbow', price: 1.99, stock: 124, unit: 'pack'},
-];
+// const allVariants: Variant[] = [
+//   {size: 'M', crust: 'Thin', color: 'White', price: 11.99, stock: 80, unit: 'roll'},
+//   {size: 'L', crust: 'Thick', color: 'Black', price: 15.99, stock: 50, unit: 'roll'},
+//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 25.99, stock: 24, unit: 'kilos'},
+//   {size: 'M', crust: 'Thin', color: 'White', price: 13.99, stock: 50, unit: 'kilos'},
+//   {size: 'L', crust: 'Thick', color: 'Black', price: 22.99, stock: 10, unit: 'kilos'},
+//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 31.99, stock: 12, unit: 'kilos'},
+//   {size: 'M', crust: 'Thin', color: 'White', price: 3.99, stock: 800, unit: 'pack'},
+//   {size: 'L', crust: 'Thick', color: 'Black', price: 2.99, stock: 250, unit: 'pack'},
+//   {size: 'XL', crust: 'Large', color: 'Rainbow', price: 1.99, stock: 124, unit: 'pack'},
+// ];
 
 // ✅ Utility to group by unit
 const groupByUnit = (variants: Variant[]) => {
@@ -38,21 +38,19 @@ const groupByUnit = (variants: Variant[]) => {
 };
 
 export const AddProductVariantListScreen: React.FC = () => {
-  const [variantList, setVariantList] = useState<Variant[]>(allVariants);
   const product = useAddProductStore(state => state.product);
+  const updateProduct = useAddProductStore(state => state.updateProduct);
   const units = product?.units ?? [];
 
   // ✅ Handle delete for a given unit and index
-  const handleDelete = (unit: string, index: number) => {
-    const groupedVariants = groupByUnit(variantList);
-    const updatedGroup = [...groupedVariants[unit]];
-    updatedGroup.splice(index, 1); // Remove the item at index
+  const handleDelete = (unit: string, index: number, item: any) => {
+    if (!product) return;
 
-    const updatedVariantList: Variant[] = Object.entries(groupedVariants).flatMap(([key, group]) =>
-      key === unit ? updatedGroup : group,
-    );
+    const updated = variants.filter(v => JSON.stringify(v) !== JSON.stringify(item));
 
-    setVariantList(updatedVariantList);
+    updateProduct({
+      variants: updated,
+    });
   };
 
   const variants = product?.variants ?? [];
@@ -73,7 +71,7 @@ export const AddProductVariantListScreen: React.FC = () => {
 
         return [
           unitName,
-          () => <VariantList data={data} onDelete={(index: number) => handleDelete(unitName, index)} />,
+          () => <VariantList data={data} onDelete={(index: number, item) => handleDelete(unitName, index, item)} />,
         ];
       }),
     ),
