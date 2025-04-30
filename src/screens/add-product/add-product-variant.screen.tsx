@@ -1,8 +1,10 @@
-import {IconButton, Input} from '@app/components/atoms';
+import {Button, IconButton, Input} from '@app/components/atoms';
 import {useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Unit, VariantInput} from '@app/types';
+import {AddProductVariantSchema} from '@app/validations';
 import clsx from 'clsx';
+import {Formik, FormikHelpers, FormikValues} from 'formik';
 import React from 'react';
 import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
@@ -11,6 +13,16 @@ type Props = {};
 
 const inputSize = 'sm';
 const labelSize = 'text-sm';
+
+const initialValues = {
+  unit: null, // or ID if preferred
+  variants: [
+    {id: Date.now(), name: '', value: ''},
+    {id: Date.now() + 1, name: '', value: ''},
+  ],
+  price: '',
+  stock: '',
+};
 
 export const AddProductVariant: React.FC<Props> = ({}) => {
   const [variants, setVariants] = React.useState<VariantInput[]>([
@@ -50,22 +62,68 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
     );
   };
 
-  const renderVariantInput = (variant: VariantInput) => {
+  const generateId = () => Date.now() + Math.floor(Math.random() * 1000);
+
+  const handleAddDynamicVariant = (
+    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'],
+    values: typeof initialValues,
+  ) => {
+    const newVariant: VariantInput = {
+      id: generateId(),
+      name: '',
+      value: '',
+    };
+
+    const updatedVariants = [...values.variants, newVariant];
+    setFieldValue('variants', updatedVariants);
+  };
+
+  const handleRemoveDynamicVariant = (
+    id: number,
+    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'],
+    values: typeof initialValues,
+  ) => {
+    const updatedVariants = values.variants.filter(variant => variant.id !== id);
+    setFieldValue('variants', updatedVariants);
+  };
+
+  const handleChangeDynamicText = (
+    id: number,
+    field: keyof VariantInput,
+    value: string,
+    values: typeof initialValues,
+    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'],
+  ) => {
+    const updatedVariants = values.variants.map(variant =>
+      variant.id === id ? {...variant, [field]: value} : variant,
+    );
+    setFieldValue('variants', updatedVariants);
+  };
+
+  const renderVariantInput = (
+    variant: VariantInput,
+    setFieldValue: FormikHelpers<FormikValues>['setFieldValue'],
+    values: typeof initialValues,
+  ) => {
     return (
       <View className="flex-row gap-2 items-center mb-1.5 flex-1">
         <View className="flex-1 gap-2">
           <Input
-            onChangeText={text => handleChangeText(variant.id, 'name', text)}
+            // onChangeText={text => handleChangeText(variant.id, 'name', text)}
+            onChangeText={text => handleChangeDynamicText(variant.id, 'name', text, values, setFieldValue)}
             leadingIcon="layers"
             placeholder="Contoh: Color"
             size={inputSize}
+            value={variant.name}
           />
         </View>
         <View className="flex-1 gap-2">
           <Input
-            onChangeText={text => handleChangeText(variant.id, 'value', text)}
+            // onChangeText={text => handleChangeText(variant.id, 'value', text)}
+            onChangeText={text => handleChangeDynamicText(variant.id, 'value', text, values, setFieldValue)}
             placeholder="Contoh: Green"
             size={inputSize}
+            value={variant.value}
           />
         </View>
       </View>
@@ -78,77 +136,108 @@ export const AddProductVariant: React.FC<Props> = ({}) => {
 
   return (
     <View className="flex-1 bg-white">
-      <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
-        <View className="px-4 pt-8">
-          <View className="mb-4 gap-2">
-            <Text className="text-sm text-gray-800">Pilih satuan</Text>
+      <Formik
+        initialValues={initialValues}
+        validationSchema={AddProductVariantSchema}
+        onSubmit={values => {
+          console.log('Submitted', values);
+        }}>
+        {({values, handleChange, handleSubmit, setFieldValue, errors}) => {
+          console.log('err:', errors);
+          return (
+            <KeyboardAwareScrollView contentContainerStyle={{paddingBottom: 25}} bottomOffset={25}>
+              <View className="px-4 pt-8">
+                <View className="mb-4 gap-2">
+                  <Text className="text-sm text-gray-800">Pilih satuan</Text>
 
-            <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-              <View className="flex-row gap-2">
-                {units?.map(item => (
-                  <TouchableOpacity
-                    onPress={() => {
-                      handleSelectUnit(item);
-                    }}
-                    key={item.id}
-                    className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-                      'bg-gray-100': selectedUnit?.id === item.id,
-                    })}>
-                    <Text>{item.name}</Text>
-                  </TouchableOpacity>
-                ))}
+                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    <View className="flex-row gap-2">
+                      {units?.map(item => (
+                        <TouchableOpacity
+                          onPress={() => {
+                            handleSelectUnit(item);
+                            setFieldValue('unit', item);
+                          }}
+                          key={item.id}
+                          className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
+                            'bg-gray-100': selectedUnit?.id === item.id,
+                          })}>
+                          <Text>{item.name}</Text>
+                        </TouchableOpacity>
+                      ))}
+                    </View>
+                  </ScrollView>
+                </View>
+
+                <View className="flex-row gap-2 items-center mb-2">
+                  <View className="flex-1">
+                    <Text className={clsx('text-gray-800', labelSize)}>Varian</Text>
+                  </View>
+                  <View className="flex-1">
+                    <Text className={clsx('text-gray-800', labelSize)}>Detail</Text>
+                  </View>
+                  <IconButton disabled color={'transparent'} icon="delete" size={'xs'} />
+                </View>
+
+                <>
+                  {values.variants.slice(0, -1).map((item, _) => {
+                    return (
+                      <View key={item.id} className="flex-row items-center gap-2">
+                        {renderVariantInput(item, setFieldValue, values)}
+                        <IconButton
+                          color={colors.gray[500]}
+                          onPress={() => handleRemoveDynamicVariant(item.id, setFieldValue, values)}
+                          icon="delete"
+                          size={'xs'}
+                        />
+                      </View>
+                    );
+                  })}
+
+                  <View className="flex-row items-center gap-2">
+                    {renderVariantInput(values.variants.slice(-1)[0], setFieldValue, values)}
+                    <IconButton
+                      roundedSize={12}
+                      color="white"
+                      backgroundColor={colors.orange[500]}
+                      onPress={() => {
+                        handleAddDynamicVariant(setFieldValue, values);
+                      }}
+                      size="xs"
+                      icon="add"
+                    />
+                  </View>
+
+                  <View className="flex-row gap-2 items-center mt-6">
+                    <View className="flex-1 gap-2">
+                      <Text className={clsx('text-gray-800', labelSize)}>Harga variasi</Text>
+                      <Input
+                        leadingIcon="attch_money"
+                        onChangeText={handleChange('price')}
+                        placeholder="3.500"
+                        size={inputSize}
+                      />
+                    </View>
+                    <View className="flex-1 gap-2">
+                      <Text className={clsx('text-gray-800', labelSize)}>Stok</Text>
+                      <Input
+                        leadingIcon="deployed_code_update"
+                        onChangeText={handleChange('stock')}
+                        placeholder="45"
+                        size={inputSize}
+                      />
+                    </View>
+                  </View>
+
+                  <View className="mt-4">
+                    <Button onPress={handleSubmit} title="Submit" containerColor={colors.orange[500]} />
+                  </View>
+                </>
               </View>
-            </ScrollView>
-          </View>
-
-          <View className="flex-row gap-2 items-center mb-2">
-            <View className="flex-1">
-              <Text className={clsx('text-gray-800', labelSize)}>Varian</Text>
-            </View>
-            <View className="flex-1">
-              <Text className={clsx('text-gray-800', labelSize)}>Detail</Text>
-            </View>
-            <IconButton disabled color={'transparent'} icon="delete" size={'xs'} />
-          </View>
-
-          {variants.slice(0, -1).map((item, _) => {
-            return (
-              <View key={item.id} className="flex-row items-center gap-2">
-                {renderVariantInput(item)}
-                <IconButton
-                  color={colors.gray[500]}
-                  onPress={() => handleRemoveVariant(item.id)}
-                  icon="delete"
-                  size={'xs'}
-                />
-              </View>
-            );
-          })}
-
-          <View className="flex-row items-center gap-2">
-            {renderVariantInput(variants.slice(-1)[0])}
-            <IconButton
-              roundedSize={12}
-              color="white"
-              backgroundColor={colors.orange[500]}
-              onPress={handleAddVariant}
-              size="xs"
-              icon="add"
-            />
-          </View>
-
-          <View className="flex-row gap-2 items-center mt-6">
-            <View className="flex-1 gap-2">
-              <Text className={clsx('text-gray-800', labelSize)}>Harga variasi</Text>
-              <Input leadingIcon="attch_money" onChangeText={() => {}} placeholder="3.500" size={inputSize} />
-            </View>
-            <View className="flex-1 gap-2">
-              <Text className={clsx('text-gray-800', labelSize)}>Stok</Text>
-              <Input leadingIcon="deployed_code_update" onChangeText={() => {}} placeholder="45" size={inputSize} />
-            </View>
-          </View>
-        </View>
-      </KeyboardAwareScrollView>
+            </KeyboardAwareScrollView>
+          );
+        }}
+      </Formik>
     </View>
   );
 };
