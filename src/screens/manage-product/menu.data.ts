@@ -10,6 +10,10 @@ export const manageProductMenus: ManageProductMenuItem[] = [
     screen: 'Categories',
   },
   {
+    label: 'Satuan',
+    screen: 'Unit',
+  },
+  {
     label: 'Varian',
     screen: 'Variant',
   },

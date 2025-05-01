@@ -10,6 +10,7 @@ export type ManageProductMenuItem =
   | MenuItem<ManageProductStackParamList, 'ManageProduct'>
   | MenuItem<ManageProductStackParamList, 'Products'>
   | MenuItem<ManageProductStackParamList, 'Categories'>
+  | MenuItem<ManageProductStackParamList, 'Unit'>
   | MenuItem<ManageProductStackParamList, 'Variant'>
   | MenuItem<ManageProductStackParamList, 'Material'>
   | MenuItem<ManageProductStackParamList, 'Recipe'>

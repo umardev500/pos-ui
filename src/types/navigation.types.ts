@@ -19,6 +19,10 @@ export type ManageProductStackParamList = {
   ManageProduct: undefined;
   Products: undefined;
   Categories: undefined;
+  Unit: undefined;
+  AddUnit: {
+    id?: number;
+  };
   Variant: undefined;
   Material: undefined;
   Recipe: undefined;

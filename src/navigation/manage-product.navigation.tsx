@@ -5,6 +5,7 @@ import {
   ManageProductScreen,
   MaterialScreen,
   RecipeScreen,
+  UnitListScreen,
   VariantScreen,
 } from '@app/screens';
 import {CategoriesScreen, CategoryDetailScreen} from '@app/screens/categories';
@@ -61,6 +62,30 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         component={CategoriesScreen}
       />
 
+      <Stack.Screen
+        options={({navigation}) => ({
+          title: 'Satuan',
+          headerRight: () => (
+            <View className="px-1">
+              <IconButton icon="add" onPress={() => navigation.navigate('AddUnit', {id: undefined})} size="sm" />
+            </View>
+          ),
+        })}
+        name="Unit"
+        component={UnitListScreen}
+      />
+      <Stack.Screen
+        options={() => ({
+          title: 'Tambah Satuan',
+          headerRight: () => (
+            <View className="px-1">
+              <IconButton icon="check" size="sm" />
+            </View>
+          ),
+        })}
+        name="AddUnit"
+        component={UnitListScreen}
+      />
       <Stack.Screen options={{title: 'Varian'}} name="Variant" component={VariantScreen} />
       <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
       <Stack.Screen options={{title: 'Resep'}} name="Recipe" component={RecipeScreen} />
