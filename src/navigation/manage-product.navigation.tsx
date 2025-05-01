@@ -26,6 +26,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
   const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
   const pressSaveAddCategory = useTriggerStore(state => state.pressSaveAddCategory);
   const isSaveAddCategoryEnabled = useTriggerStore(state => state.isSaveAddCategoryEnabled);
+  const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
 
   return (
     <Stack.Navigator
@@ -93,7 +94,13 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           title: 'Tambah Produk',
           headerRight: () => (
             <View className="mr-2">
-              <IconButton icon="check" onPress={() => setSaveAddProductPressed(true)} size="sm" />
+              <IconButton
+                disabled={!isSaveAddProductEnabled}
+                color={isSaveAddProductEnabled ? colors.gray[700] : colors.gray[400]}
+                icon="check"
+                onPress={() => setSaveAddProductPressed(true)}
+                size="sm"
+              />
             </View>
           ),
         })}

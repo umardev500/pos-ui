@@ -1,15 +1,16 @@
 import {useNavigation} from '@react-navigation/native';
 import {Formik, FormikProps} from 'formik';
+import lodash from 'lodash';
 import {Text, TouchableOpacity, View} from 'react-native';
 
 import {Icon} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
-import {useAddProductStore, useTriggerStore} from '@app/stores';
+import {useAddProductStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {Category, ProductInput, Unit} from '@app/types';
 import {AddProductSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
-import {useEffect} from 'react';
+import {memo} from 'react';
 
 const inputSize = 'sm';
 
@@ -22,9 +23,10 @@ type Props = {
   selectedCategory?: Category;
   selectedUnits?: Unit[];
   formikRef?: React.RefObject<FormikProps<ProductInput> | null>;
+  onIsValidInputChanged?: lodash.DebouncedFunc<(isValid: boolean) => void>;
 };
 
-export const ProductForm = ({
+export const ProductFormComponent = ({
   product,
   updateProduct,
   initialProductState,
@@ -33,31 +35,21 @@ export const ProductForm = ({
   selectedCategory,
   selectedUnits,
   formikRef,
+  onIsValidInputChanged,
 }: Props) => {
   const navigation = useNavigation();
   const resetProduct = useAddProductStore(state => state.resetProduct);
-
-  const isSaveAddProductPressed = useTriggerStore(state => state.isSaveAddProductPressed);
-  const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
-
-  /**
-   * Auto-submit form when the trigger changes
-   */
-  useEffect(() => {
-    if (formikRef?.current && isSaveAddProductPressed) {
-      formikRef?.current.submitForm();
-      setSaveAddProductPressed(false); // Toggle back to false after submission
-    }
-  }, [isSaveAddProductPressed]);
 
   /**
    * Sync input value changes with both Formik and external product state
    */
   const handleSyncChange = (field: keyof ProductInput) => (text: string) => {
-    updateProduct({[field]: text});
-    formikRef?.current?.setFieldValue(field, text);
-  };
+    const numericFields = ['capital', 'price', 'discount', 'quantity'];
+    const value = numericFields.includes(field) ? Number(text) || 0 : text;
 
+    updateProduct({[field]: value});
+    formikRef?.current?.setFieldValue(field, value);
+  };
   /**
    * Format numeric fields and pass the result to updateProduct
    */
@@ -78,8 +70,9 @@ export const ProductForm = ({
       validationSchema={AddProductSchema}
       onSubmit={handleSubmit}
       enableReinitialize>
-      {({values, handleBlur, resetForm, errors}) => {
-        console.log('errors:', errors);
+      {({values, handleBlur, resetForm, isValid}) => {
+        const isValidInput = !lodash.isEqual(values, initialProductState) && isValid;
+        onIsValidInputChanged?.call(null, isValidInput);
 
         return (
           <>
@@ -223,3 +216,6 @@ export const ProductForm = ({
     </Formik>
   );
 };
+
+// make render at once
+export const ProductForm = memo(ProductFormComponent, () => true);

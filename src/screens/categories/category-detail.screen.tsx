@@ -1,11 +1,11 @@
 import {Input} from '@app/components/atoms';
 import {useTriggerStore} from '@app/stores';
 import {CategoryInput, ManageProductStackParamList} from '@app/types';
+import {createDebouncedInputValidator} from '@app/utils';
 import {AddCategorySchema} from '@app/validations';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
-import {debounce} from 'lodash';
-import React, {useEffect} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {Text, View} from 'react-native';
 
 type Props = StackScreenProps<ManageProductStackParamList, 'CategoryDetail'>;
@@ -35,9 +35,9 @@ export const CategoryDetailScreen: React.FC<Props> = ({route}) => {
     console.log(values);
   };
 
-  const handleValidInputChange = debounce((isValid: boolean) => {
-    setSaveAddCategoryEnabled(isValid);
-  }, 500);
+  const handleValidInputChange = useMemo(() => {
+    return createDebouncedInputValidator(setSaveAddCategoryEnabled, 500);
+  }, []);
 
   return (
     <>
