@@ -3,15 +3,15 @@ import React from 'react';
 import {Pressable, Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
-type Props = {};
+type Props = {
+  onPress?: () => void;
+};
 
-export const CheckoutSummary: React.FC<Props> = () => {
+export const CheckoutSummary: React.FC<Props> = ({onPress}) => {
   const {bottom} = useSafeAreaInsets();
 
-  const handlePress = () => {};
-
   return (
-    <Pressable onPress={handlePress}>
+    <Pressable onPress={onPress}>
       <View
         className="absolute shadow-xl shadow-black left-4 right-4 flex-row items-center justify-between  bg-orange-500 rounded-xl px-4 py-4"
         style={{bottom: bottom + 8}}>

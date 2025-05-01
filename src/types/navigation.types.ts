@@ -8,6 +8,7 @@ export type MainStackParamList = {
     screen?: keyof ManageProductStackParamList;
   };
   Drawer: undefined;
+  Cart: undefined;
 };
 
 export type AuthStackParamList = {

@@ -8,12 +8,15 @@ import {
 } from '@app/components/organisms';
 import {dessertProducts, drinkProducts, foodProducts, snackProducts} from '@app/mocks';
 import {Product, RenderScene} from '@app/types';
+import {useNavigation} from '@react-navigation/native';
 import {useRef} from 'react';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {Route, SceneMap} from 'react-native-tab-view';
 
 export const HomeScreen = () => {
+  const navigation = useNavigation();
+
   const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
 
   const routes: Route[] = [
@@ -60,13 +63,17 @@ export const HomeScreen = () => {
     console.log(qty, product);
   };
 
+  const handlePressCheckout = () => {
+    navigation.navigate('Cart');
+  };
+
   return (
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
       <View className="bg-gray-100 flex-1">
         <TabView routes={routes} renderScene={renderScene} />
-        <CheckoutSummary />
+        <CheckoutSummary onPress={handlePressCheckout} />
         <QuantityBoottomSheet onConfirm={handleOnQuantityConfirmed} ref={bottomSheetRef} />
       </View>
     </>
