@@ -16,28 +16,42 @@ const initialValues: CategoryInput = {
 };
 
 export const CategoryDetailScreen: React.FC<Props> = ({route}) => {
-  const id = route.params?.id;
-  // TODO: get category by id if id is provided
-
+  // ————————————————————————————————————————————————
+  // 🛠 References and State
+  // ————————————————————————————————————————————————
   const formikRef = React.useRef<FormikProps<CategoryInput>>(null);
+  const id = route.params?.id; // TODO: get category by id if id is provided
 
+  // ————————————————————————————————————————————————
+  // 📦 Store States
+  // ————————————————————————————————————————————————
   const isSaveAddCategoryPressed = useTriggerStore(state => state.isSaveAddCategoryPressed);
   const setSaveAddCategoryEnabled = useTriggerStore(state => state.setSaveAddCategoryEnabled);
 
+  // ————————————————————————————————————————————————
+  // 🧪 Effects
+  // ————————————————————————————————————————————————
+  // Trigger form submission when save category is pressed
   useEffect(() => {
     if (isSaveAddCategoryPressed) {
       formikRef?.current?.submitForm();
     }
   }, [isSaveAddCategoryPressed]);
 
+  // ————————————————————————————————————————————————
+  // 📝 Handlers
+  // ————————————————————————————————————————————————
   const onSubmit = (values: CategoryInput) => {
     // TODO: save category
     console.log(values);
   };
 
+  // ————————————————————————————————————————————————
+  // 🧪 Input Validator
+  // ————————————————————————————————————————————————
   const handleValidInputChange = useMemo(() => {
     return createDebouncedInputValidator(setSaveAddCategoryEnabled, 500);
-  }, []);
+  }, [setSaveAddCategoryEnabled]);
 
   return (
     <>
