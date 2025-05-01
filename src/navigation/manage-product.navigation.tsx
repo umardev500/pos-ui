@@ -72,7 +72,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
           return {
             title: id ? 'Ubah Kategori' : 'Tambah Kategori',
             headerRight: () => (
-              <View className="mr-2">
+              <View className="mr-2 flex-row items-center gap-2">
                 <IconButton
                   icon="check"
                   color={isSaveAddCategoryEnabled ? colors.gray[700] : colors.gray[400]}
@@ -80,6 +80,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
                   onPress={pressSaveAddCategory}
                   size="sm"
                 />
+                {id && <IconButton icon="delete" size="sm" color={colors.red[600]} />}
               </View>
             ),
           };
