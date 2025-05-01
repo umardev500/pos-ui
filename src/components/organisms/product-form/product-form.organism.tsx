@@ -40,8 +40,12 @@ export const ProductFormComponent = ({
   const navigation = useNavigation();
   const resetProduct = useAddProductStore(state => state.resetProduct);
 
+  // ————————————————————————————————————————————————
+  // 🛠 Handlers
+  // ————————————————————————————————————————————————
+
   /**
-   * Sync input value changes with both Formik and external product state
+   * Sync input value changes with both Formik and external product state.
    */
   const handleSyncChange = (field: keyof ProductInput) => (text: string) => {
     const numericFields = ['capital', 'price', 'discount', 'quantity'];
@@ -50,8 +54,9 @@ export const ProductFormComponent = ({
     updateProduct({[field]: value});
     formikRef?.current?.setFieldValue(field, value);
   };
+
   /**
-   * Format numeric fields and pass the result to updateProduct
+   * Format numeric fields and pass the result to updateProduct.
    */
   const handleSubmit = (values: ProductInput) => {
     updateProduct({
