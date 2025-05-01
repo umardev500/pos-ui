@@ -21,6 +21,13 @@ interface TriggerState {
   setSaveAddCategoryEnabled: (enabled: boolean) => void;
   setSaveAddCategoryPressed: (pressed: boolean) => void;
   pressSaveAddCategory: () => void;
+
+  // Unit button
+  isSaveAddUnitEnabled: boolean;
+  isSaveAddUnitPressed: boolean;
+  setSaveAddUnitEnabled: (enabled: boolean) => void;
+  setSaveAddUnitPressed: (pressed: boolean) => void;
+  pressSaveAddUnit: () => void;
 }
 
 export const useTriggerStore = create<TriggerState>(set => ({
@@ -52,5 +59,15 @@ export const useTriggerStore = create<TriggerState>(set => ({
   pressSaveAddCategory: () => {
     set({isSaveAddCategoryPressed: true});
     setTimeout(() => set({isSaveAddCategoryPressed: false}), 200);
+  },
+
+  // Unit
+  isSaveAddUnitEnabled: false,
+  isSaveAddUnitPressed: false,
+  setSaveAddUnitEnabled: enabled => set({isSaveAddUnitEnabled: enabled}),
+  setSaveAddUnitPressed: pressed => set({isSaveAddUnitPressed: pressed}),
+  pressSaveAddUnit: () => {
+    set({isSaveAddUnitPressed: true});
+    setTimeout(() => set({isSaveAddUnitPressed: false}), 200);
   },
 }));

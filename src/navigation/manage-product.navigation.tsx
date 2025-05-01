@@ -2,6 +2,7 @@ import {IconButton} from '@app/components/atoms';
 import {
   AddProductVariant,
   AddProductVariantListScreen,
+  AddUnitScreen,
   ManageProductScreen,
   MaterialScreen,
   RecipeScreen,
@@ -28,6 +29,7 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
   const pressSaveAddCategory = useTriggerStore(state => state.pressSaveAddCategory);
   const isSaveAddCategoryEnabled = useTriggerStore(state => state.isSaveAddCategoryEnabled);
   const isSaveAddProductEnabled = useTriggerStore(state => state.isSaveAddProductEnabled);
+  const isSaveAddUnitEnabled = useTriggerStore(state => state.isSaveAddUnitEnabled);
 
   return (
     <Stack.Navigator
@@ -75,16 +77,26 @@ export const ManageProductStackNavigator: React.FC<Props> = props => {
         component={UnitListScreen}
       />
       <Stack.Screen
-        options={() => ({
-          title: 'Tambah Satuan',
-          headerRight: () => (
-            <View className="px-1">
-              <IconButton icon="check" size="sm" />
-            </View>
-          ),
-        })}
+        options={({route}) => {
+          const id = route.params?.id;
+          return {
+            title: id ? 'Ubah Satuan' : 'Tambah Satuan',
+            headerRight: () => (
+              <View className="mr-2 flex-row items-center gap-2">
+                <IconButton
+                  icon="check"
+                  color={isSaveAddUnitEnabled ? colors.gray[700] : colors.gray[400]}
+                  disabled={!isSaveAddUnitEnabled}
+                  onPress={pressSaveAddCategory}
+                  size="sm"
+                />
+                {id && <IconButton icon="delete" size="sm" color={colors.red[600]} />}
+              </View>
+            ),
+          };
+        }}
         name="AddUnit"
-        component={UnitListScreen}
+        component={AddUnitScreen}
       />
       <Stack.Screen options={{title: 'Varian'}} name="Variant" component={VariantScreen} />
       <Stack.Screen options={{title: 'Bahan Baku'}} name="Material" component={MaterialScreen} />
