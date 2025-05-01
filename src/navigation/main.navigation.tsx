@@ -1,5 +1,6 @@
 import {IconButton} from '@app/components/atoms';
 import {CartScreen} from '@app/screens';
+import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
 import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
@@ -26,8 +27,8 @@ export const MainNavigation = () => {
             <Header
               headerRight={() => {
                 return (
-                  <View>
-                    <IconButton icon="add" />
+                  <View className="px-1">
+                    <IconButton icon="more_vert" color={colors.gray[800]} />
                   </View>
                 );
               }}

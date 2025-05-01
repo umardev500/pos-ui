@@ -57,6 +57,7 @@ const glyphMap = {
   real_estate_agent: 0xe932,
   scan: 0xe933,
   sell: 0xe934,
+  more_vert: 0xe935,
   ...glyphMapFill,
 };
 
