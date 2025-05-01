@@ -13,32 +13,35 @@ import {TrueSheet} from '@lodev09/react-native-true-sheet';
 type Props = {};
 
 export const AddProductScreen: React.FC<Props> = () => {
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // 🌟 Refs: Formik & Bottom Sheets
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   const categorySheetRef = useRef<TrueSheet>(null);
   const unitSheetRef = useRef<TrueSheet>(null);
   const formikRef = useRef<FormikProps<ProductInput>>(null);
 
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // 📦 Global State Store
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   const {product, updateProduct} = useAddProductStore();
   const isSaveAddProductPressed = useTriggerStore(state => state.isSaveAddProductPressed);
   const setSaveAddProductPressed = useTriggerStore(state => state.setSaveAddProductPressed);
   const setSaveAddProductEnabled = useTriggerStore(state => state.setSaveAddProductEnabled);
 
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // 🛠 Local UI State
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(product?.category);
   const [selectedUnits, setSelectedUnits] = useState<Unit[]>(product?.units || []);
 
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // 📝 Effects
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
 
-  // Auto-submit form on save trigger
+  /**
+   * Auto-submit the form when the global "save" trigger is toggled.
+   * Useful for submitting from a parent or external button.
+   */
   useEffect(() => {
     if (formikRef.current && isSaveAddProductPressed) {
       formikRef.current.submitForm();
@@ -46,21 +49,30 @@ export const AddProductScreen: React.FC<Props> = () => {
     }
   }, [isSaveAddProductPressed]);
 
-  // Update product units when selection changes
+  /**
+   * Sync selected units with the product in the global store
+   * whenever the unit selection changes.
+   */
   useEffect(() => {
     if (selectedUnits.length > 0) {
       updateProduct({units: selectedUnits});
     }
   }, [selectedUnits]);
 
-  // Update product category when selection changes
+  /**
+   * Sync selected category with the product in the global store
+   * whenever the category selection changes.
+   */
   useEffect(() => {
     if (selectedCategory) {
       updateProduct({category: selectedCategory});
     }
   }, [selectedCategory]);
 
-  // Reset local state when product is cleared
+  /**
+   * Reset the selected category and units when the product
+   * state matches the initial product state (i.e., form reset).
+   */
   useEffect(() => {
     if (lodash.isEqual(product, initialProductState)) {
       setSelectedCategory(undefined);
@@ -68,23 +80,34 @@ export const AddProductScreen: React.FC<Props> = () => {
     }
   }, [product]);
 
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // ⚙️ Handlers
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
 
-  // Toggle category selection
+  /**
+   * Toggle category selection.
+   * Deselects if the selected category is clicked again.
+   */
   const toggleCategory = (category: Category) => {
     setSelectedCategory(prev => (prev?.id === category.id ? undefined : category));
   };
 
-  // Toggle unit selection
+  /**
+   * Toggle a unit in the selected unit list.
+   * Adds if not present, removes if already selected.
+   */
   const toggleUnit = (unit: Unit) => {
     setSelectedUnits(prev => (prev.some(u => u.id === unit.id) ? prev.filter(u => u.id !== unit.id) : [...prev, unit]));
   };
 
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
   // 🧪 Input Validator
-  // ————————————————————————————————
+  // ————————————————————————————————————————————————
+
+  /**
+   * Debounced handler to validate the form input and toggle
+   * the save button's enabled state accordingly.
+   */
   const handleValidInputChange = useMemo(() => {
     return createDebouncedInputValidator(setSaveAddProductEnabled, 500);
   }, []);
