@@ -38,6 +38,8 @@ export const DrawerContent: React.FC<Props> = ({}) => {
             icon="deployed_code_update"
           />
           <DrawerMenu onPress={() => {}} label="Kelola Toko" icon="store_front" />
+          <View className="h-[1px] bg-gray-200" />
+          <DrawerMenu onPress={() => {}} label="Pengaturan" icon="setting" />
           <DrawerMenu onPress={() => {}} label="Keluar" icon="power_setting" />
         </View>
       </View>
