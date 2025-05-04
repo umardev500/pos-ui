@@ -1,5 +1,5 @@
 import {ProductItem} from '@app/components/molecules';
-import {Product} from '@app/types';
+import {ProductDto} from '@app/types';
 import React from 'react';
 import {FlatList, ListRenderItem, useWindowDimensions, View} from 'react-native';
 
@@ -7,16 +7,16 @@ const PADDING_X = 8 * 2;
 const NUM_COL = 2;
 
 type Props = {
-  products: Product[];
-  onAddToCart?: (product: Product) => void;
+  data?: ProductDto[];
+  onAddToCart?: (product: ProductDto) => void;
 };
 
 export const ListProducts: React.FC<Props> = props => {
-  const {products, onAddToCart} = props;
+  const {data, onAddToCart} = props;
   const {width} = useWindowDimensions();
   const itemWidth = (width - PADDING_X) / NUM_COL;
 
-  const renderItem: ListRenderItem<Product> = ({item}) => {
+  const renderItem: ListRenderItem<ProductDto> = ({item}) => {
     return <ProductItem onAddToCart={onAddToCart} width={itemWidth} product={item} />;
   };
 
@@ -27,7 +27,7 @@ export const ListProducts: React.FC<Props> = props => {
         ItemSeparatorComponent={() => <View className="h-4" />}
         numColumns={2}
         keyExtractor={item => `${item.id}`}
-        data={products}
+        data={data}
         renderItem={renderItem}
       />
     </>

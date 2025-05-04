@@ -9,13 +9,11 @@ interface Props {
 }
 
 export const CatalogTemplate: React.FC<Props> = () => {
-  const {data} = useProducts();
-
-  console.log('render catalog', data);
+  const {data} = useProducts({});
 
   return (
     <>
-      <ListProducts products={[]} />
+      <ListProducts data={data} />
     </>
   );
 };

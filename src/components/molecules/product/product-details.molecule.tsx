@@ -1,16 +1,19 @@
 import {Icon} from '@app/components/atoms';
 import {colors} from '@app/styles';
-import {Product} from '@app/types';
+import {ProductDto} from '@app/types';
 import {numberUtils} from '@app/utils';
 import {Pressable, Text, View} from 'react-native';
 
 type Props = {
-  product: Product;
+  product: ProductDto;
   onAddToCart?: () => void;
 };
 
 export const ProductDetails: React.FC<Props> = ({product, onAddToCart}) => {
-  const {name, price, variants} = product;
+  const {name, product_variant: variants} = product;
+  const baseUnitPrice = product.product_unit.find(unit => unit.unit_id === product.base_unit_id);
+
+  const price = baseUnitPrice?.price || 0;
 
   return (
     <View className="pt-2 pb-2 px-2.5">

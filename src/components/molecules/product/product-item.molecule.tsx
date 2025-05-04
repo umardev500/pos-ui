@@ -1,4 +1,4 @@
-import {Product} from '@app/types';
+import {ProductDto} from '@app/types';
 import React from 'react';
 import {View} from 'react-native';
 import {ProductDetails} from './product-details.molecule';
@@ -6,8 +6,8 @@ import {ProductImage} from './product-image.molecule';
 
 type Props = {
   width?: number;
-  product: Product;
-  onAddToCart?: (product: Product) => void;
+  product: ProductDto;
+  onAddToCart?: (product: ProductDto) => void;
 };
 
 export const ProductItem: React.FC<Props> = props => {
