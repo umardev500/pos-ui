@@ -110,9 +110,6 @@ export const HomeScreen = () => {
   // 📦 Component Render
   // ————————————————————————————————————————————————
 
-  const items = useCartStore(state => state.items);
-  console.log(items);
-
   return (
     <>
       <SystemBars style={'dark'} />
