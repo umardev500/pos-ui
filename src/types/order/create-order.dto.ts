@@ -1,14 +1,10 @@
 import {DiscountType} from '@app/types/discount';
 
 export interface CreateOrderDTO {
-  merchant_id: number;
-  order_type_id: number;
-  total_amount: number;
-  discount_type?: DiscountType;
-  discount_value?: number;
-  down_payment?: number;
-  paid_at?: string; // ISO 8601 date string
-  order_items?: CreateOrderItemDTO[];
+  order_type_id: number; // The ID of the order type (e.g., DINE_IN, TAKEAWAY)
+  order_items: CreateOrderItemDTO[]; // List of items in the order, including quantity, product, price
+  discount_id?: number; // Optional discount ID, set internally (not user-provided)
+  down_payment?: number; // Optional down payment
 }
 
 export interface CreateOrderItemDTO {
