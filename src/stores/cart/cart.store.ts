@@ -32,14 +32,24 @@ export const useCartStore = create<CartState>((set, get) => ({
       return {items: [...state.items, item]};
     }),
 
-  updateQuantity: (productId, unitId, variantId, quantity = 1) =>
-    set(state => ({
-      items: state.items.map(item =>
-        item.product.id === productId && item.unit.id === unitId && item.variant?.id === variantId
-          ? {...item, quantity}
-          : item,
-      ),
-    })),
+  updateQuantity: (productId, unitId, variantId, quantity = 1) => {
+    set(state => {
+      const updatedItems = state.items.map(item => {
+        // Check if we match the product, unit, and variant (if provided)
+        const matchesProduct = item.product.id === productId;
+        const matchesUnit = item.unit.unit_id === unitId;
+        const matchesVariant = !variantId || item.variant?.id === variantId;
+
+        if (matchesProduct && matchesUnit && matchesVariant) {
+          return {...item, quantity}; // Update the quantity
+        }
+
+        return item;
+      });
+
+      return {items: updatedItems}; // Return the new state
+    });
+  },
 
   removeItem: (productId, unitId, variantId) =>
     set(state => ({

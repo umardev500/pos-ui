@@ -55,7 +55,7 @@ export const HomeScreen = () => {
 
     if (existingItem) {
       // If the product is already in the cart, update the quantity
-      useCartStore.getState().updateQuantity(product.id, existingItem.quantity + qty);
+      useCartStore.getState().updateQuantity(product.id, product.base_unit_id, undefined, existingItem.quantity + qty);
     } else {
       // If the product is not in the cart, add it as a new item
       useCartStore.getState().addItem({
@@ -109,6 +109,9 @@ export const HomeScreen = () => {
   // ————————————————————————————————————————————————
   // 📦 Component Render
   // ————————————————————————————————————————————————
+
+  const items = useCartStore(state => state.items);
+  console.log(items);
 
   return (
     <>
