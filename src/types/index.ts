@@ -5,6 +5,7 @@ export * from './category.type';
 export * from './discount';
 export * from './menu.type';
 export * from './navigation.types';
+export * from './order';
 export * from './product';
 export * from './product.type';
 export * from './tab.type';

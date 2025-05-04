@@ -9,3 +9,8 @@ export interface DiscountDto {
   created_at: string;
   updated_at: string;
 }
+
+export enum DiscountType {
+  PERCENT = 'PERCENT',
+  FIXED = 'FIXED',
+}
