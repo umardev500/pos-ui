@@ -33,6 +33,11 @@ export const HomeScreen = () => {
 
   // Handle when quantity is confirmed
   const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
+    if (qty <= 0) {
+      console.log(`Ignored adding ${product.name} with quantity 0`);
+      return;
+    }
+
     // Check if the product is already in the cart
     const existingItem = useCartStore.getState().items.find(item => item.product.id === product.id);
 
