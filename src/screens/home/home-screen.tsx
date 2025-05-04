@@ -64,7 +64,7 @@ export const HomeScreen = () => {
           all: () => <CatalogTemplate onAddToCart={handleAddCart} />, // Placeholder for 'All' products
           ...categories.reduce((acc: {[key: string]: () => React.JSX.Element}, category) => {
             // Add scene for each category
-            acc[category.id] = () => <CatalogTemplate onAddToCart={handleAddCart} />;
+            acc[category.id] = () => <CatalogTemplate categoryId={category.id} onAddToCart={handleAddCart} />;
             return acc;
           }, {}),
         }
