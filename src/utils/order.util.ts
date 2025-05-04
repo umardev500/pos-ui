@@ -8,7 +8,7 @@ export function mapCartToCreateOrderDTO(
     down_payment?: number; // Optional down payment
   },
 ): CreateOrderDTO {
-  const order_items: CreateOrderItemDTO[] = cartItems.map(item => {
+  const order_items: CreateOrderItemDTO[] = cartItems.map((item): CreateOrderItemDTO => {
     // Check if variant exists and use variant price if available
     const price = item.variant ? item.variant.price : item.unit.price;
 
@@ -17,10 +17,7 @@ export function mapCartToCreateOrderDTO(
       unit_id: item.unit.unit_id,
       quantity: item.quantity,
       price,
-      subtotal: item.quantity * price,
       variant_id: item.variant?.id, // Include variant ID if it exists
-      discount_type: item.product.discount?.type, // Set discount type if available
-      discount_value: item.product.discount?.value, // Set discount value if available
     };
   });
 

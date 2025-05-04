@@ -1,5 +1,3 @@
-import {DiscountType} from '@app/types/discount';
-
 export interface CreateOrderDTO {
   order_type_id: number; // The ID of the order type (e.g., DINE_IN, TAKEAWAY)
   order_items: CreateOrderItemDTO[]; // List of items in the order, including quantity, product, price
@@ -12,8 +10,6 @@ export interface CreateOrderItemDTO {
   unit_id: number;
   quantity: number;
   price: number;
-  subtotal: number;
   variant_id?: number;
-  discount_type?: DiscountType;
-  discount_value?: number;
+  discount_id?: number;
 }
