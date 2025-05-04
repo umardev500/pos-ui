@@ -20,7 +20,7 @@ export const HomeScreen = () => {
   const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
 
   // Get the total number of items in the cart
-  const totalItems = useCartStore(state => state.totalItems());
+  const totalItems = useCartStore(state => state.items.length);
 
   // ————————————————————————————————————————————————
   // 📦 Handler Functions
@@ -41,7 +41,11 @@ export const HomeScreen = () => {
       useCartStore.getState().updateQuantity(product.id, existingItem.quantity + qty);
     } else {
       // If the product is not in the cart, add it as a new item
-      useCartStore.getState().addItem(product, qty);
+      useCartStore.getState().addItem({
+        product,
+        quantity: qty,
+        unit: product.product_unit[0],
+      });
     }
 
     console.log(`Product ${product.name} added with quantity ${qty}`);
