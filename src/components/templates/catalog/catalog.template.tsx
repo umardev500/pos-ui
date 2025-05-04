@@ -8,12 +8,12 @@ interface Props {
   onAddToCart?: (product: ProductDto) => void;
 }
 
-export const CatalogTemplate: React.FC<Props> = () => {
+export const CatalogTemplate: React.FC<Props> = ({onAddToCart}) => {
   const {data} = useProducts({});
 
   return (
     <>
-      <ListProducts data={data} />
+      <ListProducts onAddToCart={onAddToCart} data={data} />
     </>
   );
 };
