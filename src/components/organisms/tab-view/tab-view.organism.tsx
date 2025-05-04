@@ -72,6 +72,7 @@ export const TabView: React.FC<Props> = props => {
   return (
     <ReactNativeTabView
       key={cache.toString()}
+      lazy
       navigationState={tabState}
       renderScene={renderScene}
       onIndexChange={setIndex}

@@ -1,15 +1,10 @@
 import {CheckoutSummary} from '@app/components/molecules';
-import {
-  ListProducts,
-  MainHeader,
-  QuantityBoottomSheet,
-  QuantityBottomSheetRef,
-  TabView,
-} from '@app/components/organisms';
-import {dessertProducts, drinkProducts, foodProducts, snackProducts} from '@app/mocks';
+import {MainHeader, QuantityBoottomSheet, QuantityBottomSheetRef, TabView} from '@app/components/organisms';
+import {CatalogTemplate} from '@app/components/templates';
+import {useCategories} from '@app/hooks';
 import {Product, RenderScene} from '@app/types';
 import {useNavigation} from '@react-navigation/native';
-import {useRef} from 'react';
+import React, {useRef} from 'react';
 import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {Route, SceneMap} from 'react-native-tab-view';
@@ -18,63 +13,81 @@ type Routes = Route[];
 
 export const HomeScreen = () => {
   const navigation = useNavigation();
+  const {data: categories} = useCategories();
 
-  // ————————————————————————————————————————————————
-  // 🌟 Refs: Bottom Sheet for Quantity
-  // ————————————————————————————————————————————————
+  // Refs for handling bottom sheet interactions
   const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
 
   // ————————————————————————————————————————————————
-  // 📦 Tab Routes Definition
-  // ————————————————————————————————————————————————
-  const routes: Routes = [
-    {key: 'all', title: 'All'},
-    {key: 'food', title: 'Food'},
-    {key: 'drink', title: 'Drink'},
-    {key: 'snack', title: 'Snack'},
-    {key: 'dessert', title: 'Dessert'},
-  ];
-
-  // ————————————————————————————————————————————————
-  // 🧪 Render Scene for Each Tab
-  // ————————————————————————————————————————————————
-  const renderScene: RenderScene = SceneMap({
-    all: () => (
-      <ListProducts onAddToCart={handleAddCart} products={[...foodProducts, ...drinkProducts, ...snackProducts]} />
-    ),
-    food: () => <ListProducts onAddToCart={handleAddCart} products={foodProducts} />,
-    drink: () => <ListProducts onAddToCart={handleAddCart} products={drinkProducts} />,
-    snack: () => <ListProducts onAddToCart={handleAddCart} products={snackProducts} />,
-    dessert: () => <ListProducts onAddToCart={handleAddCart} products={dessertProducts} />,
-  });
-
-  // ————————————————————————————————————————————————
-  // ⚙️ Handlers for Button Actions
+  // 📦 Handler Functions
   // ————————————————————————————————————————————————
 
-  // Handler when add to cart button is pressed
+  // Handle adding a product to the cart
   const handleAddCart = (selectedProduct: Product) => {
     bottomSheetRef.current?.open(selectedProduct, 0);
   };
 
-  // Handler when quantity is confirmed
+  // Handle when quantity is confirmed
   const handleOnQuantityConfirmed = (qty: number, product: Product) => {
-    // TODO: Add to cart
+    // TODO: Add product to cart after confirmation
     console.log(qty, product);
   };
 
-  // Navigate to Cart screen
+  // Navigate to the Cart screen
   const handlePressCheckout = () => {
     navigation.navigate('Cart');
   };
+
+  // ————————————————————————————————————————————————
+  // 📦 Dynamic Routes Based on Categories
+  // ————————————————————————————————————————————————
+
+  // Dynamically create tab routes based on the categories
+  const routes: Routes = categories
+    ? [
+        {key: 'all', title: 'All'},
+        ...categories.map(category => ({
+          key: category.id.toString(), // Ensure the key is a string
+          title: category.name,
+        })),
+      ]
+    : [];
+
+  // ————————————————————————————————————————————————
+  // 📦 Render Scene for Each Tab
+  // ————————————————————————————————————————————————
+
+  // Dynamically render each scene for each category
+  const renderScene: RenderScene = SceneMap(
+    categories
+      ? {
+          all: () => <CatalogTemplate />, // Placeholder for 'All' products
+          ...categories.reduce((acc: {[key: string]: () => React.JSX.Element}, category) => {
+            // Add scene for each category
+            acc[category.id] = () => <CatalogTemplate />;
+            return acc;
+          }, {}),
+        }
+      : {},
+  );
+
+  // ————————————————————————————————————————————————
+  // 📦 Component Render
+  // ————————————————————————————————————————————————
 
   return (
     <>
       <SystemBars style={'dark'} />
       <MainHeader />
+
       <View className="bg-gray-100 flex-1">
-        <TabView routes={routes} renderScene={renderScene} />
+        {/* TabView Component for Switching Categories */}
+        {categories && routes.length > 0 && <TabView routes={routes} renderScene={renderScene} />}
+
+        {/* Checkout Summary Section */}
         <CheckoutSummary onPress={handlePressCheckout} />
+
+        {/* Bottom sheet for quantity input */}
         <QuantityBoottomSheet onConfirm={handleOnQuantityConfirmed} ref={bottomSheetRef} />
       </View>
     </>
