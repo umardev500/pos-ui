@@ -9,7 +9,7 @@ export const ProductsScreen: React.FC<Props> = ({}) => {
   return (
     <View className="flex-1 bg-white">
       <View className="px-4 py-4">
-        <Input size="md" placeholder="Search..." trailingIcon="search" />
+        <Input size="sm" placeholder="Search..." trailingIcon="search" />
       </View>
 
       <View>
