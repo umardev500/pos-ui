@@ -14,39 +14,30 @@ import {View} from 'react-native';
 import {SystemBars} from 'react-native-edge-to-edge';
 import {Route, SceneMap} from 'react-native-tab-view';
 
+type Routes = Route[];
+
 export const HomeScreen = () => {
   const navigation = useNavigation();
 
+  // ————————————————————————————————————————————————
+  // 🌟 Refs: Bottom Sheet for Quantity
+  // ————————————————————————————————————————————————
   const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
 
-  const routes: Route[] = [
-    {
-      key: 'all',
-      title: 'All',
-    },
-    {
-      key: 'food',
-      title: 'Food',
-    },
-    {
-      key: 'drink',
-      title: 'Drink',
-    },
-    {
-      key: 'snack',
-      title: 'Snack',
-    },
-    {
-      key: 'dessert',
-      title: 'Dessert',
-    },
+  // ————————————————————————————————————————————————
+  // 📦 Tab Routes Definition
+  // ————————————————————————————————————————————————
+  const routes: Routes = [
+    {key: 'all', title: 'All'},
+    {key: 'food', title: 'Food'},
+    {key: 'drink', title: 'Drink'},
+    {key: 'snack', title: 'Snack'},
+    {key: 'dessert', title: 'Dessert'},
   ];
 
-  // Handler when add to cart button is pressed
-  const handleAddCart = (selectedProduct: Product) => {
-    bottomSheetRef.current?.open(selectedProduct, 0);
-  };
-
+  // ————————————————————————————————————————————————
+  // 🧪 Render Scene for Each Tab
+  // ————————————————————————————————————————————————
   const renderScene: RenderScene = SceneMap({
     all: () => (
       <ListProducts onAddToCart={handleAddCart} products={[...foodProducts, ...drinkProducts, ...snackProducts]} />
@@ -57,12 +48,22 @@ export const HomeScreen = () => {
     dessert: () => <ListProducts onAddToCart={handleAddCart} products={dessertProducts} />,
   });
 
+  // ————————————————————————————————————————————————
+  // ⚙️ Handlers for Button Actions
+  // ————————————————————————————————————————————————
+
+  // Handler when add to cart button is pressed
+  const handleAddCart = (selectedProduct: Product) => {
+    bottomSheetRef.current?.open(selectedProduct, 0);
+  };
+
   // Handler when quantity is confirmed
   const handleOnQuantityConfirmed = (qty: number, product: Product) => {
     // TODO: Add to cart
     console.log(qty, product);
   };
 
+  // Navigate to Cart screen
   const handlePressCheckout = () => {
     navigation.navigate('Cart');
   };
