@@ -2,6 +2,7 @@ import {CheckoutSummary} from '@app/components/molecules';
 import {MainHeader, QuantityBoottomSheet, QuantityBottomSheetRef, TabView} from '@app/components/organisms';
 import {CatalogTemplate} from '@app/components/templates';
 import {useCategories} from '@app/hooks';
+import {useCartStore} from '@app/stores';
 import {ProductDto, RenderScene} from '@app/types';
 import {useNavigation} from '@react-navigation/native';
 import React, {useRef} from 'react';
@@ -17,6 +18,9 @@ export const HomeScreen = () => {
 
   // Refs for handling bottom sheet interactions
   const bottomSheetRef = useRef<QuantityBottomSheetRef>(null);
+
+  // Get the total number of items in the cart
+  const totalItems = useCartStore(state => state.totalItems());
 
   // ————————————————————————————————————————————————
   // 📦 Handler Functions
@@ -85,7 +89,7 @@ export const HomeScreen = () => {
         {categories && routes.length > 0 && <TabView routes={routes} renderScene={renderScene} />}
 
         {/* Checkout Summary Section */}
-        <CheckoutSummary onPress={handlePressCheckout} />
+        {totalItems > 0 && <CheckoutSummary onPress={handlePressCheckout} />}
 
         {/* Bottom sheet for quantity input */}
         <QuantityBoottomSheet onConfirm={handleOnQuantityConfirmed} ref={bottomSheetRef} />
