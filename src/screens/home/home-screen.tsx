@@ -38,6 +38,17 @@ export const HomeScreen = () => {
       return;
     }
 
+    // If the product has multiple units or variants, redirect to a selection screen
+    const hasMultipleUnits = product.product_unit.length > 1;
+    const hasVariants = product.product_variant.length > 0;
+
+    if (hasMultipleUnits || hasVariants) {
+      // Navigate to selection screen (e.g., ProductDetail or VariantSelector)
+      // navigation.navigate('ProductDetail', {product});
+      console.log('continue to selection screen');
+      return;
+    }
+
     // Check if the product is already in the cart
     const existingItem = useCartStore.getState().items.find(item => item.product.id === product.id);
 
