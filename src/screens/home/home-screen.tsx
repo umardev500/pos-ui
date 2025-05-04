@@ -39,8 +39,8 @@ export const HomeScreen = () => {
     }
 
     // If the product has multiple units or variants, redirect to a selection screen
-    const hasMultipleUnits = product.product_unit.length > 1;
-    const hasVariants = product.product_variant.length > 0;
+    const hasMultipleUnits = product.product_units.length > 1;
+    const hasVariants = product.product_variants.length > 0;
 
     if (hasMultipleUnits || hasVariants) {
       // Navigate to selection screen (e.g., ProductDetail or VariantSelector)
@@ -60,7 +60,7 @@ export const HomeScreen = () => {
       useCartStore.getState().addItem({
         product,
         quantity: qty,
-        unit: product.product_unit[0],
+        unit: product.product_units[0],
       });
     }
 

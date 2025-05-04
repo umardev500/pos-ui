@@ -43,6 +43,6 @@ export interface ProductDto {
   category: CategoryDto | null;
   base_unit: UnitDto;
   discount: DiscountDto | null;
-  product_unit: ProductUnitDto[];
-  product_variant: ProductVariantDto[];
+  product_units: ProductUnitDto[];
+  product_variants: ProductVariantDto[];
 }

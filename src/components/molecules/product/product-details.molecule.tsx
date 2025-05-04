@@ -9,7 +9,7 @@ type Props = {
 };
 
 export const ProductDetails: React.FC<Props> = ({product, onAddToCart}) => {
-  const {name, product_variant: variants, product_unit: units, base_unit_id} = product;
+  const {name, product_variants: variants, product_units: units, base_unit_id} = product;
 
   // Get base unit's price (fallback to 0)
   const baseUnit = units.find(unit => unit.unit_id === base_unit_id);
