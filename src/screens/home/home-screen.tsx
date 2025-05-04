@@ -51,10 +51,10 @@ export const HomeScreen = () => {
     all: () => (
       <ListProducts onAddToCart={handleAddCart} products={[...foodProducts, ...drinkProducts, ...snackProducts]} />
     ),
-    food: () => <ListProducts products={foodProducts} />,
-    drink: () => <ListProducts products={drinkProducts} />,
-    snack: () => <ListProducts products={snackProducts} />,
-    dessert: () => <ListProducts products={dessertProducts} />,
+    food: () => <ListProducts onAddToCart={handleAddCart} products={foodProducts} />,
+    drink: () => <ListProducts onAddToCart={handleAddCart} products={drinkProducts} />,
+    snack: () => <ListProducts onAddToCart={handleAddCart} products={snackProducts} />,
+    dessert: () => <ListProducts onAddToCart={handleAddCart} products={dessertProducts} />,
   });
 
   // Handler when quantity is confirmed
