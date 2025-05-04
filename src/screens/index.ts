@@ -5,6 +5,7 @@ export * from './categories';
 export * from './home';
 export * from './manage-product';
 export * from './material';
+export * from './product';
 export * from './products';
 export * from './recipe';
 export * from './unit';

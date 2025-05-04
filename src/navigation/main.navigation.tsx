@@ -1,5 +1,5 @@
 import {IconButton} from '@app/components/atoms';
-import {CartScreen} from '@app/screens';
+import {CartScreen, ProductView} from '@app/screens';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
@@ -42,6 +42,7 @@ export const MainNavigation = () => {
         name="Cart"
         component={CartScreen}
       />
+      <Stack.Screen name="ProductView" options={{headerShown: false, title: ''}} component={ProductView} />
     </Stack.Navigator>
   );
 };

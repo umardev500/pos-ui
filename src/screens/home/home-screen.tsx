@@ -34,6 +34,7 @@ export const HomeScreen = () => {
 
     if (hasMultipleUnits || hasVariants) {
       console.log('continue to selection screen');
+      navigation.navigate('ProductView', {id: product.id});
       return;
     }
 

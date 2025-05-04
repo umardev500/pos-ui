@@ -9,6 +9,9 @@ export type MainStackParamList = {
   };
   Drawer: undefined;
   Cart: undefined;
+  ProductView: {
+    id: number;
+  };
 };
 
 export type AuthStackParamList = {
