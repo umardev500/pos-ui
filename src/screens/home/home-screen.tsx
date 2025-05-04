@@ -33,8 +33,18 @@ export const HomeScreen = () => {
 
   // Handle when quantity is confirmed
   const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
-    // TODO: Add product to cart after confirmation
-    console.log(qty, product);
+    // Check if the product is already in the cart
+    const existingItem = useCartStore.getState().items.find(item => item.product.id === product.id);
+
+    if (existingItem) {
+      // If the product is already in the cart, update the quantity
+      useCartStore.getState().updateQuantity(product.id, existingItem.quantity + qty);
+    } else {
+      // If the product is not in the cart, add it as a new item
+      useCartStore.getState().addItem(product, qty);
+    }
+
+    console.log(`Product ${product.name} added with quantity ${qty}`);
   };
 
   // Navigate to the Cart screen
