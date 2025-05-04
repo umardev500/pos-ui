@@ -27,17 +27,7 @@ export const HomeScreen = () => {
   // ————————————————————————————————————————————————
 
   // Handle adding a product to the cart
-  const handleAddCart = (selectedProduct: ProductDto) => {
-    bottomSheetRef.current?.open(selectedProduct, 0);
-  };
-
-  // Handle when quantity is confirmed
-  const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
-    if (qty <= 0) {
-      console.log(`Ignored adding ${product.name} with quantity 0`);
-      return;
-    }
-
+  const handleAddCart = (product: ProductDto) => {
     // If the product has multiple units or variants, redirect to a selection screen
     const hasMultipleUnits = product.product_units.length > 1;
     const hasVariants = product.product_variants.length > 0;
@@ -46,6 +36,16 @@ export const HomeScreen = () => {
       // Navigate to selection screen (e.g., ProductDetail or VariantSelector)
       // navigation.navigate('ProductDetail', {product});
       console.log('continue to selection screen');
+      return;
+    }
+
+    bottomSheetRef.current?.open(product, 0);
+  };
+
+  // Handle when quantity is confirmed
+  const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
+    if (qty <= 0) {
+      console.log(`Ignored adding ${product.name} with quantity 0`);
       return;
     }
 
