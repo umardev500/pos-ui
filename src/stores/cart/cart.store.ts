@@ -7,9 +7,10 @@ type CartState = {
   updateQuantity: (productId: number, unitId: number, variantId?: number, quantity?: number) => void;
   removeItem: (productId: number, unitId: number, variantId?: number) => void;
   clearCart: () => void;
+  getTotalPrice: () => number; // New method to get total price
 };
 
-export const useCartStore = create<CartState>(set => ({
+export const useCartStore = create<CartState>((set, get) => ({
   items: [],
 
   addItem: item =>
@@ -48,4 +49,12 @@ export const useCartStore = create<CartState>(set => ({
     })),
 
   clearCart: () => set({items: []}),
+
+  getTotalPrice: () =>
+    get().items.reduce((total, item) => {
+      // Get the price based on unit or variant
+      const price = item.variant?.price || item.unit.price;
+      // Add price * quantity to total
+      return total + price * item.quantity;
+    }, 0),
 }));

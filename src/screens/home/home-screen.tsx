@@ -21,6 +21,7 @@ export const HomeScreen = () => {
 
   // Get the total number of items in the cart
   const totalItems = useCartStore(state => state.items.length);
+  const totalPrice = useCartStore(state => state.getTotalPrice());
 
   // ————————————————————————————————————————————————
   // 📦 Handler Functions
@@ -119,7 +120,9 @@ export const HomeScreen = () => {
         {categories && routes.length > 0 && <TabView routes={routes} renderScene={renderScene} />}
 
         {/* Checkout Summary Section */}
-        {totalItems > 0 && <CheckoutSummary onPress={handlePressCheckout} />}
+        {totalItems > 0 && (
+          <CheckoutSummary totalItems={totalItems} totalAmount={totalPrice} onPress={handlePressCheckout} />
+        )}
 
         {/* Bottom sheet for quantity input */}
         <QuantityBoottomSheet onConfirm={handleOnQuantityConfirmed} ref={bottomSheetRef} />
