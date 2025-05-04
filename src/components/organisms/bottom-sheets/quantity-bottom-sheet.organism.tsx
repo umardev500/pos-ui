@@ -1,28 +1,28 @@
 import {QuantityButton, QuantityButtonRef} from '@app/components/atoms';
-import {Product} from '@app/types';
+import {ProductDto} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import React, {useImperativeHandle, useRef, useState} from 'react';
 import {Text, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export type QuantityBottomSheetRef = {
-  open: (product: Product, defaultQty?: number) => void;
+  open: (product: ProductDto, defaultQty?: number) => void;
 };
 
 type Props = {
   ref?: React.RefObject<QuantityBottomSheetRef | null>;
-  onConfirm?: (qty: number, product: Product) => void;
+  onConfirm?: (qty: number, product: ProductDto) => void;
 };
 
 export const QuantityBoottomSheet: React.FC<Props> = ({ref, onConfirm}) => {
   const qtyBtnRef = useRef<QuantityButtonRef>(null);
   const sheet = useRef<TrueSheet>(null);
   const {bottom} = useSafeAreaInsets();
-  const [product, setProduct] = useState<Product>();
+  const [product, setProduct] = useState<ProductDto>();
   let currentQty = 0;
 
   useImperativeHandle(ref, () => ({
-    open: (selectedProduct: Product, defaultQty: number = 0) => {
+    open: (selectedProduct: ProductDto, defaultQty: number = 0) => {
       setProduct(selectedProduct);
       sheet.current?.present();
 

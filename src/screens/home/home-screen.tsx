@@ -2,7 +2,7 @@ import {CheckoutSummary} from '@app/components/molecules';
 import {MainHeader, QuantityBoottomSheet, QuantityBottomSheetRef, TabView} from '@app/components/organisms';
 import {CatalogTemplate} from '@app/components/templates';
 import {useCategories} from '@app/hooks';
-import {Product, RenderScene} from '@app/types';
+import {ProductDto, RenderScene} from '@app/types';
 import {useNavigation} from '@react-navigation/native';
 import React, {useRef} from 'react';
 import {View} from 'react-native';
@@ -23,12 +23,12 @@ export const HomeScreen = () => {
   // ————————————————————————————————————————————————
 
   // Handle adding a product to the cart
-  const handleAddCart = (selectedProduct: Product) => {
+  const handleAddCart = (selectedProduct: ProductDto) => {
     bottomSheetRef.current?.open(selectedProduct, 0);
   };
 
   // Handle when quantity is confirmed
-  const handleOnQuantityConfirmed = (qty: number, product: Product) => {
+  const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
     // TODO: Add product to cart after confirmation
     console.log(qty, product);
   };
@@ -61,10 +61,10 @@ export const HomeScreen = () => {
   const renderScene: RenderScene = SceneMap(
     categories
       ? {
-          all: () => <CatalogTemplate />, // Placeholder for 'All' products
+          all: () => <CatalogTemplate onAddToCart={handleAddCart} />, // Placeholder for 'All' products
           ...categories.reduce((acc: {[key: string]: () => React.JSX.Element}, category) => {
             // Add scene for each category
-            acc[category.id] = () => <CatalogTemplate />;
+            acc[category.id] = () => <CatalogTemplate onAddToCart={handleAddCart} />;
             return acc;
           }, {}),
         }
