@@ -1,12 +1,29 @@
-import {fetchProducts} from '@app/services';
+import {fetchProductById, fetchProducts} from '@app/services';
 import {ProductFilterDTO} from '@app/types';
 import {useQuery} from '@tanstack/react-query';
 
-// Update the useProducts hook to accept filter parameters
+/**
+ * Custom hook to fetch products with optional filters 🔍
+ * @param filter - The filter criteria (optional) to search products by.
+ * @returns The query result for products, including loading, error, and data states.
+ */
 export const useProducts = (filter?: ProductFilterDTO) => {
   return useQuery({
-    queryKey: ['products', filter], // Include filter in the query key to trigger re-fetch when filter changes
-    queryFn: () => fetchProducts(filter), // Pass the filter to the fetch function
-    enabled: filter !== undefined, // Enable the query only if the filter is provided
+    queryKey: ['products', filter], // Unique key for caching and refetching
+    queryFn: () => fetchProducts(filter), // Fetch function with the filter
+    enabled: filter !== undefined, // Only trigger the query if the filter is provided
+  });
+};
+
+/**
+ * Custom hook to fetch a single product by its ID 🎯
+ * @param id - The ID of the product to fetch.
+ * @returns The query result for a single product.
+ */
+export const useProductById = (id: number) => {
+  return useQuery({
+    queryKey: ['product', id], // Unique key for caching and refetching the product
+    queryFn: () => fetchProductById(id), // Fetch function with product ID
+    enabled: !!id, // Only enable the query if an ID is provided
   });
 };
