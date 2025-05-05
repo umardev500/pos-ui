@@ -1,12 +1,14 @@
 import {product5} from '@app/assets/images';
 import {Button, Icon, ProductTagIndicator} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
+import {UnitSheet} from '@app/components/organisms';
 import {useProductById} from '@app/hooks';
 import {colors} from '@app/styles';
-import {MainStackParamList} from '@app/types';
+import {MainStackParamList, UnitDto} from '@app/types';
 import {numberUtils} from '@app/utils';
+import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
-import React from 'react';
+import React, {useRef} from 'react';
 import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -20,6 +22,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const {id} = route.params; // Get product ID from route params
 
   // ————————————————————————————————————————————————
+  // 🌟 Refs: Formik & Bottom Sheets
+  // ————————————————————————————————————————————————
+  const unitSheetRef = useRef<TrueSheet>(null);
+
+  // ————————————————————————————————————————————————
   // 🛠 Data Fetching and Transformation
   // ————————————————————————————————————————————————
 
@@ -30,6 +37,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
   // Destructure product data into usable variables
   const {name, description, category, product_variants: variants, product_units: units, base_unit_id} = data || {};
+
+  /**
+   * Transform product units into UnitDto format.
+   */
+  const unitsDto: UnitDto[] = units?.map(pu => pu.unit) || [];
 
   /**
    * Get the base unit's price (defaults to 0 if not found).
@@ -132,7 +144,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
                 {/* 🧳 Unit */}
                 <LabeledInput
                   isClickableOnly
-                  onPress={() => console.log('Open modal')}
+                  onPress={() => {
+                    unitSheetRef.current?.present();
+                  }}
                   trailingIcon="chevron_right"
                   label="Satuan"
                   placeholder="Pilih satuan"
@@ -158,6 +172,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
       <View className="px-4 pt-4 border-t border-t-gray-100" style={{paddingBottom: bottom + 16}}>
         <Button title="Add to Cart" containerColor={colors.orange[500]} textColor={colors.white} />
       </View>
+
+      {/* 👀 Unit sheet */}
+      <UnitSheet
+        units={unitsDto}
+        ref={unitSheetRef}
+        selected={[]}
+        onSelect={e => {
+          console.log(e);
+        }}
+      />
     </View>
   );
 };

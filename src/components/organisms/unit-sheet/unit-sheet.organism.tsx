@@ -1,26 +1,31 @@
-import {Unit} from '@app/types';
+import {UnitDto} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import clsx from 'clsx';
-import {View, Text, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 
-export const UnitSheet = ({
+type Props = {
+  selected: UnitDto[];
+  onSelect: (unit: UnitDto) => void;
+  units?: UnitDto[];
+  ref?: React.RefObject<TrueSheet | null>;
+};
+
+export const UnitSheet: React.FC<Props> = ({
   selected,
   onSelect,
+  units = [
+    {id: 1, name: 'Pack'},
+    {id: 2, name: 'Roll'},
+    {id: 3, name: 'Kilos'},
+  ],
   ref,
-}: {
-  selected: Unit[];
-  onSelect: (unit: Unit) => void;
-  ref?: React.RefObject<TrueSheet | null>;
 }) => (
   <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
     <View className="pt-8 px-4 pb-10">
       <Text className="text-sm text-gray-800">Pilih Satuan</Text>
       <View className="mt-4 gap-2">
-        {[
-          {id: 1, name: 'Pack'},
-          {id: 2, name: 'Roll'},
-          {id: 3, name: 'Kilos'},
-        ].map(unit => (
+        {units.map(unit => (
           <TouchableOpacity
             key={unit.id}
             onPress={() => onSelect(unit)}
