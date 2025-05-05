@@ -17,7 +17,7 @@ export const fetchProducts = async (filter?: ProductFilterDTO): Promise<ProductD
   }
 
   if (categoryId) {
-    params.append('category_id', categoryId); // Add category filter
+    params.append('category_id', categoryId.toString()); // Add category filter
   }
 
   if (params.toString()) {
