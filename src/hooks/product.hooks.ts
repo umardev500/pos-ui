@@ -21,8 +21,6 @@ export const useProducts = (filter?: ProductFilterDTO) => {
  * @returns The query result for a single product.
  */
 export const useProductById = (id: number) => {
-  console.log('query', id);
-
   return useQuery({
     queryKey: ['product', id], // Unique key for caching and refetching the product
     queryFn: () => fetchProductById(id), // Fetch function with product ID
