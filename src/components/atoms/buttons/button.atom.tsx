@@ -20,6 +20,7 @@ type Props = {
         uri: string;
       };
   activeOpacity?: number;
+  disabled?: boolean;
 };
 
 export const Button: React.FC<Props> = ({
@@ -32,6 +33,7 @@ export const Button: React.FC<Props> = ({
   loadingType = 'beside',
   anim = require('@app/assets/anim/loading-primary.json'),
   activeOpacity = 0.7,
+  disabled = false,
   onPress,
 }) => {
   const renderText = () => (
@@ -62,7 +64,7 @@ export const Button: React.FC<Props> = ({
   };
 
   return (
-    <TouchableOpacity activeOpacity={activeOpacity} onPress={onPress}>
+    <TouchableOpacity disabled={disabled} activeOpacity={activeOpacity} onPress={onPress}>
       <View
         style={{backgroundColor: containerColor}}
         className={clsx('flex-row items-center justify-center rounded-xl', {
