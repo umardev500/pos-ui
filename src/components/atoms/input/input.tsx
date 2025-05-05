@@ -26,6 +26,7 @@ type Props = {
   numberOfLines?: number;
   placeholderTextColor?: string;
   isClickableOnly?: boolean;
+  disabled?: boolean;
   onPress?: () => void;
 };
 
@@ -49,6 +50,7 @@ export const Input: React.FC<Props> = ({
   placeholderTextColor = colors.gray[400],
   numberOfLines = 4,
   isClickableOnly = false,
+  disabled = false,
   onPress,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
@@ -73,6 +75,7 @@ export const Input: React.FC<Props> = ({
         'items-center': !isTextArea,
         'border-gray-400': !isFocused,
         'border-orange-500': isFocused,
+        'bg-gray-100': disabled,
       })}>
       {leadingIcon && (
         <View className={clsx('mr-2', isTextArea && 'mt-3')}>
@@ -81,7 +84,7 @@ export const Input: React.FC<Props> = ({
       )}
 
       {isClickableOnly ? (
-        <Pressable onPress={onPress} className={clsx('flex-1 justify-center h-full', text)}>
+        <Pressable disabled={disabled} onPress={onPress} className={clsx('flex-1 justify-center h-full', text)}>
           <Text
             style={[placeholderTextColor ? {color: placeholderTextColor} : {}]}
             className={clsx(text, {

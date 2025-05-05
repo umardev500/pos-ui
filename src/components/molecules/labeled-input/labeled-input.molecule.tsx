@@ -14,6 +14,7 @@ export const LabeledInput = ({
   isTextArea,
   placeholderTextColor,
   size = 'sm',
+  disabled = false,
 }: {
   label: string;
   icon?: IconName;
@@ -27,10 +28,12 @@ export const LabeledInput = ({
   isTextArea?: boolean;
   placeholderTextColor?: string;
   size?: 'sm' | 'md' | 'lg';
+  disabled?: boolean;
 }) => (
   <View className="gap-2 flex-grow">
     <Text className="text-sm text-gray-800">{label}</Text>
     <Input
+      disabled={disabled}
       leadingIcon={icon}
       trailingIcon={trailingIcon}
       isClickableOnly={isClickableOnly}
