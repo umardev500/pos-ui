@@ -8,3 +8,4 @@ export * from './product-form';
 export * from './tab-view';
 export * from './unit-sheet';
 export * from './variant-list';
+export * from './variants-selection-sheet';

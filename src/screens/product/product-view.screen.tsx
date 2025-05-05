@@ -1,7 +1,7 @@
 import {product5} from '@app/assets/images';
 import {Button, Icon, ProductTagIndicator} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
-import {UnitSheet} from '@app/components/organisms';
+import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
 import {useProductById} from '@app/hooks';
 import {colors} from '@app/styles';
 import {MainStackParamList, UnitDto} from '@app/types';
@@ -25,6 +25,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 🔗 Refs
   // ————————————————————————————————————————————————
   const unitSheetRef = useRef<TrueSheet>(null);
+  const variantsRef = useRef<TrueSheet>(null);
 
   // ————————————————————————————————————————————————
   // 📡 Data Fetching
@@ -143,7 +144,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
               <LabeledInput
                 isClickableOnly
                 disabled={!hasVariants}
-                onPress={() => console.log('Open modal')}
+                onPress={() => variantsRef.current?.present()}
                 trailingIcon="chevron_right"
                 label="Variasi"
                 placeholder="Pilih variasi"
@@ -167,6 +168,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
         selected={selectedUnit ? [selectedUnit] : []}
         onSelect={handleSelectUnit}
       />
+
+      {/* 📋 Variants Selector */}
+      <VariantsSelectionSheet variants={variants} ref={variantsRef} />
     </View>
   );
 };

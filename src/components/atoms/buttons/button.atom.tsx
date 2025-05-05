@@ -2,7 +2,7 @@ import {Loading} from '@app/components/atoms/loading';
 import clsx from 'clsx';
 import {AnimationObject} from 'lottie-react-native';
 import React from 'react';
-import {Pressable, Text, View} from 'react-native';
+import {Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
   title: string;
@@ -19,6 +19,7 @@ type Props = {
     | {
         uri: string;
       };
+  activeOpacity?: number;
 };
 
 export const Button: React.FC<Props> = ({
@@ -30,6 +31,7 @@ export const Button: React.FC<Props> = ({
   isLoading = false,
   loadingType = 'beside',
   anim = require('@app/assets/anim/loading-primary.json'),
+  activeOpacity = 0.7,
   onPress,
 }) => {
   const renderText = () => (
@@ -60,7 +62,7 @@ export const Button: React.FC<Props> = ({
   };
 
   return (
-    <Pressable onPress={onPress}>
+    <TouchableOpacity activeOpacity={activeOpacity} onPress={onPress}>
       <View
         style={{backgroundColor: containerColor}}
         className={clsx('flex-row items-center justify-center rounded-xl', {
@@ -69,6 +71,6 @@ export const Button: React.FC<Props> = ({
         })}>
         {renderContent()}
       </View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
