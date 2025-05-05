@@ -7,9 +7,7 @@ export interface CreateOrderDTO {
 
 export interface CreateOrderItemDTO {
   product_id: number;
-  unit_id: number;
   quantity: number;
   price: number;
-  variant_id?: number;
   discount_id?: number;
 }
