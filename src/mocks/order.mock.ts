@@ -1,140 +1,103 @@
-import {
-  CartItem,
-  CategoryDto,
-  DiscountDto,
-  DiscountType,
-  ProductDto,
-  ProductUnitDto,
-  ProductVariantDto,
-  UnitDto,
-  VariantValueDto,
-} from '@app/types';
+import {CartItem} from '@app/types';
 import {mapCartToCreateOrderDTO} from '@app/utils/order.util';
 
-const mockCartItems: CartItem[] = [
+const cartWithVariants: CartItem[] = [
   {
     product: {
       id: 1,
-      name: 'T-shirt',
-      description: 'A cotton T-shirt.',
-      image_url: 'http://example.com/tshirt.jpg',
-      barcode: '1234567890123',
+      name: 'Cheese Burger',
+      description: null,
+      image_url: null,
+      barcode: null,
       base_unit_id: 1,
-      category_id: 2,
-      merchant_id: 101,
-      discount_id: 1,
-      created_at: '2025-05-01T12:00:00Z',
-      updated_at: '2025-05-01T12:00:00Z',
-      category: {id: 2, name: 'Clothing', description: 'Apparel'} as CategoryDto,
-      base_unit: {id: 1, name: 'Piece'} as UnitDto,
-      discount: {
-        id: 1,
-        type: 'PERCENT' as DiscountType,
-        value: 10, // 10% off
-      } as DiscountDto,
+      category_id: 1,
+      merchant_id: 1,
+      discount_id: null,
+      created_at: '2025-05-05T07:43:11.640Z',
+      updated_at: '2025-05-05T07:43:11.640Z',
+      category: null,
+      base_unit: {id: 1, name: 'Piece', merchant_id: 1},
+      discount: null,
       product_units: [
         {
           id: 1,
           product_id: 1,
           unit_id: 1,
-          stock: 50,
-          price: 15,
+          stock: 100,
+          price: 8500,
           conversion_factor: 1,
-          sku: 'TSHIRT123',
+          sku: 'CBG-PCS-001',
           barcode: null,
-          unit: {id: 1, name: 'Piece'} as UnitDto,
-        } as ProductUnitDto,
-      ],
-      product_variants: [], // No variants for this product
-    } as ProductDto,
-    quantity: 2,
-    unit: {
-      id: 1,
-      unit_id: 1,
-      price: 15,
-      sku: 'TSHIRT123',
-      conversion_factor: 1,
-      stock: 50,
-      barcode: null,
-      unit: {id: 1, name: 'Piece'} as UnitDto,
-    } as ProductUnitDto,
-    variant: undefined, // No variant selected
-  },
-  {
-    product: {
-      id: 2,
-      name: 'Jeans',
-      description: 'A pair of denim jeans.',
-      image_url: 'http://example.com/jeans.jpg',
-      barcode: '9876543210987',
-      base_unit_id: 1,
-      category_id: 2,
-      merchant_id: 101,
-      discount_id: null,
-      created_at: '2025-05-01T12:00:00Z',
-      updated_at: '2025-05-01T12:00:00Z',
-      category: {id: 2, name: 'Clothing', description: 'Apparel'} as CategoryDto,
-      base_unit: {id: 1, name: 'Piece'} as UnitDto,
-      discount: null, // No discount
-      product_units: [
-        {
-          id: 2,
-          product_id: 2,
-          unit_id: 1,
-          stock: 30,
-          price: 40,
-          conversion_factor: 1,
-          sku: 'JEANS456',
-          barcode: null,
-          unit: {id: 1, name: 'Piece'} as UnitDto,
-        } as ProductUnitDto,
+          unit: {id: 1, name: 'Piece', merchant_id: 1},
+        },
       ],
       product_variants: [
         {
           id: 1,
-          product_id: 2,
+          product_id: 1,
           unit_id: 1,
-          variant_value_id: 1,
-          stock: 20,
-          price: 42,
-          sku: 'JEANS456-BLUE',
-          barcode: null,
-          variant_value: {id: 1, variant_type_id: 1, value: 'Blue'} as VariantValueDto,
-          unit: {id: 1, name: 'Piece'} as UnitDto,
-        } as ProductVariantDto,
+          stock: 50,
+          price: 3300.5,
+          sku: 'CBG-PCS-BEEF',
+          barcode: '12345678',
+          unit: {id: 1, name: 'Piece', merchant_id: 1},
+          product_variant_values: [
+            {
+              id: 2,
+              product_variant_id: 1,
+              variant_value_id: 1,
+              variant_value: {
+                id: 1,
+                variant_type_id: 1,
+                value: 'Beef',
+                variant_type: {id: 1, name: 'Flavor'},
+              },
+            },
+          ],
+        },
       ],
-    } as ProductDto,
-    quantity: 1,
+    },
+    quantity: 2,
     unit: {
       id: 1,
+      product_id: 1,
       unit_id: 1,
-      price: 40,
-      sku: 'JEANS456',
+      stock: 100,
+      price: 8500,
       conversion_factor: 1,
-      stock: 30,
+      sku: 'CBG-PCS-001',
       barcode: null,
-      unit: {id: 1, name: 'Piece'} as UnitDto,
-    } as ProductUnitDto,
+      unit: {id: 1, name: 'Piece', merchant_id: 1},
+    },
     variant: {
       id: 1,
-      product_id: 2,
+      product_id: 1,
       unit_id: 1,
-      variant_value_id: 1,
-      stock: 20,
-      price: 42,
-      sku: 'JEANS456-BLUE',
-      barcode: null,
-      variant_value: {id: 1, variant_type_id: 1, value: 'Blue'} as VariantValueDto,
-      unit: {id: 1, name: 'Piece'} as UnitDto,
-    } as ProductVariantDto,
+      stock: 50,
+      price: 3300.5,
+      sku: 'CBG-PCS-BEEF',
+      barcode: '12345678',
+      unit: {id: 1, name: 'Piece', merchant_id: 1},
+      product_variant_values: [
+        {
+          id: 2,
+          product_variant_id: 1,
+          variant_value_id: 1,
+          variant_value: {
+            id: 1,
+            variant_type_id: 1,
+            value: 'Beef',
+            variant_type: {id: 1, name: 'Flavor'},
+          },
+        },
+      ],
+    },
   },
 ];
 
-const orderInfo = {
-  order_type_id: 1, // For example, 1 = "Dine-in"
-  discount_id: 1,
-  down_payment: 10,
-};
+const orderTypeId = 1; // DINE_IN, for example
+const discountId = 123; // Optional discount ID
+const downPayment = 50; // Optional down payment
 
-const createOrderDTO = mapCartToCreateOrderDTO(mockCartItems, orderInfo);
+const createOrderDTO = mapCartToCreateOrderDTO(cartWithVariants, orderTypeId, discountId, downPayment);
 console.log(createOrderDTO);
