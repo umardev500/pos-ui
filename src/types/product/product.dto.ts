@@ -1,7 +1,7 @@
 import {CategoryDto} from '@app/types/category';
 import {DiscountDto} from '@app/types/discount';
 import {UnitDto} from '@app/types/unit';
-import {VariantValueDto} from '@app/types/variant';
+import {VariantTypeDTO} from '@app/types/variant';
 
 export interface ProductUnitDto {
   id: number;
@@ -15,17 +15,30 @@ export interface ProductUnitDto {
   unit: UnitDto;
 }
 
-export interface ProductVariantDto {
+export interface ProductVariantDTO {
   id: number;
   product_id: number;
   unit_id: number;
-  variant_value_id: number;
   stock: number;
   price: number;
   sku: string;
-  barcode: string | null;
-  variant_value: VariantValueDto;
+  barcode: string;
   unit: UnitDto;
+  product_variant_values: ProductVariantValueDTO[];
+}
+
+export interface ProductVariantValueDTO {
+  id: number;
+  product_variant_id: number;
+  variant_value_id: number;
+  variant_value: VariantValueDTO;
+}
+
+export interface VariantValueDTO {
+  id: number;
+  variant_type_id: number;
+  value: string;
+  variant_type: VariantTypeDTO;
 }
 
 export interface ProductDto {
@@ -44,5 +57,5 @@ export interface ProductDto {
   base_unit: UnitDto;
   discount: DiscountDto | null;
   product_units: ProductUnitDto[];
-  product_variants: ProductVariantDto[];
+  product_variants: ProductVariantDTO[];
 }
