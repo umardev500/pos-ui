@@ -78,7 +78,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
         contentContainerStyle={{paddingBottom: 25}}
         bottomOffset={25}
         showsVerticalScrollIndicator={false}>
-        <View className="flex-row bg-red-100">
+        <View className="flex-row">
           <Image className="w-full h-[350px]" source={product5} />
         </View>
 
