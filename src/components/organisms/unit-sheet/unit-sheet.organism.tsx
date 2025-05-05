@@ -5,7 +5,7 @@ import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
-  selected: UnitDto[];
+  selected?: UnitDto[];
   onSelect: (unit: UnitDto) => void;
   units?: UnitDto[];
   ref?: React.RefObject<TrueSheet | null>;
@@ -30,7 +30,7 @@ export const UnitSheet: React.FC<Props> = ({
             key={unit.id}
             onPress={() => onSelect(unit)}
             className={clsx('border border-dashed border-gray-300 rounded-xl px-4 py-3', {
-              'bg-gray-100': selected.some(u => u.id === unit.id),
+              'bg-gray-100': selected?.some(u => u.id === unit.id),
             })}>
             <Text className="text-sm text-gray-800 font-medium">{unit.name}</Text>
           </TouchableOpacity>

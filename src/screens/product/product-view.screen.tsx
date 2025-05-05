@@ -8,7 +8,7 @@ import {MainStackParamList, UnitDto} from '@app/types';
 import {numberUtils} from '@app/utils';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -30,11 +30,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 📡 Data Fetching
   // ————————————————————————————————————————————————
   const {data} = useProductById(id);
-  const {name, description, category, product_variants: variants, product_units: units, base_unit_id} = data || {};
 
   // ————————————————————————————————————————————————
   // 🧠 Data Transformation
   // ————————————————————————————————————————————————
+  const {name, description, category, product_variants: variants, product_units: units, base_unit_id} = data || {};
   const unitsDto: UnitDto[] = units?.map(pu => pu.unit) || [];
   const baseUnit = units?.find(unit => unit.unit_id === base_unit_id);
   const price = baseUnit?.price ?? 0;
@@ -44,9 +44,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   // 🎛 State
   // ————————————————————————————————————————————————
-  const [selectedUnit, setSelectedUnit] = useState<UnitDto>(unitsDto[0]);
+  const [selectedUnit, setSelectedUnit] = useState<UnitDto | undefined>(undefined);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const {bottom} = useSafeAreaInsets();
+
+  // Sync selectedUnit when unitsDto changes
+  useEffect(() => {
+    if (unitsDto.length > 0) {
+      setSelectedUnit(prev => prev || unitsDto[0]); // only set if not already selected
+    }
+  }, [unitsDto]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
@@ -63,6 +70,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   // 🧱 UI Rendering
   // ————————————————————————————————————————————————
+
   return (
     <View className="flex-1 bg-white">
       {/* 🖼 Header Image */}
@@ -152,7 +160,12 @@ export const ProductView: React.FC<Props> = ({route}) => {
       </View>
 
       {/* 📋 Unit Selector */}
-      <UnitSheet units={unitsDto} ref={unitSheetRef} selected={[selectedUnit]} onSelect={handleSelectUnit} />
+      <UnitSheet
+        units={unitsDto}
+        ref={unitSheetRef}
+        selected={selectedUnit ? [selectedUnit] : []}
+        onSelect={handleSelectUnit}
+      />
     </View>
   );
 };
