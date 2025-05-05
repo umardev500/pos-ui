@@ -35,7 +35,7 @@ export const Button: React.FC<Props> = ({
   const renderText = () => (
     <Text
       style={{color: textColor, fontSize: textSize}}
-      className={clsx('text-center font-medium font-jost', {
+      className={clsx('text-center font-medium', {
         'text-base': size === 'md' && !textSize,
         'text-lg': size === 'lg' && !textSize,
       })}>
