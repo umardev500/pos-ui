@@ -142,6 +142,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
               />
               <LabeledInput
                 isClickableOnly
+                disabled={!hasVariants}
                 onPress={() => console.log('Open modal')}
                 trailingIcon="chevron_right"
                 label="Variasi"
