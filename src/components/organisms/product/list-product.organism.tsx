@@ -8,11 +8,13 @@ const NUM_COL = 2;
 
 type Props = {
   data?: ProductDto[];
+  onRefresh?: () => void;
+  isRefreshing?: boolean;
   onAddToCart?: (product: ProductDto) => void;
 };
 
 export const ListProducts: React.FC<Props> = props => {
-  const {data, onAddToCart} = props;
+  const {data, onRefresh, isRefreshing, onAddToCart} = props;
   const {width} = useWindowDimensions();
   const itemWidth = (width - PADDING_X) / NUM_COL;
 
@@ -28,6 +30,8 @@ export const ListProducts: React.FC<Props> = props => {
         numColumns={2}
         keyExtractor={item => `${item.id}`}
         data={data}
+        onRefresh={onRefresh}
+        refreshing={isRefreshing}
         renderItem={renderItem}
       />
     </>
