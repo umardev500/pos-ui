@@ -38,7 +38,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => 
               <Text className="text-base font-medium text-orange-500">Rp {numberUtils.toDecimal(price || 0)}</Text>
 
               <View className="flex-row items-center gap-2">
-                <QuantityControl onIncrement={handleIncrement} onDecrement={handleDecrement} />
+                <QuantityControl value={quantity} onIncrement={handleIncrement} onDecrement={handleDecrement} />
                 <IconButton onPress={() => {}} icon="delete" size="xs" color={colors.gray[400]} />
               </View>
             </View>
