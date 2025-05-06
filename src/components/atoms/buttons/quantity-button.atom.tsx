@@ -1,7 +1,7 @@
 import {Icon} from '@app/components/atoms/icon';
 import {colors} from '@app/styles';
 import clsx from 'clsx';
-import React, {useEffect, useImperativeHandle, useState} from 'react';
+import React, {useEffect, useImperativeHandle, useRef, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 
 export type QuantityButtonRef = {
@@ -19,6 +19,7 @@ type Props = {
 
 export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.orange[500], size = 'sm', ref}) => {
   const [value, setValue] = useState(0);
+  const isFirstRender = useRef(true);
 
   const handleIncrement = () => setValue(prev => prev + 1);
   const handleDecrement = () => setValue(prev => prev - 1);
@@ -30,6 +31,12 @@ export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.or
   }));
 
   useEffect(() => {
+    // Skip the onChange call on the first render
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
     onChange?.(value);
   }, [value]);
 
