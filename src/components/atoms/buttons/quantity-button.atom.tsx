@@ -1,5 +1,6 @@
 import {Icon} from '@app/components/atoms/icon';
 import {colors} from '@app/styles';
+import clsx from 'clsx';
 import React, {useEffect, useImperativeHandle, useState} from 'react';
 import {Pressable, Text, View} from 'react-native';
 
@@ -11,24 +12,19 @@ export type QuantityButtonRef = {
 
 type Props = {
   onChange?: (quantity: number) => void;
+  textColor?: string;
   ref?: React.RefObject<QuantityButtonRef | null>;
+  size?: 'xs' | 'sm' | 'md' | 'lg';
 };
 
-export const QuantityButton: React.FC<Props> = ({onChange, ref}) => {
+export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.orange[500], size = 'sm', ref}) => {
   const [value, setValue] = useState(0);
 
-  const handleIncrement = () => {
-    setValue(prev => prev + 1);
-  };
-
-  const handleDecrement = () => {
-    setValue(prev => prev - 1);
-  };
+  const handleIncrement = () => setValue(prev => prev + 1);
+  const handleDecrement = () => setValue(prev => prev - 1);
 
   useImperativeHandle(ref, () => ({
-    reset: () => {
-      setValue(0);
-    },
+    reset: () => setValue(0),
     getValue: () => value,
     setValue: (val: number) => setValue(val),
   }));
@@ -37,14 +33,47 @@ export const QuantityButton: React.FC<Props> = ({onChange, ref}) => {
     onChange?.(value);
   }, [value]);
 
+  const sizeClasses = {
+    xs: {
+      button: 'w-6 h-6',
+      icon: 16,
+      text: 'text-xs',
+    },
+    sm: {
+      button: 'w-8 h-8',
+      icon: 16,
+      text: 'text-sm',
+    },
+    md: {
+      button: 'w-10 h-10',
+      icon: 20,
+      text: 'text-base',
+    },
+    lg: {
+      button: 'w-12 h-12',
+      icon: 24,
+      text: 'text-lg',
+    },
+  }[size];
+
   return (
-    <View className="flex-row items-center justify-between gap-4 bg-white border border-gray-300 rounded-md overflow-hidden">
-      <Pressable onPress={handleDecrement} className="border-r border-r-gray-300 w-8 h-8 items-center justify-center">
-        <Icon name="check_intermediate_small" size={20} color={value > 0 ? colors.gray[500] : colors.gray[300]} />
+    <View className="flex-row items-center justify-between gap-4 bg-white border-[0.5px] border-gray-300 rounded-md overflow-hidden">
+      <Pressable
+        onPress={handleDecrement}
+        className={clsx('border-r-[0.5px] border-r-gray-300 items-center justify-center', sizeClasses.button)}>
+        <Icon
+          name="check_intermediate_small"
+          size={sizeClasses.icon}
+          color={value > 0 ? colors.gray[500] : colors.gray[300]}
+        />
       </Pressable>
-      <Text className="text-sm text-orange-500">{value}</Text>
-      <Pressable onPress={handleIncrement} className="border-l border-l-gray-300 w-8 h-8 items-center justify-center">
-        <Icon name="add" size={20} color={colors.gray[600]} />
+      <Text className={clsx('', sizeClasses.text)} style={{color: textColor}}>
+        {value}
+      </Text>
+      <Pressable
+        onPress={handleIncrement}
+        className={clsx('border-l-[0.5px] border-l-gray-300 items-center justify-center', sizeClasses.button)}>
+        <Icon name="add" size={sizeClasses.icon} color={colors.gray[600]} />
       </Pressable>
     </View>
   );

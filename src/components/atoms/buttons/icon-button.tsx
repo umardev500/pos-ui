@@ -14,7 +14,7 @@ type Props = TouchableOpacityProps & {
 
 // Size configuration
 const SIZE_STYLES = {
-  xs: {width: 'w-8', height: 'h-8', iconSize: 20},
+  xs: {width: 'w-8', height: 'h-8', iconSize: 18},
   sm: {width: 'w-10', height: 'h-10', iconSize: 24},
   md: {width: 'w-12', height: 'h-12', iconSize: 24},
   lg: {width: 'w-14', height: 'h-14', iconSize: 24},

@@ -3,5 +3,7 @@ export * from './chekcout';
 export * from './drawer-menu';
 export * from './labeled-input';
 export * from './liste-menu-item';
+export * from './order-item';
 export * from './product';
+export * from './quantity-controll';
 export * from './variant-item';
