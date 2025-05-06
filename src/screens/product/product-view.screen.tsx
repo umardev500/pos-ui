@@ -105,6 +105,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const handleVariantSelected = (variant: ProductVariantDTO, opt: Record<string, string>) => {
     setSelectedOptions(opt);
     setFieldValue('variant', variant);
+    setTimeout(() => {
+      variantsRef.current?.dismiss();
+    }, 500);
   };
 
   // Generic version of setFieldValue to ensure value is type-safe
