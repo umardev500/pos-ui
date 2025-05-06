@@ -21,11 +21,11 @@ export const CartScreen: React.FC = () => {
   // 🛠 Handlers
   // ————————————————————————————————————————————————
   const handleIncrement = (num: number, item?: CartItem) => {
-    console.log('increment', num);
+    if (item) useCartStore.getState().incrementQuantity(item);
   };
 
   const handleDecrement = (num: number, item?: CartItem) => {
-    console.log('decrement', num);
+    if (item) useCartStore.getState().decrementQuantity(item);
   };
 
   const handlePressMoreOnSummary = () => orderSummaryRef.current?.present();

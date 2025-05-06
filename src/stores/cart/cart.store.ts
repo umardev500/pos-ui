@@ -7,7 +7,8 @@ type CartState = {
 
   // Actions
   addItem: (item: CartItem) => void;
-  updateQuantity: (productId: number, unitId: number, variantId?: number, quantity?: number) => void;
+  incrementQuantity: (item: CartItem) => void;
+  decrementQuantity: (item: CartItem) => void;
   removeItem: (productId: number, unitId: number, variantId?: number) => void;
   clearCart: () => void;
 
@@ -54,23 +55,37 @@ export const useCartStore = create<CartState>((set, get) => ({
     }),
 
   // ————————————————————————————————————————————————
-  // 🔄 Update quantity of a specific cart item
+  // ➕ Increment quantity of an existing item
   // ————————————————————————————————————————————————
-  updateQuantity: (productId, unitId, variantId, quantity = 1) =>
+  incrementQuantity: (item: CartItem) =>
     set(state => {
-      const updatedItems = state.items.map(item => {
-        const isSameProduct = item.product.id === productId;
-        const isSameUnit = item.unit.unit_id === unitId;
-        const isSameVariant = !variantId || item.variant?.id === variantId || (!item.variant && !variantId);
+      return {
+        items: state.items.map(i =>
+          i.product.id === item.product.id &&
+          i.unit.unit_id === item.unit.unit_id &&
+          i.variant?.id === item.variant?.id &&
+          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
+            ? {...i, quantity: i.quantity + 1}
+            : i,
+        ),
+      };
+    }),
 
-        if (isSameProduct && isSameUnit && isSameVariant) {
-          return {...item, quantity};
-        }
-
-        return item;
-      });
-
-      return {items: updatedItems};
+  // ————————————————————————————————————————————————
+  // ➖ Decrement quantity of an existing item
+  // ————————————————————————————————————————————————
+  decrementQuantity: (item: CartItem) =>
+    set(state => {
+      return {
+        items: state.items.map(i =>
+          i.product.id === item.product.id &&
+          i.unit.unit_id === item.unit.unit_id &&
+          i.variant?.id === item.variant?.id &&
+          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
+            ? {...i, quantity: Math.max(i.quantity - 1, 1)} // prevent going below 1
+            : i,
+        ),
+      };
     }),
 
   // ————————————————————————————————————————————————
