@@ -22,6 +22,9 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 type Props = StackScreenProps<MainStackParamList, 'ProductView'>;
 
 export const ProductView: React.FC<Props> = ({route}) => {
+  // ————————————————————————————————————————————————
+  // 🔗 Params
+  // ————————————————————————————————————————————————
   const {id} = route.params;
 
   // ————————————————————————————————————————————————
@@ -39,21 +42,23 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   // 🧠 Data Transformation
   // ————————————————————————————————————————————————
-  const {name, description, category, product_variants: variants, product_units: units, base_unit_id} = data || {};
-  const unitsDto: UnitDto[] = units?.map(pu => pu.unit) || [];
-  const baseUnit = units?.find(unit => unit.unit_id === base_unit_id);
+  const {name, description, category, product_units = [], product_variants = [], base_unit_id} = data || {};
+
+  const unitsDto: UnitDto[] = product_units.map(pu => pu.unit);
+  const baseUnit = product_units.find(u => u.unit_id === base_unit_id);
   const price = baseUnit?.price ?? 0;
-  const hasVariants = (variants?.length || 0) > 0;
-  const totalVariants = hasVariants ? variants?.length || 0 : units?.length || 0;
+  const hasVariants = product_variants.length > 0;
+  const totalVariants = hasVariants ? product_variants.length : product_units.length;
 
   // ————————————————————————————————————————————————
   // 🎛 State
   // ————————————————————————————————————————————————
-  const [selectedUnit, setSelectedUnit] = useState<UnitDto | undefined>(undefined);
+  const [selectedUnit, setSelectedUnit] = useState<UnitDto>();
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const {bottom} = useSafeAreaInsets();
 
+  // Generate display text for selected variant options
   const variantPlaceholder = Object.entries(selectedOptions)
     .map(([key, value]) => `${key}: ${value}`)
     .join(', ');
@@ -62,37 +67,46 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 🧪 Effects
   // ————————————————————————————————————————————————
 
-  // Sync selectedUnit when unitsDto changes
+  /**
+   * Set initial unit selection when units are loaded.
+   * Defaults to base unit if no unit is already selected.
+   */
   useEffect(() => {
-    if (unitsDto.length > 0) {
-      setSelectedUnit(prev => prev || baseUnit?.unit); // only set if not already selected
+    if (unitsDto.length && !selectedUnit) {
+      setSelectedUnit(baseUnit?.unit);
     }
   }, [unitsDto]);
 
-  // Sync form with selected unit
+  /**
+   * Sync selected unit to Formik's product_unit field.
+   */
   useEffect(() => {
-    if (!formRef.current && !selectedUnit) return;
-    const unit = getProductUnitByUnit(units || [], selectedUnit);
-
+    if (!selectedUnit) return;
+    const unit = getProductUnitByUnit(product_units, selectedUnit);
     setFieldValue('product_unit', unit);
   }, [selectedUnit]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
   // ————————————————————————————————————————————————
+
+  /** Toggle product description visibility */
   const toggleDescription = () => setIsDescriptionExpanded(prev => !prev);
 
+  /** Handle unit selection and close sheet */
   const handleSelectUnit = (unit: UnitDto) => {
     setSelectedUnit(unit);
-    setTimeout(() => {
-      unitSheetRef.current?.dismiss();
-    }, 500);
+    setTimeout(() => unitSheetRef.current?.dismiss(), 500);
   };
 
+  /** Submit form via Formik ref */
   const handleAddTocartSubmitted = () => {
     formRef.current?.submitForm();
   };
 
+  /**
+   * Add item to cart with form data.
+   */
   const handleFormSubmit = (formData: PreviewProductFormType) => {
     useCartStore.getState().addItem({
       product: data!!,
@@ -102,15 +116,18 @@ export const ProductView: React.FC<Props> = ({route}) => {
     });
   };
 
-  const handleVariantSelected = (variant: ProductVariantDTO, opt: Record<string, string>) => {
-    setSelectedOptions(opt);
+  /**
+   * Handle variant selection from sheet and sync with Formik.
+   */
+  const handleVariantSelected = (variant: ProductVariantDTO, options: Record<string, string>) => {
+    setSelectedOptions(options);
     setFieldValue('variant', variant);
-    setTimeout(() => {
-      variantsRef.current?.dismiss();
-    }, 500);
+    setTimeout(() => variantsRef.current?.dismiss(), 500);
   };
 
-  // Generic version of setFieldValue to ensure value is type-safe
+  /**
+   * Safely set Formik field value with correct type.
+   */
   const setFieldValue = <T extends keyof PreviewProductFormType>(field: T, value: PreviewProductFormType[T]) => {
     formRef.current?.setFieldValue(field, value);
   };
@@ -121,7 +138,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
   return (
     <View className="flex-1 bg-white">
-      {/* 🖼 Header Image */}
+      {/* Header Image */}
       <KeyboardAwareScrollView
         contentContainerStyle={{paddingBottom: 25}}
         bottomOffset={25}
@@ -130,9 +147,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
           <Image className="w-full h-[350px]" source={product5} />
         </View>
 
-        {/* 📝 Product Details */}
+        {/* Product Details */}
         <View className="p-4">
-          {/* 🧾 Title & Price */}
+          {/* Title & Price */}
           <View className="flex-row items-center justify-between">
             <View className="gap-1.5">
               <Text className="text-xl text-gray-800 font-semibold">{name}</Text>
@@ -149,7 +166,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
             <Text className="text-xl font-medium text-orange-500">Rp{numberUtils.toDecimal(price)}</Text>
           </View>
 
-          {/* 📃 Description */}
+          {/* Expandable Description */}
           <View className="mt-8">
             <TouchableOpacity onPress={toggleDescription} activeOpacity={0.7} className="flex-row items-center gap-1">
               <Icon
@@ -169,7 +186,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
             )}
           </View>
 
-          {/* 🎛 Product Config */}
+          {/* Product Configuration Form */}
           <Formik
             innerRef={formRef}
             initialValues={initialPreviewProductForm}
@@ -177,10 +194,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
             validateOnMount={false}
             onSubmit={handleFormSubmit}>
             {({handleChange, errors}) => {
-              console.log(errors);
-
+              console.log(errors); // Validation errors logged for dev purposes
               return (
                 <View className="mt-6 gap-2">
+                  {/* Order Type (Placeholder) */}
                   <LabeledInput
                     isClickableOnly
                     onPress={() => {}}
@@ -189,6 +206,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     placeholder="Pilih tipe order"
                   />
 
+                  {/* Unit & Variant Selection */}
                   <View className="flex-row gap-2">
                     <LabeledInput
                       isClickableOnly
@@ -209,6 +227,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     />
                   </View>
 
+                  {/* Additional Notes */}
                   <LabeledInput
                     onChange={handleChange('note')}
                     icon="description"
@@ -217,12 +236,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     placeholder="Catatan tambahan"
                   />
 
+                  {/* Quantity Control */}
                   <View className="flex-row">
-                    <QuantityButton
-                      onChange={qty => {
-                        setFieldValue('quantity', qty);
-                      }}
-                    />
+                    <QuantityButton onChange={qty => setFieldValue('quantity', qty)} />
                   </View>
                 </View>
               );
@@ -231,7 +247,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
         </View>
       </KeyboardAwareScrollView>
 
-      {/* 🛒 Add to Cart */}
+      {/* Add to Cart Button */}
       <View className="px-4 pt-4 border-t border-t-gray-100" style={{paddingBottom: bottom + 16}}>
         <Button
           onPress={handleAddTocartSubmitted}
@@ -241,7 +257,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
         />
       </View>
 
-      {/* 📋 Unit Selector */}
+      {/* Unit Selector Modal */}
       <UnitSheet
         units={unitsDto}
         ref={unitSheetRef}
@@ -249,8 +265,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
         onSelect={handleSelectUnit}
       />
 
-      {/* 📋 Variants Selector */}
-      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={variants} ref={variantsRef} />
+      {/* Variants Selection Modal */}
+      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={product_variants} ref={variantsRef} />
     </View>
   );
 };
