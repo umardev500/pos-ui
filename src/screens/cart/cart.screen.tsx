@@ -28,12 +28,16 @@ export const CartScreen: React.FC = () => {
     if (item) useCartStore.getState().decrementQuantity(item);
   };
 
+  const handleDelete = (item?: CartItem) => {
+    if (item) useCartStore.getState().removeItem(item);
+  };
+
   const handlePressMoreOnSummary = () => orderSummaryRef.current?.present();
   const handlePressConfig = () => orderConfigRef.current?.present();
 
   return (
     <View className="flex-1 bg-white" style={{paddingBottom: bottom}}>
-      <OrderList data={cartItems} onDecrement={handleDecrement} onIncrement={handleIncrement} />
+      <OrderList data={cartItems} onDecrement={handleDecrement} onIncrement={handleIncrement} onDelete={handleDelete} />
 
       <OrderConfigSheet ref={orderConfigRef} />
       <OrderSummary onPressOrderConfig={handlePressConfig} onPressMoreSummary={handlePressMoreOnSummary} />

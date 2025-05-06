@@ -11,9 +11,10 @@ type Props = {
   item?: CartItem;
   onIncrement?: (num: number, item?: CartItem) => void;
   onDecrement?: (num: number, item?: CartItem) => void;
+  onDelete?: (item?: CartItem) => void;
 };
 
-export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => {
+export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDelete}) => {
   const {product, quantity, unit, variant, selectecVariantOptions, price} = item || {};
 
   let variantPlaceholder = '';
@@ -21,6 +22,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => 
 
   const handleIncrement = (num: number) => onIncrement?.(num, item);
   const handleDecrement = (num: number) => onDecrement?.(num, item);
+  const handleDelete = () => onDelete?.(item);
 
   return (
     <View className="px-4">
@@ -39,7 +41,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => 
 
               <View className="flex-row items-center gap-2">
                 <QuantityControl value={quantity} onIncrement={handleIncrement} onDecrement={handleDecrement} />
-                <IconButton onPress={() => {}} icon="delete" size="xs" color={colors.gray[400]} />
+                <IconButton onPress={handleDelete} icon="delete" size="xs" color={colors.gray[400]} />
               </View>
             </View>
           </View>

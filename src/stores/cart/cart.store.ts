@@ -9,7 +9,7 @@ type CartState = {
   addItem: (item: CartItem) => void;
   incrementQuantity: (item: CartItem) => void;
   decrementQuantity: (item: CartItem) => void;
-  removeItem: (productId: number, unitId: number, variantId?: number) => void;
+  removeItem: (item: CartItem) => void;
   clearCart: () => void;
 
   // Derived State
@@ -91,10 +91,16 @@ export const useCartStore = create<CartState>((set, get) => ({
   // ————————————————————————————————————————————————
   // ❌ Remove item from cart
   // ————————————————————————————————————————————————
-  removeItem: (productId, unitId, variantId) =>
+  removeItem: (item: CartItem) =>
     set(state => ({
       items: state.items.filter(
-        item => !(item.product.id === productId && item.unit.unit_id === unitId && item.variant?.id === variantId),
+        i =>
+          !(
+            i.product.id === item.product.id &&
+            i.unit.unit_id === item.unit.unit_id &&
+            i.variant?.id === item.variant?.id &&
+            lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
+          ),
       ),
     })),
 
