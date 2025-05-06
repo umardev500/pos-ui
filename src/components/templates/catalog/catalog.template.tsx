@@ -6,9 +6,10 @@ import React, {useCallback, useState} from 'react';
 interface Props {
   categoryId?: number;
   onAddToCart?: (product: ProductDto) => void;
+  onPress?: (id: number) => void;
 }
 
-export const CatalogTemplate: React.FC<Props> = ({categoryId, onAddToCart}) => {
+export const CatalogTemplate: React.FC<Props> = ({categoryId, onAddToCart, onPress}) => {
   const {data, refetch} = useProducts({categoryId});
   const [isRefreshing, setIsRefreshing] = useState(false);
 
@@ -21,7 +22,13 @@ export const CatalogTemplate: React.FC<Props> = ({categoryId, onAddToCart}) => {
 
   return (
     <>
-      <ListProducts onRefresh={handleRefresh} isRefreshing={isRefreshing} onAddToCart={onAddToCart} data={data} />
+      <ListProducts
+        onRefresh={handleRefresh}
+        isRefreshing={isRefreshing}
+        onAddToCart={onAddToCart}
+        data={data}
+        onPress={onPress}
+      />
     </>
   );
 };

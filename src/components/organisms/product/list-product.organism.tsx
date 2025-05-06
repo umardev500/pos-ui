@@ -11,15 +11,16 @@ type Props = {
   onRefresh?: () => void;
   isRefreshing?: boolean;
   onAddToCart?: (product: ProductDto) => void;
+  onPress?: (id: number) => void;
 };
 
 export const ListProducts: React.FC<Props> = props => {
-  const {data, onRefresh, isRefreshing, onAddToCart} = props;
+  const {data, onRefresh, isRefreshing, onAddToCart, onPress} = props;
   const {width} = useWindowDimensions();
   const itemWidth = (width - PADDING_X) / NUM_COL;
 
   const renderItem: ListRenderItem<ProductDto> = ({item}) => {
-    return <ProductItem onAddToCart={onAddToCart} width={itemWidth} product={item} />;
+    return <ProductItem onAddToCart={onAddToCart} width={itemWidth} product={item} onPress={onPress} />;
   };
 
   return (

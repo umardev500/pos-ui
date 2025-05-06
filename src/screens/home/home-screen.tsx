@@ -56,6 +56,8 @@ export const HomeScreen = () => {
 
   const handlePressCheckout = () => navigation.navigate('Cart');
 
+  const handlePressItem = (id: number) => navigation.navigate('ProductView', {id});
+
   // ————————————————————————————————————————————————
   // 📦 Route and Scene Mapping
   // ————————————————————————————————————————————————
@@ -72,11 +74,13 @@ export const HomeScreen = () => {
   const generateScenes = (): RenderScene =>
     categories
       ? SceneMap({
-          all: () => <CatalogTemplate onAddToCart={handleAddCart} />,
+          all: () => <CatalogTemplate onPress={handlePressItem} onAddToCart={handleAddCart} />,
           ...categories.reduce(
             (acc, category) => ({
               ...acc,
-              [category.id]: () => <CatalogTemplate categoryId={category.id} onAddToCart={handleAddCart} />,
+              [category.id]: () => (
+                <CatalogTemplate onPress={handlePressItem} categoryId={category.id} onAddToCart={handleAddCart} />
+              ),
             }),
             {},
           ),
