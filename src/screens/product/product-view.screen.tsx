@@ -103,7 +103,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
   /** Handle unit selection and close sheet */
   const handleSelectUnit = (unit: UnitDto) => {
     const productUnit = getProductUnitByUnit(product_units, unit);
-    setPrice(productUnit?.price ?? 0);
+    const unitPrice = productUnit?.price ?? 0;
+
+    setPrice(unitPrice);
+    priceRef.current = unitPrice;
     setSelectedUnit(unit);
     setTimeout(() => unitSheetRef.current?.dismiss(), 500);
   };
