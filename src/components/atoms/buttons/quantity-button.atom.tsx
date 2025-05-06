@@ -22,7 +22,7 @@ export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.or
   const isFirstRender = useRef(true);
 
   const handleIncrement = () => setValue(prev => prev + 1);
-  const handleDecrement = () => setValue(prev => prev - 1);
+  const handleDecrement = () => setValue(prev => (prev > 0 ? prev - 1 : 0));
 
   useImperativeHandle(ref, () => ({
     reset: () => setValue(0),
