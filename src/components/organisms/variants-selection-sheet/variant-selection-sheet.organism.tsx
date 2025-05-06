@@ -25,7 +25,7 @@ export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref}) => {
   const filteredVariants = findMatchingVariants(availableVariants, selectedOptions);
 
   // Group variant values that are valid under the current selection
-  const grouping = collectUniqueVariantValues(filteredVariants);
+  // const grouping = collectUniqueVariantValues(filteredVariants);
 
   const handleSelect = (type: string, value: string) => {
     setSelectedOptions(prev => {
