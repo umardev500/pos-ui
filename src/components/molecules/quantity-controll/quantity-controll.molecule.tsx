@@ -14,7 +14,7 @@ export const QuantityControl: React.FC<Props> = ({value = 0, onIncrement, onDecr
   const [currentValue, setCurrentValue] = useState(value);
 
   const handleDecrement = () => {
-    if (!(currentValue <= 1)) {
+    if (currentValue > 1) {
       const newValue = currentValue - 1;
       setCurrentValue(newValue);
       onDecrement?.(newValue);
