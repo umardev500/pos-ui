@@ -15,7 +15,7 @@ type Props = {
 };
 
 export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDelete}) => {
-  const {product, quantity, unit: productUnit, variant, selectecVariantOptions, price} = item || {};
+  const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item || {};
 
   let variantPlaceholder = `Unit: ${productUnit?.unit.name}`;
   if (selectecVariantOptions) variantPlaceholder = generateVariantPlaceholder(selectecVariantOptions);
