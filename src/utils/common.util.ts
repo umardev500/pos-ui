@@ -18,3 +18,10 @@ export function createDebouncedInputValidator(setValidCallback: (valid: boolean)
     setValidCallback(isValid);
   }, delay);
 }
+
+// Generate display text for selected variant options
+export const generateVariantPlaceholder = (options: Record<string, string>) => {
+  return Object.entries(options)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
+};

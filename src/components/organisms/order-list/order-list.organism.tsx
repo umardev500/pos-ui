@@ -1,23 +1,24 @@
 import {OrderItem} from '@app/components/molecules';
 import {CartItem} from '@app/types';
 import React from 'react';
-import {FlatList, View} from 'react-native';
+import {FlatList, ListRenderItem, View} from 'react-native';
 
 type Props = {
+  data: CartItem[];
   onIncrement?: (num: number, item?: CartItem) => void;
   onDecrement?: (num: number, item?: CartItem) => void;
 };
 
-export const OrderList: React.FC<Props> = ({onIncrement, onDecrement}) => {
-  const renderItem = () => {
-    return <OrderItem onDecrement={onDecrement} onIncrement={onIncrement} />;
+export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement}) => {
+  const renderItem: ListRenderItem<CartItem> = ({item}) => {
+    return <OrderItem item={item} onDecrement={onDecrement} onIncrement={onIncrement} />;
   };
 
   return (
     <FlatList
       contentContainerStyle={{paddingBottom: 16, paddingTop: 16}}
       ItemSeparatorComponent={() => <View className="h-4" />}
-      data={[1, 2, 3, 4, 5, 6, 7, 8]}
+      data={data}
       renderItem={renderItem}
     />
   );

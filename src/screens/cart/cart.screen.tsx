@@ -1,4 +1,5 @@
 import {OrderConfigSheet, OrderList, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
+import {useCartStore} from '@app/stores';
 import {CartItem} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import React, {useRef} from 'react';
@@ -10,6 +11,11 @@ export const CartScreen: React.FC = () => {
   const orderConfigRef = useRef<TrueSheet>(null);
 
   const {bottom} = useSafeAreaInsets();
+
+  // ————————————————————————————————————————————————
+  // 📦 Hooks
+  // ————————————————————————————————————————————————
+  const cartItems = useCartStore(state => state.items);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
@@ -27,7 +33,7 @@ export const CartScreen: React.FC = () => {
 
   return (
     <View className="flex-1 bg-white" style={{paddingBottom: bottom}}>
-      <OrderList onDecrement={handleDecrement} onIncrement={handleIncrement} />
+      <OrderList data={cartItems} onDecrement={handleDecrement} onIncrement={handleIncrement} />
 
       <OrderConfigSheet ref={orderConfigRef} />
       <OrderSummary onPressOrderConfig={handlePressConfig} onPressMoreSummary={handlePressMoreOnSummary} />

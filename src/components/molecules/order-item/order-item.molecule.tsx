@@ -3,6 +3,7 @@ import {IconButton} from '@app/components/atoms';
 import {QuantityControl} from '@app/components/molecules';
 import {colors} from '@app/styles';
 import {CartItem} from '@app/types';
+import {generateVariantPlaceholder, numberUtils} from '@app/utils';
 import React from 'react';
 import {Image, Text, View} from 'react-native';
 
@@ -13,6 +14,11 @@ type Props = {
 };
 
 export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => {
+  const {product, quantity, unit, variant, selectecVariantOptions, price} = item || {};
+
+  let variantPlaceholder = '';
+  if (selectecVariantOptions) variantPlaceholder = generateVariantPlaceholder(selectecVariantOptions);
+
   const handleIncrement = (num: number) => onIncrement?.(num, item);
   const handleDecrement = (num: number) => onDecrement?.(num, item);
 
@@ -24,12 +30,12 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => 
 
           <View className="flex-1 justify-between">
             <View>
-              <Text className="text-base font-medium text-gray-800 leading-6">Italliano Ice Cream</Text>
-              <Text className="text-xs text-gray-400">Size: Medium, Flavor: Beef</Text>
+              <Text className="text-base font-medium text-gray-800 leading-6">{product?.name}</Text>
+              <Text className="text-xs text-gray-400">{variantPlaceholder}</Text>
             </View>
 
             <View className="flex-row justify-between items-center mt-2">
-              <Text className="text-base font-medium text-orange-500">Rp 30.000</Text>
+              <Text className="text-base font-medium text-orange-500">Rp {numberUtils.toDecimal(price || 0)}</Text>
 
               <View className="flex-row items-center gap-2">
                 <QuantityControl onIncrement={handleIncrement} onDecrement={handleDecrement} />

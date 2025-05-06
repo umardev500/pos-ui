@@ -6,7 +6,7 @@ import {useProductById} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {MainStackParamList, ProductVariantDTO, UnitDto} from '@app/types';
-import {getProductUnitByUnit, numberUtils} from '@app/utils';
+import {generateVariantPlaceholder, getProductUnitByUnit, numberUtils} from '@app/utils';
 import {initialPreviewProductForm, PreviewProductFormType, ProductPreviewSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -33,6 +33,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const unitSheetRef = useRef<TrueSheet>(null);
   const variantsRef = useRef<TrueSheet>(null);
   const formRef = useRef<FormikProps<PreviewProductFormType>>(null);
+  const priceRef = useRef<number>(0);
 
   // ————————————————————————————————————————————————
   // 📡 Data Fetching
@@ -59,9 +60,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const {bottom} = useSafeAreaInsets();
 
   // Generate display text for selected variant options
-  const variantPlaceholder = Object.entries(selectedOptions)
-    .map(([key, value]) => `${key}: ${value}`)
-    .join(', ');
+  const variantPlaceholder = generateVariantPlaceholder(selectedOptions);
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -113,15 +112,18 @@ export const ProductView: React.FC<Props> = ({route}) => {
       quantity: formData.quantity!!,
       unit: formData.product_unit!!,
       variant: formData.variant,
+      selectecVariantOptions: selectedOptions,
+      price: priceRef.current,
     });
   };
 
   /**
    * Handle variant selection from sheet and sync with Formik.
    */
-  const handleVariantSelected = (variant: ProductVariantDTO, options: Record<string, string>) => {
+  const handleVariantSelected = (variant: ProductVariantDTO, options: Record<string, string>, price: number) => {
     setSelectedOptions(options);
     setFieldValue('variant', variant);
+    priceRef.current = price;
     setTimeout(() => variantsRef.current?.dismiss(), 500);
   };
 

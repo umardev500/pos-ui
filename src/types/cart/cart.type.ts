@@ -5,4 +5,6 @@ export type CartItem = {
   quantity: number;
   unit: ProductUnitDto; // Added unit to CartItem
   variant?: ProductVariantDTO; // Variant is optional
+  selectecVariantOptions?: Record<string, string>;
+  price?: number;
 };
