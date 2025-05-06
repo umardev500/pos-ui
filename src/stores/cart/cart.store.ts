@@ -1,4 +1,5 @@
 import {CartItem} from '@app/types';
+import lodash from 'lodash';
 import {create} from 'zustand';
 
 type CartState = {
@@ -22,14 +23,22 @@ export const useCartStore = create<CartState>((set, get) => ({
   // ————————————————————————————————————————————————
   addItem: item =>
     set(state => {
-      const exists = state.items.find(
+      // const exists = state.items.find(
+      //   i =>
+      //     i.product.id === item.product.id &&
+      //     i.unit.unit_id === item.unit.unit_id &&
+      //     i.variant?.id === item.variant?.id,
+      // );
+
+      const isExists = state.items.find(
         i =>
           i.product.id === item.product.id &&
           i.unit.unit_id === item.unit.unit_id &&
-          i.variant?.id === item.variant?.id,
+          i.variant?.id === item.variant?.id &&
+          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions),
       );
 
-      if (exists) {
+      if (isExists) {
         return {
           items: state.items.map(i =>
             i.product.id === item.product.id &&
