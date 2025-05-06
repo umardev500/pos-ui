@@ -87,6 +87,8 @@ export const Input: React.FC<Props> = ({
         <Pressable disabled={disabled} onPress={onPress} className={clsx('flex-1 justify-center h-full', text)}>
           <Text
             style={[placeholderTextColor ? {color: placeholderTextColor} : {}]}
+            numberOfLines={1}
+            ellipsizeMode="tail"
             className={clsx(text, {
               'text-gray-800': value,
             })}>
