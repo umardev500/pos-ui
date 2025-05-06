@@ -1,4 +1,4 @@
-import {OrderList, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
+import {OrderConfigSheet, OrderList, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
 import {CartItem} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import React, {useRef} from 'react';
@@ -7,9 +7,13 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 export const CartScreen: React.FC = () => {
   const orderSummaryRef = useRef<TrueSheet>(null);
+  const orderConfigRef = useRef<TrueSheet>(null);
 
   const {bottom} = useSafeAreaInsets();
 
+  // ————————————————————————————————————————————————
+  // 🛠 Handlers
+  // ————————————————————————————————————————————————
   const handleIncrement = (num: number, item?: CartItem) => {
     console.log('increment', num);
   };
@@ -18,16 +22,15 @@ export const CartScreen: React.FC = () => {
     console.log('decrement', num);
   };
 
-  // ————————————————————————————————————————————————
-  // 🛠 Handlers
-  // ————————————————————————————————————————————————
   const handlePressMoreOnSummary = () => orderSummaryRef.current?.present();
+  const handlePressConfig = () => orderConfigRef.current?.present();
 
   return (
     <View className="flex-1 bg-white" style={{paddingBottom: bottom}}>
       <OrderList onDecrement={handleDecrement} onIncrement={handleIncrement} />
 
-      <OrderSummary onPressMoreSummary={handlePressMoreOnSummary} />
+      <OrderConfigSheet ref={orderConfigRef} />
+      <OrderSummary onPressOrderConfig={handlePressConfig} onPressMoreSummary={handlePressMoreOnSummary} />
       <OrderSummarySheet ref={orderSummaryRef} />
     </View>
   );

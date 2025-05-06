@@ -5,9 +5,10 @@ import {Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
   onPressMoreSummary?: () => void;
+  onPressOrderConfig?: () => void;
 };
 
-export const OrderSummary: React.FC<Props> = ({onPressMoreSummary}) => {
+export const OrderSummary: React.FC<Props> = ({onPressMoreSummary, onPressOrderConfig}) => {
   return (
     <View className="px-4 py-4 border-t border-gray-100">
       <View className="flex-row items-center justify-between">
@@ -17,7 +18,7 @@ export const OrderSummary: React.FC<Props> = ({onPressMoreSummary}) => {
           <Icon name="chevron_up" size={18} color={colors.gray[400]} />
         </TouchableOpacity>
 
-        <TouchableOpacity activeOpacity={0.7} onPress={() => {}}>
+        <TouchableOpacity activeOpacity={0.7} onPress={onPressOrderConfig}>
           <Icon name="more_horiz" size={18} color={colors.gray[500]} />
         </TouchableOpacity>
       </View>
