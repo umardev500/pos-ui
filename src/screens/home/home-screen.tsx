@@ -11,6 +11,7 @@ import {CatalogTemplate} from '@app/components/templates';
 import {useCategories} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {ProductDto, RenderScene} from '@app/types';
+import {getProductUnitByUnit} from '@app/utils';
 
 type Routes = Route[];
 
@@ -43,11 +44,13 @@ export const HomeScreen = () => {
 
   const handleOnQuantityConfirmed = (qty: number, product: ProductDto) => {
     if (qty <= 0) return;
+    const productUnit = getProductUnitByUnit(product.product_units, product.base_unit);
 
     useCartStore.getState().addItem({
       product,
       quantity: qty,
       unit: product.product_units[0],
+      price: productUnit?.price,
     });
   };
 
