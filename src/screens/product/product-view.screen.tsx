@@ -3,10 +3,11 @@ import {Button, Icon, ProductTagIndicator, QuantityButton} from '@app/components
 import {LabeledInput} from '@app/components/molecules';
 import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
 import {useProductById} from '@app/hooks';
+import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {MainStackParamList, UnitDto} from '@app/types';
-import {getProductUnitByUnit, numberUtils, prettyLog} from '@app/utils';
-import {initialPreviewProductForm, PreviewProductFormType} from '@app/validations';
+import {MainStackParamList, ProductVariantDTO, UnitDto} from '@app/types';
+import {getProductUnitByUnit, numberUtils} from '@app/utils';
+import {initialPreviewProductForm, PreviewProductFormType, ProductPreviewSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
@@ -83,8 +84,21 @@ export const ProductView: React.FC<Props> = ({route}) => {
     }, 500);
   };
 
-  const handleSubmit = () => {
+  const handleAddTocartSubmitted = () => {
     formRef.current?.submitForm();
+  };
+
+  const handleFormSubmit = (formData: PreviewProductFormType) => {
+    useCartStore.getState().addItem({
+      product: data!!,
+      quantity: formData.quantity!!,
+      unit: formData.product_unit!!,
+      variant: formData.variant,
+    });
+  };
+
+  const handleVariantSelected = (variant: ProductVariantDTO) => {
+    setFieldValue('variant', variant);
   };
 
   // Generic version of setFieldValue to ensure value is type-safe
@@ -150,17 +164,15 @@ export const ProductView: React.FC<Props> = ({route}) => {
           <Formik
             innerRef={formRef}
             initialValues={initialPreviewProductForm}
-            onSubmit={e => {
-              prettyLog(e);
-            }}>
-            {({setFieldValue, handleChange, errors}) => {
+            validationSchema={ProductPreviewSchema(hasVariants)}
+            validateOnMount={false}
+            onSubmit={handleFormSubmit}>
+            {({handleChange}) => {
               return (
                 <View className="mt-6 gap-2">
                   <LabeledInput
                     isClickableOnly
-                    onPress={() => {
-                      setFieldValue('order_type_id', 10);
-                    }}
+                    onPress={() => {}}
                     trailingIcon="chevron_right"
                     label="Tipe order"
                     placeholder="Pilih tipe order"
@@ -210,7 +222,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       {/* 🛒 Add to Cart */}
       <View className="px-4 pt-4 border-t border-t-gray-100" style={{paddingBottom: bottom + 16}}>
         <Button
-          onPress={handleSubmit}
+          onPress={handleAddTocartSubmitted}
           title="Add to Cart"
           containerColor={colors.orange[500]}
           textColor={colors.white}
@@ -226,7 +238,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       />
 
       {/* 📋 Variants Selector */}
-      <VariantsSelectionSheet variants={variants} ref={variantsRef} />
+      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={variants} ref={variantsRef} />
     </View>
   );
 };
