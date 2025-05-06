@@ -51,7 +51,12 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   const [selectedUnit, setSelectedUnit] = useState<UnitDto | undefined>(undefined);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const {bottom} = useSafeAreaInsets();
+
+  const variantPlaceholder = Object.entries(selectedOptions)
+    .map(([key, value]) => `${key}: ${value}`)
+    .join(', ');
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -97,7 +102,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
     });
   };
 
-  const handleVariantSelected = (variant: ProductVariantDTO) => {
+  const handleVariantSelected = (variant: ProductVariantDTO, opt: Record<string, string>) => {
+    setSelectedOptions(opt);
     setFieldValue('variant', variant);
   };
 
@@ -193,7 +199,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
                       onPress={() => variantsRef.current?.present()}
                       trailingIcon="chevron_right"
                       label="Variasi"
-                      placeholder="Pilih variasi"
+                      placeholderTextColor={variantPlaceholder ? colors.gray[800] : undefined}
+                      placeholder={variantPlaceholder || 'Pilih varian'}
                     />
                   </View>
 

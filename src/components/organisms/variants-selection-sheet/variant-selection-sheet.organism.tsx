@@ -10,7 +10,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 type Props = {
   variants?: ProductVariantDTO[];
   ref?: React.RefObject<TrueSheet | null>;
-  onSubmit?: (variant: ProductVariantDTO) => void;
+  onSubmit?: (variant: ProductVariantDTO, selectedOptions: Record<string, string>) => void;
 };
 
 export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, onSubmit}) => {
@@ -62,7 +62,7 @@ export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, onSubmit
 
   const handleSubmit = () => {
     console.log(filteredVariants.map(v => v.price));
-    onSubmit?.(filteredVariants[0]);
+    onSubmit?.(filteredVariants[0], selectedOptions);
   };
 
   return (
