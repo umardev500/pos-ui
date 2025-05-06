@@ -1,4 +1,4 @@
-import {product10} from '@app/assets/images';
+import {product3} from '@app/assets/images';
 import {IconButton} from '@app/components/atoms';
 import {QuantityControl} from '@app/components/molecules';
 import {colors} from '@app/styles';
@@ -20,7 +20,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement}) => 
     <View className="px-4">
       <View className="border bg-white border-gray-300 border-dashed rounded-xl px-1.5 py-1.5 overflow-hidden">
         <View className="flex-row gap-2.5">
-          <Image source={product10} className="w-20 h-20 rounded-lg" />
+          <Image source={product3} className="w-20 h-20 rounded-lg" />
 
           <View className="flex-1 justify-between">
             <View>

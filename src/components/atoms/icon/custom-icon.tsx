@@ -58,6 +58,15 @@ const glyphMap = {
   scan: 0xe933,
   sell: 0xe934,
   more_vert: 0xe935,
+  add_photo_alternative: 0xe936,
+  fingerprint: 0xe937,
+  image: 0xe938,
+  bedtime: 0xe939,
+  earthquake: 0xe93a,
+  restaurant: 0xe93b,
+  routine: 0xe93c,
+  sunny: 0xe93d,
+  more_horiz: 0xe93e,
   ...glyphMapFill,
 };
 

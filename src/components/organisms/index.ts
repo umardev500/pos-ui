@@ -4,6 +4,7 @@ export * from './drawer-content';
 export * from './header';
 export * from './list-menu';
 export * from './order-list';
+export * from './order-summary';
 export * from './product';
 export * from './product-form';
 export * from './tab-view';

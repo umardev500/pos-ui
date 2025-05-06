@@ -15,9 +15,9 @@ export const OrderList: React.FC<Props> = ({onIncrement, onDecrement}) => {
 
   return (
     <FlatList
-      contentContainerStyle={{paddingBottom: 50, paddingTop: 16}}
+      contentContainerStyle={{paddingBottom: 16, paddingTop: 16}}
       ItemSeparatorComponent={() => <View className="h-4" />}
-      data={[1, 2, 3, 4, 5]}
+      data={[1, 2, 3, 4, 5, 6, 7, 8]}
       renderItem={renderItem}
     />
   );
