@@ -65,7 +65,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // Sync selectedUnit when unitsDto changes
   useEffect(() => {
     if (unitsDto.length > 0) {
-      setSelectedUnit(prev => prev || unitsDto[0]); // only set if not already selected
+      setSelectedUnit(prev => prev || baseUnit?.unit); // only set if not already selected
     }
   }, [unitsDto]);
 
@@ -176,7 +176,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
             validationSchema={ProductPreviewSchema(hasVariants)}
             validateOnMount={false}
             onSubmit={handleFormSubmit}>
-            {({handleChange}) => {
+            {({handleChange, errors}) => {
+              console.log(errors);
+
               return (
                 <View className="mt-6 gap-2">
                   <LabeledInput
