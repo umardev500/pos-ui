@@ -1,5 +1,5 @@
 import {product5} from '@app/assets/images';
-import {Button, Icon, ProductTagIndicator} from '@app/components/atoms';
+import {Button, Icon, ProductTagIndicator, QuantityButton} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
 import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
 import {useProductById} from '@app/hooks';
@@ -192,6 +192,14 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     label="Catatan"
                     placeholder="Catatan tambahan"
                   />
+
+                  <View className="flex-row">
+                    <QuantityButton
+                      onChange={qty => {
+                        setFieldValue('quantity', qty);
+                      }}
+                    />
+                  </View>
                 </View>
               );
             }}
