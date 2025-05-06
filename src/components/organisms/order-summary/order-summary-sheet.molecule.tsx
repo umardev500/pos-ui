@@ -1,3 +1,5 @@
+import {useCartStore} from '@app/stores';
+import {numberUtils} from '@app/utils';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import React from 'react';
 import {Text, View} from 'react-native';
@@ -9,13 +11,14 @@ type Props = {
 
 export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
   const {bottom} = useSafeAreaInsets();
+  const getTotalPrice = useCartStore(state => state.getTotalPrice);
 
   return (
     <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
       <View className="pt-6 px-4" style={{paddingBottom: bottom + 16}}>
         <View className="flex-row items-center justify-between py-4">
           <Text className="text-sm text-gray-800">Total</Text>
-          <Text className="text-sm text-gray-700 font-medium">Rp75.000</Text>
+          <Text className="text-sm text-gray-700 font-medium">Rp{numberUtils.toDecimal(getTotalPrice())}</Text>
         </View>
 
         <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
