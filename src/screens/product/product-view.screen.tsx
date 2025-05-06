@@ -5,9 +5,11 @@ import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
 import {useProductById} from '@app/hooks';
 import {colors} from '@app/styles';
 import {MainStackParamList, UnitDto} from '@app/types';
-import {numberUtils} from '@app/utils';
+import {getProductUnitByUnit, numberUtils, prettyLog} from '@app/utils';
+import {initialPreviewProductForm, PreviewProductFormType} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
+import {Formik, FormikProps} from 'formik';
 import React, {useEffect, useRef, useState} from 'react';
 import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
@@ -26,6 +28,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   const unitSheetRef = useRef<TrueSheet>(null);
   const variantsRef = useRef<TrueSheet>(null);
+  const formRef = useRef<FormikProps<PreviewProductFormType>>(null);
 
   // ————————————————————————————————————————————————
   // 📡 Data Fetching
@@ -49,12 +52,24 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const {bottom} = useSafeAreaInsets();
 
+  // ————————————————————————————————————————————————
+  // 🧪 Effects
+  // ————————————————————————————————————————————————
+
   // Sync selectedUnit when unitsDto changes
   useEffect(() => {
     if (unitsDto.length > 0) {
       setSelectedUnit(prev => prev || unitsDto[0]); // only set if not already selected
     }
   }, [unitsDto]);
+
+  // Sync form with selected unit
+  useEffect(() => {
+    if (!formRef.current && !selectedUnit) return;
+    const unit = getProductUnitByUnit(units || [], selectedUnit);
+
+    setFieldValue('product_unit', unit);
+  }, [selectedUnit]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
@@ -66,6 +81,15 @@ export const ProductView: React.FC<Props> = ({route}) => {
     setTimeout(() => {
       unitSheetRef.current?.dismiss();
     }, 500);
+  };
+
+  const handleSubmit = () => {
+    formRef.current?.submitForm();
+  };
+
+  // Generic version of setFieldValue to ensure value is type-safe
+  const setFieldValue = <T extends keyof PreviewProductFormType>(field: T, value: PreviewProductFormType[T]) => {
+    formRef.current?.setFieldValue(field, value);
   };
 
   // ————————————————————————————————————————————————
@@ -123,42 +147,66 @@ export const ProductView: React.FC<Props> = ({route}) => {
           </View>
 
           {/* 🎛 Product Config */}
-          <View className="mt-6 gap-2">
-            <LabeledInput
-              isClickableOnly
-              onPress={() => console.log('Open modal')}
-              trailingIcon="chevron_right"
-              label="Tipe order"
-              placeholder="Pilih tipe order"
-            />
+          <Formik
+            innerRef={formRef}
+            initialValues={initialPreviewProductForm}
+            onSubmit={e => {
+              prettyLog(e);
+            }}>
+            {({setFieldValue, handleChange, errors}) => {
+              return (
+                <View className="mt-6 gap-2">
+                  <LabeledInput
+                    isClickableOnly
+                    onPress={() => {
+                      setFieldValue('order_type_id', 10);
+                    }}
+                    trailingIcon="chevron_right"
+                    label="Tipe order"
+                    placeholder="Pilih tipe order"
+                  />
 
-            <View className="flex-row gap-2">
-              <LabeledInput
-                isClickableOnly
-                onPress={() => unitSheetRef.current?.present()}
-                trailingIcon="chevron_right"
-                label="Satuan"
-                placeholder={selectedUnit ? selectedUnit.name : 'Pilih satuan'}
-                placeholderTextColor={selectedUnit ? colors.gray[800] : undefined}
-              />
-              <LabeledInput
-                isClickableOnly
-                disabled={!hasVariants}
-                onPress={() => variantsRef.current?.present()}
-                trailingIcon="chevron_right"
-                label="Variasi"
-                placeholder="Pilih variasi"
-              />
-            </View>
+                  <View className="flex-row gap-2">
+                    <LabeledInput
+                      isClickableOnly
+                      onPress={() => unitSheetRef.current?.present()}
+                      trailingIcon="chevron_right"
+                      label="Satuan"
+                      placeholder={selectedUnit ? selectedUnit.name : 'Pilih satuan'}
+                      placeholderTextColor={selectedUnit ? colors.gray[800] : undefined}
+                    />
+                    <LabeledInput
+                      isClickableOnly
+                      disabled={!hasVariants}
+                      onPress={() => variantsRef.current?.present()}
+                      trailingIcon="chevron_right"
+                      label="Variasi"
+                      placeholder="Pilih variasi"
+                    />
+                  </View>
 
-            <LabeledInput icon="description" isTextArea label="Catatan" placeholder="Catatan tambahan" />
-          </View>
+                  <LabeledInput
+                    onChange={handleChange('note')}
+                    icon="description"
+                    isTextArea
+                    label="Catatan"
+                    placeholder="Catatan tambahan"
+                  />
+                </View>
+              );
+            }}
+          </Formik>
         </View>
       </KeyboardAwareScrollView>
 
       {/* 🛒 Add to Cart */}
       <View className="px-4 pt-4 border-t border-t-gray-100" style={{paddingBottom: bottom + 16}}>
-        <Button title="Add to Cart" containerColor={colors.orange[500]} textColor={colors.white} />
+        <Button
+          onPress={handleSubmit}
+          title="Add to Cart"
+          containerColor={colors.orange[500]}
+          textColor={colors.white}
+        />
       </View>
 
       {/* 📋 Unit Selector */}
