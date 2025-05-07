@@ -15,6 +15,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 
 // ————————————————————————————————————————————————
 // 📦 Props and Setup
@@ -122,6 +123,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
   /** Submit form via Formik ref */
   const handleAddTocartSubmitted = () => {
     formRef.current?.submitForm();
+
+    setTimeout(() => {
+      const errors = formRef.current?.errors;
+      if (errors && Object.keys(errors).length > 0) {
+        Toast.show({
+          type: 'error',
+          text1: 'Please fill all required fields',
+        });
+      }
+    }, 300);
   };
 
   /**
@@ -135,6 +146,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
       variant: formData.variant,
       selectecVariantOptions: selectedOptions,
       price: priceRef.current,
+    });
+
+    Toast.show({
+      type: 'success',
+      text1: 'Product added to cart successfully 🎉',
     });
   };
 

@@ -5,6 +5,7 @@ import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 import {useState} from 'react';
 import {KeyboardProvider} from 'react-native-keyboard-controller';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import Toast from 'react-native-toast-message';
 import './global.css';
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ export default function Wrapper() {
           <App />
         </QueryClientProvider>
       </KeyboardProvider>
+      <Toast />
     </SafeAreaProvider>
   );
 }
