@@ -11,6 +11,7 @@ import {initialPreviewProductForm, PreviewProductFormType, ProductPreviewSchema}
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
+import lodash from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {Image, Pressable, Text, TouchableOpacity, View} from 'react-native';
 import {KeyboardAwareScrollView} from 'react-native-keyboard-controller';
@@ -92,9 +93,12 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
     if (cartItem.note) setFieldValue('note', cartItem.note);
     if (cartItem.quantity) setFieldValue('quantity', cartItem.quantity);
-    if (cartItem.selectecVariantOptions) {
+    if (!lodash.isEmpty(cartItem.selectecVariantOptions)) {
       setSelectedOptions(cartItem.selectecVariantOptions);
       setFieldValue('variant', cartItem.variant);
+      priceRef.current = cartItem.variant?.price ?? 0;
+    } else {
+      priceRef.current = cartItem.unit.price;
     }
   }, [cartItem]);
 
