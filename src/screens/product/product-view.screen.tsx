@@ -289,7 +289,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
                   {/* Quantity Control */}
                   <View className="flex-row">
-                    <QuantityButton onChange={qty => setFieldValue('quantity', qty)} />
+                    <QuantityButton
+                      defaultValue={cartItem?.quantity || 0}
+                      onChange={qty => setFieldValue('quantity', qty)}
+                    />
                   </View>
                 </View>
               );

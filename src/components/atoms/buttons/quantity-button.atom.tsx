@@ -15,10 +15,17 @@ type Props = {
   textColor?: string;
   ref?: React.RefObject<QuantityButtonRef | null>;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  defaultValue?: number;
 };
 
-export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.orange[500], size = 'sm', ref}) => {
-  const [value, setValue] = useState(0);
+export const QuantityButton: React.FC<Props> = ({
+  onChange,
+  textColor = colors.orange[500],
+  size = 'sm',
+  ref,
+  defaultValue = 0,
+}) => {
+  const [value, setValue] = useState(defaultValue);
   const isFirstRender = useRef(true);
 
   const handleIncrement = () => setValue(prev => prev + 1);
@@ -29,6 +36,10 @@ export const QuantityButton: React.FC<Props> = ({onChange, textColor = colors.or
     getValue: () => value,
     setValue: (val: number) => setValue(val),
   }));
+
+  useEffect(() => {
+    setValue(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     // Skip the onChange call on the first render
