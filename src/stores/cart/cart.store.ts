@@ -12,6 +12,7 @@ type CartState = {
   decrementQuantity: (item: CartItem) => void;
   removeItem: (item: CartItem) => void;
   clearCart: () => void;
+  getTotalDiscount: () => number;
 
   // Derived State
   getTotalPrice: () => number;
@@ -126,4 +127,25 @@ export const useCartStore = create<CartState>((set, get) => ({
       const price = item.variant?.price ?? item.unit.price;
       return total + price * item.quantity;
     }, 0),
+
+  // ————————————————————————————————————————————————
+  // 💰 Compute total cart discount
+  // ————————————————————————————————————————————————
+  getTotalDiscount: () => {
+    return get().items.reduce((total, item) => {
+      const discount = item.product.discount;
+      if (!discount) return total;
+
+      const unitPrice = item.variant?.price ?? item.unit.price;
+      let discountValue = 0;
+
+      if (discount.type === 'PERCENT') {
+        discountValue = (unitPrice * discount.value) / 100;
+      } else if (discount.type === 'FIXED') {
+        discountValue = discount.value;
+      }
+
+      return total + discountValue * item.quantity;
+    }, 0);
+  },
 }));

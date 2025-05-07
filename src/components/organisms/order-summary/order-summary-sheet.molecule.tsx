@@ -28,7 +28,7 @@ export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
 
         <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm text-gray-800">Diskon Produk</Text>
-          <Text className="text-sm text-gray-700 font-medium">-Rp4.200</Text>
+          <Text className="text-sm text-gray-700 font-medium">-Rp{useCartStore.getState().getTotalDiscount()}</Text>
         </View>
 
         <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
