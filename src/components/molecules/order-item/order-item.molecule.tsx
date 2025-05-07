@@ -5,7 +5,7 @@ import {colors} from '@app/styles';
 import {CartItem} from '@app/types';
 import {generateVariantPlaceholder, numberUtils} from '@app/utils';
 import React from 'react';
-import {Image, Text, View} from 'react-native';
+import {Alert, Image, Text, View} from 'react-native';
 
 type Props = {
   item?: CartItem;
@@ -20,11 +20,14 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
   let variantPlaceholder = `Unit: ${productUnit?.unit.name}`;
   if (selectecVariantOptions) variantPlaceholder = generateVariantPlaceholder(selectecVariantOptions);
 
-  console.log(product);
-
   const handleIncrement = (num: number) => onIncrement?.(num, item);
   const handleDecrement = (num: number) => onDecrement?.(num, item);
-  const handleDelete = () => onDelete?.(item);
+  const handleDelete = () => {
+    Alert.alert('Delete item', 'Are you sure you want to delete this?', [
+      {text: 'Cancel', style: 'cancel'},
+      {text: 'Delete', onPress: () => onDelete?.(item), style: 'destructive'},
+    ]);
+  };
 
   return (
     <View className="px-4">
