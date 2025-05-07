@@ -16,6 +16,7 @@ type CartState = {
 
   // Derived State
   getTotalPrice: () => number;
+  getFinalAmount: () => number;
 };
 
 export const useCartStore = create<CartState>((set, get) => ({
@@ -147,5 +148,11 @@ export const useCartStore = create<CartState>((set, get) => ({
 
       return total + discountValue * item.quantity;
     }, 0);
+  },
+
+  getFinalAmount: () => {
+    const total = get().getTotalPrice();
+    const discount = get().getTotalDiscount();
+    return total - discount;
   },
 }));
