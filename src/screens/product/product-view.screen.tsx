@@ -113,9 +113,18 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Retrieves all variants matching the selected unit's ID.
    */
   useEffect(() => {
-    const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
-    setSelectedVariants(variants);
-  }, [selectedUnit]);
+    if (unitHasVariants) {
+      const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
+      setSelectedVariants(variants);
+
+      return;
+    }
+
+    const localProductUnit = getProductUnitByUnit(product_units, selectedUnit);
+    if (!localProductUnit) return;
+    const localPrice = localProductUnit.price;
+    priceRef.current = localPrice;
+  }, [selectedUnit, unitHasVariants]);
 
   /**
    * Sync selected unit to Formik's product_unit field.
