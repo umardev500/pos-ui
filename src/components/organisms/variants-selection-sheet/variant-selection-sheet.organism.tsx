@@ -4,30 +4,40 @@ import {ProductVariantDTO} from '@app/types';
 import {collectUniqueVariantValues, findMatchingVariants} from '@app/utils';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import clsx from 'clsx';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
   variants?: ProductVariantDTO[];
   ref?: React.RefObject<TrueSheet | null>;
+  currentSelectedOptions?: Record<string, string>;
   onSubmit?: (variant: ProductVariantDTO, selectedOptions: Record<string, string>, price: number) => void;
 };
 
-export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, onSubmit}) => {
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, currentSelectedOptions, onSubmit}) => {
+  // ————————————————————————————————————————————————
+  // 🧠 State
+  // ————————————————————————————————————————————————
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>(currentSelectedOptions || {});
 
-  // All possible options from all variants
+  // ————————————————————————————————————————————————
+  // 🎯 Sync with external selection
+  // ————————————————————————————————————————————————
+  useEffect(() => {
+    setSelectedOptions(currentSelectedOptions || {});
+  }, [currentSelectedOptions]);
+
+  // ————————————————————————————————————————————————
+  // 🔍 Derived Data
+  // ————————————————————————————————————————————————
   const selectionItems = collectUniqueVariantValues(variants || []);
-
-  // Only include variants that are in stock
   const availableVariants = (variants || []).filter(v => v.stock > 0);
-
-  // Filter based on current selection
   const filteredVariants = findMatchingVariants(availableVariants, selectedOptions);
+  const isComplete = Object.keys(selectionItems).every(type => selectedOptions[type]);
 
-  // Group variant values that are valid under the current selection
-  // const grouping = collectUniqueVariantValues(filteredVariants);
-
+  // ————————————————————————————————————————————————
+  // 🖱️ Handlers
+  // ————————————————————————————————————————————————
   const handleSelect = (type: string, value: string) => {
     setSelectedOptions(prev => {
       const isAlreadySelected = prev[type] === value;
@@ -38,31 +48,24 @@ export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, onSubmit
         return updated;
       }
 
-      return {
-        ...prev,
-        [type]: value,
-      };
+      return {...prev, [type]: value};
     });
   };
 
-  // Check if all variant types are selected
-  const isComplete = Object.keys(selectionItems).every(type => selectedOptions[type]);
+  const handleSubmit = () => {
+    const selectedVariant = filteredVariants[0];
+    const selectedPrice = selectedVariant?.price;
 
-  // Function to check if a variant is available based on the current selections
-  const isVariantAvailable = (type: string, value: string) => {
-    // Make a temporary selection including the current variant type and value
-    const tempSelected = {...selectedOptions, [type]: value};
-
-    // Find matching variants that include this selection
-    const matchingVariants = findMatchingVariants(availableVariants, tempSelected);
-
-    // If there are matching variants, this option is available
-    return matchingVariants.length > 0;
+    onSubmit?.(selectedVariant, selectedOptions, selectedPrice);
   };
 
-  const handleSubmit = () => {
-    console.log(filteredVariants.map(v => v.price));
-    onSubmit?.(filteredVariants[0], selectedOptions, filteredVariants.map(v => v.price)[0]);
+  // ————————————————————————————————————————————————
+  // 🧪 Helpers
+  // ————————————————————————————————————————————————
+  const isVariantAvailable = (type: string, value: string) => {
+    const tempSelected = {...selectedOptions, [type]: value};
+    const matchingVariants = findMatchingVariants(availableVariants, tempSelected);
+    return matchingVariants.length > 0;
   };
 
   return (

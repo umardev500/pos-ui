@@ -345,7 +345,12 @@ export const ProductView: React.FC<Props> = ({route}) => {
       />
 
       {/* Variants Selection Modal */}
-      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={selectedVariants} ref={variantsRef} />
+      <VariantsSelectionSheet
+        currentSelectedOptions={selectedOptions}
+        onSubmit={handleVariantSelected}
+        variants={selectedVariants}
+        ref={variantsRef}
+      />
     </View>
   );
 };
