@@ -1,4 +1,4 @@
-import {product5} from '@app/assets/images';
+import {product7} from '@app/assets/images';
 import {Button, Icon, ProductTagIndicator, QuantityButton} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
 import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
@@ -222,7 +222,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
         bottomOffset={25}
         showsVerticalScrollIndicator={false}>
         <View className="flex-row">
-          <Image className="w-full h-[350px]" source={product5} />
+          <Image className="w-full h-[350px]" source={product7} />
         </View>
 
         {/* Product Details */}
