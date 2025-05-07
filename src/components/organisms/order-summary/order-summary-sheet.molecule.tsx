@@ -11,31 +11,48 @@ type Props = {
 
 export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
   const {bottom} = useSafeAreaInsets();
-  const getTotalPrice = useCartStore(state => state.getTotalPrice);
+  const totalPrice = useCartStore(state => state.getTotalPrice());
+  const totalDiscount = useCartStore.getState().getTotalDiscount();
+  const finalAmount = totalPrice - totalDiscount;
+
+  const formatCurrency = (amount: number) => `Rp${numberUtils.toDecimal(amount)}`;
 
   return (
     <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
       <View className="pt-6 px-4" style={{paddingBottom: bottom + 16}}>
-        <View className="flex-row items-center justify-between py-4">
-          <Text className="text-sm text-gray-800">Total</Text>
-          <Text className="text-sm text-gray-700 font-medium">Rp{numberUtils.toDecimal(getTotalPrice())}</Text>
-        </View>
+        {/* Total Before Discount */}
+        <Row label="Total" value={formatCurrency(totalPrice)} />
 
-        <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
-          <Text className="text-sm text-gray-800">Voucher Diskon</Text>
-          <Text className="text-sm text-gray-700">Rp0</Text>
-        </View>
+        {/* Voucher Discount Placeholder */}
+        <Row label="Voucher Diskon" value={formatCurrency(0)} bordered />
 
-        <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
-          <Text className="text-sm text-gray-800">Diskon Produk</Text>
-          <Text className="text-sm text-gray-700 font-medium">-Rp{useCartStore.getState().getTotalDiscount()}</Text>
-        </View>
+        {/* Product Discount */}
+        <Row label="Diskon Produk" value={`-${formatCurrency(totalDiscount)}`} bordered />
 
-        <View className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
-          <Text className="text-sm text-gray-800 font-medium">Jumlah Total</Text>
-          <Text className="text-sm text-gray-700 font-bold">Rp70.800</Text>
-        </View>
+        {/* Final Amount */}
+        <Row label="Jumlah Total" value={formatCurrency(finalAmount)} bold bordered />
       </View>
     </TrueSheet>
   );
 };
+
+// ————————————————————————————————————————————————
+// 🔧 Reusable Row Component
+// ————————————————————————————————————————————————
+const Row = ({
+  label,
+  value,
+  bordered = false,
+  bold = false,
+}: {
+  label: string;
+  value: string;
+  bordered?: boolean;
+  bold?: boolean;
+}) => (
+  <View
+    className={`flex-row items-center justify-between py-4 ${bordered ? 'border-t-[0.5px] border-t-gray-200' : ''}`}>
+    <Text className="text-sm text-gray-800">{label}</Text>
+    <Text className={`text-sm text-gray-700 ${bold ? 'font-bold' : 'font-medium'}`}>{value}</Text>
+  </View>
+);
