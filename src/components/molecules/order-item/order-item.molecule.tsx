@@ -18,7 +18,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
   const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item || {};
 
   let variantPlaceholder = `Unit: ${productUnit?.unit.name}`;
-  if (selectecVariantOptions) variantPlaceholder = generateVariantPlaceholder(selectecVariantOptions);
+  if (selectecVariantOptions) variantPlaceholder += generateVariantPlaceholder(selectecVariantOptions);
 
   const handleIncrement = (num: number) => onIncrement?.(num, item);
   const handleDecrement = (num: number) => onDecrement?.(num, item);
