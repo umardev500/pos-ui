@@ -91,6 +91,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
     if (cartItem.note) setFieldValue('note', cartItem.note);
     if (cartItem.quantity) setFieldValue('quantity', cartItem.quantity);
+    if (cartItem.selectecVariantOptions) {
+      setSelectedOptions(cartItem.selectecVariantOptions);
+      setFieldValue('variant', cartItem.variant);
+    }
   }, [cartItem]);
 
   /**
@@ -251,8 +255,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
             validateOnMount={false}
             enableReinitialize
             onSubmit={handleFormSubmit}>
-            {({values, handleChange, errors}) => {
-              console.log(errors); // Validation errors logged for dev purposes
+            {({values, handleChange}) => {
               return (
                 <View className="mt-6 gap-2">
                   {/* Order Type (Placeholder) */}
