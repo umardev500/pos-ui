@@ -50,7 +50,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
   const unitsDto: UnitDto[] = product_units.map(pu => pu.unit);
   const baseUnit = product_units.find(u => u.unit_id === base_unit_id);
-  const productPrice = baseUnit?.price ?? 0;
+  const baseUnitPrice = baseUnit?.price ?? 0;
   const hasVariants = product_variants.length > 0;
   const totalVariants = hasVariants ? product_variants.length : product_units.length;
 
@@ -61,7 +61,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [selectedVariants, setSelectedVariants] = useState<ProductVariantDTO[]>([]);
-  const [price, setPrice] = useState<number>(productPrice);
+  const [price, setPrice] = useState<number>(baseUnitPrice);
   const {bottom} = useSafeAreaInsets();
 
   const unitHasVariants = selectedUnit ? selectedVariants.length > 0 : false;
@@ -130,8 +130,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Sync product price from the product data to the state
    */
   useEffect(() => {
-    if (!isUpdate) setPrice(productPrice);
-  }, [productPrice, isUpdate]);
+    if (!isUpdate) setPrice(baseUnitPrice);
+  }, [baseUnitPrice, isUpdate]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
