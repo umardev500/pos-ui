@@ -6,7 +6,7 @@ import {useProductById} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {MainStackParamList, ProductVariantDTO, UnitDto} from '@app/types';
-import {generateVariantPlaceholder, getProductUnitByUnit, numberUtils} from '@app/utils';
+import {generateVariantPlaceholder, getProductUnitByUnit, getVariantsByUnitId, numberUtils} from '@app/utils';
 import {initialPreviewProductForm, PreviewProductFormType, ProductPreviewSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -57,8 +57,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
   const [selectedUnit, setSelectedUnit] = useState<UnitDto>();
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+  const [selectedVariants, setSelectedVariants] = useState<ProductVariantDTO[]>([]);
   const [price, setPrice] = useState<number>(productPrice);
   const {bottom} = useSafeAreaInsets();
+
+  const unitHasVariants = selectedUnit ? selectedVariants.length > 0 : false;
 
   // Generate display text for selected variant options
   const variantPlaceholder = generateVariantPlaceholder(selectedOptions);
@@ -76,6 +79,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
       setSelectedUnit(baseUnit?.unit);
     }
   }, [unitsDto]);
+
+  useEffect(() => {
+    const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
+    setSelectedVariants(variants);
+  }, [selectedUnit]);
 
   /**
    * Sync selected unit to Formik's product_unit field.
@@ -234,7 +242,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     />
                     <LabeledInput
                       isClickableOnly
-                      disabled={!hasVariants}
+                      disabled={!unitHasVariants}
                       onPress={() => variantsRef.current?.present()}
                       trailingIcon="chevron_right"
                       label="Variasi"
@@ -282,7 +290,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       />
 
       {/* Variants Selection Modal */}
-      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={product_variants} ref={variantsRef} />
+      <VariantsSelectionSheet onSubmit={handleVariantSelected} variants={selectedVariants} ref={variantsRef} />
     </View>
   );
 };

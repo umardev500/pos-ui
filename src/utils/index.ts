@@ -4,5 +4,6 @@ export * from './find-product-unit-by-unit.util';
 export * from './number.util';
 export * from './order.util';
 export * from './pretty-log.util';
+export * from './product';
 export * from './remap-variants';
 export * from './variant.util';
