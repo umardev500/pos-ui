@@ -41,6 +41,11 @@ jobs:
       - name: List all files
         run: ls -a  # This will list all files, including hidden files like .env
 
+      - name: Clean build
+        run: |
+          cd android
+          ./gradlew clean
+
       # Step 7: Build the APK
       - name: Build APK
         run: |
@@ -57,4 +62,4 @@ jobs:
       # Step 9: Upload the APK file to the VPS using SCP
       - name: Upload APK to VPS
         run: |
-          scp -o StrictHostKeyChecking=no android/app/build/outputs/apk/release/*-release.apk root@46.250.237.92:/root/apks/
+          scp -o StrictHostKeyChecking=no android/app/build/outputs/apk/release/*-release.apk root@46.250.237.92:/var/www/html/apks/
