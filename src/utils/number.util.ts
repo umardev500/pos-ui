@@ -5,6 +5,9 @@ const toDecimal = (num: number, locale = 'id-ID') => {
   }).format(num);
 };
 
+const formatCurrency = (amount: number) => `Rp${toDecimal(amount)}`;
+
 export const numberUtils = {
   toDecimal,
+  formatCurrency,
 };
