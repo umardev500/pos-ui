@@ -27,26 +27,35 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-          yarn: true  # This installs Yarn on the runner
+          yarn: true  # Install Yarn
 
       # Step 4: Install dependencies using Yarn
       - name: Install dependencies with Yarn
         run: yarn install --ignore-engines
 
-      # Step 5: Build the APK
+      # Step 5: Set up environment variables for React Native build
+      - name: Set up .env file
+        run: |
+          echo "API_URL=http://46.250.237.92:3000/api" > .env
+
+      # Step 6: List all files to verify the .env file is created
+      - name: List all files
+        run: ls -a  # This will list all files, including hidden files like .env
+
+      # Step 7: Build the APK
       - name: Build APK
         run: |
           cd android
           ./gradlew assembleRelease
 
-      # Step 6: Set up the SSH private key from GitHub secrets
+      # Step 8: Set up the SSH private key from GitHub secrets
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa  # Use the secret for the private key
-          chmod 600 ~/.ssh/id_rsa  # Set correct file permissions
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
 
-      # Step 7: Upload the APK file to the VPS using SCP
+      # Step 9: Upload the APK file to the VPS using SCP
       - name: Upload APK to VPS
         run: |
           scp -o StrictHostKeyChecking=no android/app/build/outputs/apk/release/app-release.apk root@46.250.237.92:/root/apks/
