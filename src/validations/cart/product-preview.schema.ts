@@ -23,6 +23,8 @@ export const ProductPreviewSchema = (hasVariant?: boolean) => {
 
     quantity: yup.number().required('Quantity is required').moreThan(0, 'Quantity must be greater than zero'),
 
+    note: yup.string().optional(),
+
     ...(hasVariant && {
       variant: yup.object().required('Variant is required'),
     }),

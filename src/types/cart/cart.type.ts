@@ -7,4 +7,5 @@ export type CartItem = {
   variant?: ProductVariantDTO; // Variant is optional
   selectecVariantOptions?: Record<string, string>;
   price?: number;
+  note?: string;
 };

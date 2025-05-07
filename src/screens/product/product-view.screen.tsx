@@ -27,7 +27,6 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 🔗 Params
   // ————————————————————————————————————————————————
   const {id, cartItem} = route.params;
-  console.log(!cartItem);
 
   // ————————————————————————————————————————————————
   // 🔗 Refs
@@ -86,6 +85,13 @@ export const ProductView: React.FC<Props> = ({route}) => {
       setSelectedUnit(baseUnit?.unit);
     }
   }, [unitsDto, cartItem]);
+
+  useEffect(() => {
+    if (!cartItem) return;
+
+    if (cartItem.note) setFieldValue('note', cartItem.note);
+    if (cartItem.quantity) setFieldValue('quantity', cartItem.quantity);
+  }, [cartItem]);
 
   /**
    * Updates the selected product variants whenever the selected unit changes.
@@ -156,6 +162,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       variant: formData.variant,
       selectecVariantOptions: selectedOptions,
       price: priceRef.current,
+      note: formData.note,
     });
 
     Toast.show({
@@ -244,7 +251,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
             validateOnMount={false}
             enableReinitialize
             onSubmit={handleFormSubmit}>
-            {({handleChange, errors}) => {
+            {({values, handleChange, errors}) => {
               console.log(errors); // Validation errors logged for dev purposes
               return (
                 <View className="mt-6 gap-2">
@@ -285,14 +292,12 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     isTextArea
                     label="Catatan"
                     placeholder="Catatan tambahan"
+                    value={values.note}
                   />
 
                   {/* Quantity Control */}
                   <View className="flex-row">
-                    <QuantityButton
-                      defaultValue={cartItem?.quantity || 0}
-                      onChange={qty => setFieldValue('quantity', qty)}
-                    />
+                    <QuantityButton defaultValue={values.quantity} onChange={qty => setFieldValue('quantity', qty)} />
                   </View>
                 </View>
               );
