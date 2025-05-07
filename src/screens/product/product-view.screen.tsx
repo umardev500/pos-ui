@@ -214,8 +214,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
           <Formik
             innerRef={formRef}
             initialValues={initialPreviewProductForm}
-            validationSchema={ProductPreviewSchema(hasVariants)}
+            validationSchema={ProductPreviewSchema(unitHasVariants)}
             validateOnMount={false}
+            enableReinitialize
             onSubmit={handleFormSubmit}>
             {({handleChange, errors}) => {
               console.log(errors); // Validation errors logged for dev purposes
