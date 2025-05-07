@@ -78,7 +78,7 @@ export const VariantsSelectionSheet: React.FC<Props> = ({variants, ref, currentS
               'border-t border-gray-200 pt-4': index !== 0,
             })}>
             <Text className="text-gray-800 text-sm">{type}:</Text>
-            <View className="flex-row itemc-text-center gap-2">
+            <View className="flex-row flex-wrap items-center gap-2">
               {selectionItems[type].map(value => {
                 const isSelected = selectedOptions[type] === value;
                 const isAvailable = isVariantAvailable(type, value); // Check if variant is available
