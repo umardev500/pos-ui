@@ -7,6 +7,7 @@ type CartState = {
 
   // Actions
   addItem: (item: CartItem) => void;
+  updateItem: (item: CartItem, updates: Partial<CartItem>) => void;
   incrementQuantity: (item: CartItem) => void;
   decrementQuantity: (item: CartItem) => void;
   removeItem: (item: CartItem) => void;
@@ -24,13 +25,6 @@ export const useCartStore = create<CartState>((set, get) => ({
   // ————————————————————————————————————————————————
   addItem: item =>
     set(state => {
-      // const exists = state.items.find(
-      //   i =>
-      //     i.product.id === item.product.id &&
-      //     i.unit.unit_id === item.unit.unit_id &&
-      //     i.variant?.id === item.variant?.id,
-      // );
-
       const isExists = state.items.find(
         i =>
           i.product.id === item.product.id &&
@@ -53,6 +47,21 @@ export const useCartStore = create<CartState>((set, get) => ({
 
       return {items: [...state.items, item]};
     }),
+
+  updateItem: (item, updates) =>
+    set(state => ({
+      items: state.items.map(i => {
+        const isSameItem =
+          i.product.id === item.product.id &&
+          i.unit.unit_id === item.unit.unit_id &&
+          i.variant?.id === item.variant?.id &&
+          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions);
+
+        console.log('is same');
+
+        return isSameItem ? {...i, ...updates} : i;
+      }),
+    })),
 
   // ————————————————————————————————————————————————
   // ➕ Increment quantity of an existing item

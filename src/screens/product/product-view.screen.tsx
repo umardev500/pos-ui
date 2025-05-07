@@ -27,6 +27,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 🔗 Params
   // ————————————————————————————————————————————————
   const {id, cartItem} = route.params;
+  const isUpdate = !!cartItem;
 
   // ————————————————————————————————————————————————
   // 🔗 Refs
@@ -159,7 +160,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Add item to cart with form data.
    */
   const handleFormSubmit = (formData: PreviewProductFormType) => {
-    useCartStore.getState().addItem({
+    const currentFormData = {
       product: data!!,
       quantity: formData.quantity!!,
       unit: formData.product_unit!!,
@@ -167,7 +168,13 @@ export const ProductView: React.FC<Props> = ({route}) => {
       selectecVariantOptions: selectedOptions,
       price: priceRef.current,
       note: formData.note,
-    });
+    };
+
+    if (isUpdate) {
+      useCartStore.getState().updateItem(cartItem, currentFormData);
+    } else {
+      useCartStore.getState().addItem(currentFormData);
+    }
 
     Toast.show({
       type: 'success',
@@ -313,7 +320,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       <View className="px-4 pt-4 border-t border-t-gray-100" style={{paddingBottom: bottom + 16}}>
         <Button
           onPress={handleAddTocartSubmitted}
-          title="Add to Cart"
+          title={isUpdate ? 'Update Cart' : 'Add to Cart'}
           containerColor={colors.orange[500]}
           textColor={colors.white}
         />
