@@ -96,9 +96,15 @@ export const ProductView: React.FC<Props> = ({route}) => {
     if (!lodash.isEmpty(cartItem.selectecVariantOptions)) {
       setSelectedOptions(cartItem.selectecVariantOptions);
       setFieldValue('variant', cartItem.variant);
-      priceRef.current = cartItem.variant?.price ?? 0;
+      const localPrice = cartItem.variant?.price ?? 0;
+
+      priceRef.current = localPrice;
+      setPrice(localPrice);
+      console.log('variant', localPrice);
     } else {
-      priceRef.current = cartItem.unit.price;
+      const localPrice = cartItem.unit.price;
+      priceRef.current = localPrice;
+      setPrice(localPrice);
     }
   }, [cartItem]);
 
@@ -124,8 +130,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Sync product price from the product data to the state
    */
   useEffect(() => {
-    setPrice(productPrice);
-  }, [productPrice]);
+    if (!isUpdate) setPrice(productPrice);
+  }, [productPrice, isUpdate]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
