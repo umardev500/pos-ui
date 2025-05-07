@@ -87,6 +87,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
     }
   }, [unitsDto, cartItem]);
 
+  /**
+   * Updates the selected product variants whenever the selected unit changes.
+   * Retrieves all variants matching the selected unit's ID.
+   */
   useEffect(() => {
     const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
     setSelectedVariants(variants);
