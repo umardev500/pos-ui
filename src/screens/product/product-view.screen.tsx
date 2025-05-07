@@ -26,7 +26,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   // 🔗 Params
   // ————————————————————————————————————————————————
-  const {id} = route.params;
+  const {id, cartItem} = route.params;
+  console.log(!cartItem);
 
   // ————————————————————————————————————————————————
   // 🔗 Refs
@@ -72,14 +73,19 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
 
   /**
-   * Set initial unit selection when units are loaded.
-   * Defaults to base unit if no unit is already selected.
+   * Automatically selects a unit when the list of units is available.
+   * Prefers the unit from the cart item if present; otherwise, selects the base unit.
    */
   useEffect(() => {
     if (unitsDto.length && !selectedUnit) {
+      if (cartItem) {
+        setSelectedUnit(cartItem.unit.unit);
+        return;
+      }
+
       setSelectedUnit(baseUnit?.unit);
     }
-  }, [unitsDto]);
+  }, [unitsDto, cartItem]);
 
   useEffect(() => {
     const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);

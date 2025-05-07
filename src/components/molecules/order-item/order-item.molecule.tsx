@@ -5,16 +5,17 @@ import {colors} from '@app/styles';
 import {CartItem} from '@app/types';
 import {generateVariantPlaceholder, numberUtils} from '@app/utils';
 import React from 'react';
-import {Alert, Image, Text, View} from 'react-native';
+import {Alert, Image, Text, TouchableOpacity, View} from 'react-native';
 
 type Props = {
   item?: CartItem;
   onIncrement?: (num: number, item?: CartItem) => void;
   onDecrement?: (num: number, item?: CartItem) => void;
   onDelete?: (item?: CartItem) => void;
+  onPress?: (id: number, cartItem?: CartItem) => void;
 };
 
-export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDelete}) => {
+export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDelete, onPress}) => {
   const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item || {};
 
   let variantPlaceholder = `Unit: ${productUnit?.unit.name}`;
@@ -29,11 +30,17 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
     ]);
   };
 
+  const handlePress = () => {
+    onPress?.(product?.id || 0, item);
+  };
+
   return (
     <View className="px-4">
       <View className="border bg-white border-gray-300 border-dashed rounded-xl px-1.5 py-1.5 overflow-hidden">
         <View className="flex-row gap-2.5">
-          <Image source={product3} className="w-20 h-20 rounded-lg" />
+          <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
+            <Image source={product3} className="w-20 h-20 rounded-lg" />
+          </TouchableOpacity>
 
           <View className="flex-1 justify-between">
             <View>

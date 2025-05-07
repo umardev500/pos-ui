@@ -1,3 +1,5 @@
+import {CartItem} from '@app/types/cart';
+
 export type RootStackParamList = {
   Auth: undefined;
   Main: undefined;
@@ -11,6 +13,7 @@ export type MainStackParamList = {
   Cart: undefined;
   ProductView: {
     id: number;
+    cartItem?: CartItem;
   };
 };
 

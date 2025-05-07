@@ -8,11 +8,20 @@ type Props = {
   onIncrement?: (num: number, item?: CartItem) => void;
   onDecrement?: (num: number, item?: CartItem) => void;
   onDelete?: (item?: CartItem) => void;
+  onPress?: (id: number, cartItem?: CartItem) => void;
 };
 
-export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement, onDelete}) => {
+export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement, onDelete, onPress}) => {
   const renderItem: ListRenderItem<CartItem> = ({item}) => {
-    return <OrderItem item={item} onDecrement={onDecrement} onIncrement={onIncrement} onDelete={onDelete} />;
+    return (
+      <OrderItem
+        item={item}
+        onDecrement={onDecrement}
+        onIncrement={onIncrement}
+        onDelete={onDelete}
+        onPress={onPress}
+      />
+    );
   };
 
   return (
