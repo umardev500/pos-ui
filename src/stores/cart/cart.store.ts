@@ -19,6 +19,17 @@ type CartState = {
   getFinalAmount: () => number;
 };
 
+// Helper function to check if two items are the same
+const isSameCartItem = (itemA: CartItem, itemB: CartItem) => {
+  return (
+    itemA.product.id === itemB.product.id &&
+    itemA.unit.unit_id === itemB.unit.unit_id &&
+    itemA.order_type_id === itemB.order_type_id &&
+    itemA.variant?.id === itemB.variant?.id &&
+    lodash.isEqual(itemA.selectecVariantOptions, itemB.selectecVariantOptions)
+  );
+};
+
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
 
@@ -27,14 +38,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   // ————————————————————————————————————————————————
   addItem: item =>
     set(state => {
-      const isExists = state.items.find(
-        i =>
-          i.product.id === item.product.id &&
-          i.unit.unit_id === item.unit.unit_id &&
-          i.variant?.id === item.variant?.id &&
-          i.order_type_id === item.order_type_id &&
-          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions),
-      );
+      const isExists = state.items.some(i => isSameCartItem(i, item));
 
       if (isExists) {
         return {
@@ -55,14 +59,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   updateItem: (item, updates) =>
     set(state => ({
       items: state.items.map(i => {
-        const isSameItem =
-          i.product.id === item.product.id &&
-          i.unit.unit_id === item.unit.unit_id &&
-          i.order_type_id === item.order_type_id &&
-          i.variant?.id === item.variant?.id &&
-          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions);
-
-        console.log('is same');
+        const isSameItem = isSameCartItem(i, item);
 
         return isSameItem ? {...i, ...updates} : i;
       }),
@@ -74,15 +71,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   incrementQuantity: (item: CartItem) =>
     set(state => {
       return {
-        items: state.items.map(i =>
-          i.product.id === item.product.id &&
-          i.unit.unit_id === item.unit.unit_id &&
-          i.order_type_id === item.order_type_id &&
-          i.variant?.id === item.variant?.id &&
-          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
-            ? {...i, quantity: i.quantity + 1}
-            : i,
-        ),
+        items: state.items.map(i => (isSameCartItem(i, item) ? {...i, quantity: i.quantity + 1} : i)),
       };
     }),
 
@@ -92,33 +81,16 @@ export const useCartStore = create<CartState>((set, get) => ({
   decrementQuantity: (item: CartItem) =>
     set(state => {
       return {
-        items: state.items.map(i =>
-          i.product.id === item.product.id &&
-          i.unit.unit_id === item.unit.unit_id &&
-          i.order_type_id === item.order_type_id &&
-          i.variant?.id === item.variant?.id &&
-          lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
-            ? {...i, quantity: Math.max(i.quantity - 1, 1)} // prevent going below 1
-            : i,
-        ),
+        items: state.items.map(i => (isSameCartItem(i, item) ? {...i, quantity: Math.max(i.quantity - 1, 1)} : i)),
       };
     }),
 
   // ————————————————————————————————————————————————
   // ❌ Remove item from cart
   // ————————————————————————————————————————————————
-  removeItem: (item: CartItem) =>
+  removeItem: item =>
     set(state => ({
-      items: state.items.filter(
-        i =>
-          !(
-            i.product.id === item.product.id &&
-            i.unit.unit_id === item.unit.unit_id &&
-            i.order_type_id === item.order_type_id &&
-            i.variant?.id === item.variant?.id &&
-            lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
-          ),
-      ),
+      items: state.items.filter(i => !isSameCartItem(i, item)), // Use helper function
     })),
 
   // ————————————————————————————————————————————————
