@@ -16,11 +16,14 @@ type Props = {
 };
 
 export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDelete, onPress}) => {
-  const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item || {};
+  if (!item) return null; // Early return if there's no item
 
-  let variantPlaceholder = `Unit: ${productUnit?.unit.name}`;
-  if (selectecVariantOptions) variantPlaceholder += generateVariantPlaceholder(selectecVariantOptions);
+  const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item;
 
+  // Generate the variant placeholder text
+  const variantPlaceholder = `Unit: ${productUnit?.unit.name}${selectecVariantOptions ? generateVariantPlaceholder(selectecVariantOptions) : ''}`;
+
+  // Handlers
   const handleIncrement = (num: number) => onIncrement?.(num, item);
   const handleDecrement = (num: number) => onDecrement?.(num, item);
   const handleDelete = () => {
@@ -29,10 +32,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
       {text: 'Delete', onPress: () => onDelete?.(item), style: 'destructive'},
     ]);
   };
-
-  const handlePress = () => {
-    onPress?.(product?.id || 0, item);
-  };
+  const handlePress = () => onPress?.(product?.id || 0, item);
 
   return (
     <View className="px-4">
@@ -44,11 +44,14 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
 
           <View className="flex-1 justify-between">
             <View>
-              <Text className="text-base font-medium text-gray-800 leading-6">{product?.name}</Text>
+              <View className="flex-row items-center justify-between">
+                <Text className="text-base font-medium text-gray-800 leading-6">{product?.name}</Text>
+                <Text className="text-xs text-gray-400 mr-2.5">{item?.order_type?.label}</Text>
+              </View>
               <Text className="text-xs text-gray-400">{variantPlaceholder}</Text>
             </View>
 
-            <View className="flex-row justify-between items-center mt-2">
+            <View className="flex-row justify-between items-center">
               <Text className="text-base font-medium text-orange-500">Rp {numberUtils.toDecimal(price || 0)}</Text>
 
               <View className="flex-row items-center gap-2">
