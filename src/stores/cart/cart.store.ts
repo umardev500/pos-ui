@@ -4,7 +4,7 @@ import {create} from 'zustand';
 
 type CartState = {
   items: CartItem[];
-  additional_info?: CartAdditionalInfo;
+  additionalInfo?: CartAdditionalInfo;
 
   // Actions
   addItem: (item: CartItem) => void;
@@ -36,7 +36,7 @@ const isSameCartItem = (itemA: CartItem, itemB: CartItem) => {
 
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
-  additional_info: undefined,
+  additionalInfo: undefined,
 
   // ————————————————————————————————————————————————
   // 🛒 Add item to cart (merge if same unit/variant)
@@ -134,8 +134,8 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   setAdditionalInfo: (info: Partial<CartAdditionalInfo>) =>
     set(state => ({
-      additional_info: {
-        ...state.additional_info,
+      additionalInfo: {
+        ...state.additionalInfo,
         ...info,
       },
     })),

@@ -9,7 +9,7 @@ export const VoucherListScreen: React.FC = () => {
   const {data: discounts} = useDiscounts({
     scope: DiscountScope.ORDER,
   });
-  const discount = useCartStore(state => state.additional_info?.discount);
+  const discount = useCartStore(state => state.additionalInfo?.discount);
   const setAdditionalInfo = useCartStore(state => state.setAdditionalInfo);
 
   const handleSelect = (selected: DiscountDTO[]) => {
