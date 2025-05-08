@@ -15,6 +15,7 @@ export type MainStackParamList = {
     id: number;
     cartItem?: CartItem;
   };
+  VoucherList: undefined;
 };
 
 export type AuthStackParamList = {

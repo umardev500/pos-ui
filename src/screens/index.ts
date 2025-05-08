@@ -10,3 +10,4 @@ export * from './products';
 export * from './recipe';
 export * from './unit';
 export * from './variant';
+export * from './voucher';

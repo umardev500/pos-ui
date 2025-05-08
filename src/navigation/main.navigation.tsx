@@ -1,5 +1,5 @@
 import {IconButton} from '@app/components/atoms';
-import {CartScreen, ProductView} from '@app/screens';
+import {CartScreen, ProductView, VoucherListScreen} from '@app/screens';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
@@ -14,11 +14,13 @@ export const MainNavigation = () => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        header: ({back, route, options}) => (
+          <Header headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
+        ),
         ...TransitionPresets.ModalSlideFromBottomIOS,
       }}>
-      <Stack.Screen name="Drawer" component={DrawerNavigation} />
-      <Stack.Screen name="ManageProductStack" component={ManageProductStackNavigator} />
+      <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown: false}} />
+      <Stack.Screen name="ManageProductStack" component={ManageProductStackNavigator} options={{headerShown: false}} />
       <Stack.Screen
         options={{
           title: 'Daftar Pesanan',
@@ -43,6 +45,14 @@ export const MainNavigation = () => {
         component={CartScreen}
       />
       <Stack.Screen name="ProductView" options={{headerShown: false, title: ''}} component={ProductView} />
+      <Stack.Screen
+        options={{
+          title: 'Pilih Diskon',
+          headerShown: true,
+        }}
+        name="VoucherList"
+        component={VoucherListScreen}
+      />
     </Stack.Navigator>
   );
 };
