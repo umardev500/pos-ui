@@ -2,7 +2,7 @@ import {product7} from '@app/assets/images';
 import {Button, Icon, ProductTagIndicator, QuantityButton} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
 import {SelectionSheet, UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
-import {useOrders, useProductById} from '@app/hooks';
+import {useOrderTypes, useProductById} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {CartItem, MainStackParamList, OrderTypeDTO, ProductVariantDTO, UnitDto} from '@app/types';
@@ -43,7 +43,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 📡 Data Fetching
   // ————————————————————————————————————————————————
   const {data} = useProductById(id);
-  const {data: orderTypes} = useOrders();
+  const {data: orderTypes} = useOrderTypes();
 
   // ————————————————————————————————————————————————
   // 🧠 Data Transformation
