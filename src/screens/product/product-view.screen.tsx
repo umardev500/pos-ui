@@ -130,8 +130,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Retrieves all variants matching the selected unit's ID.
    */
   useEffect(() => {
-    if (unitHasVariants) {
-      const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
+    const variants = getVariantsByUnitId(product_variants, selectedUnit?.id ?? 0);
+    if (variants.length > 0) {
       setSelectedVariants(variants);
 
       return;
@@ -141,6 +141,9 @@ export const ProductView: React.FC<Props> = ({route}) => {
     if (!localProductUnit) return;
     const localPrice = localProductUnit.price;
     priceRef.current = localPrice;
+
+    // Reset selected variants when there are no variants for the selected unit
+    setSelectedVariants([]);
   }, [selectedUnit, unitHasVariants]);
 
   /**
