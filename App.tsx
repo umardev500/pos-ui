@@ -37,7 +37,7 @@ export default function Wrapper() {
           <App />
         </QueryClientProvider>
       </KeyboardProvider>
-      <Toast autoHide={false} config={toastConfig} />
+      <Toast config={toastConfig} />
     </SafeAreaProvider>
   );
 }
