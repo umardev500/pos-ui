@@ -112,11 +112,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
       priceRef.current = localPrice;
       setPrice(localPrice);
-      console.log('variant', localPrice);
     } else {
       const localPrice = cartItem.unit.price;
       priceRef.current = localPrice;
       setPrice(localPrice);
+    }
+
+    if (cartItem.order_type_id) {
+      const orderType = orderTypes?.find(o => o.id === cartItem.order_type_id);
+      setSelectedOrderType(orderType);
+      setFieldValue('order_type_id', orderType?.id);
     }
   }, [cartItem]);
 
@@ -201,8 +206,6 @@ export const ProductView: React.FC<Props> = ({route}) => {
       note: formData.note,
       order_type_id: formData.order_type_id,
     };
-
-    console.log(JSON.stringify(currentFormData));
 
     if (isUpdate) {
       useCartStore.getState().updateItem(cartItem, currentFormData);
