@@ -8,4 +8,5 @@ export type CartItem = {
   selectecVariantOptions?: Record<string, string>;
   price?: number;
   note?: string;
+  order_type_id?: number;
 };

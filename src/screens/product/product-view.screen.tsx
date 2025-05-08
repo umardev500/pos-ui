@@ -5,7 +5,7 @@ import {SelectionSheet, UnitSheet, VariantsSelectionSheet} from '@app/components
 import {useOrders, useProductById} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
-import {MainStackParamList, ProductVariantDTO, UnitDto} from '@app/types';
+import {CartItem, MainStackParamList, OrderTypeDTO, ProductVariantDTO, UnitDto} from '@app/types';
 import {generateVariantPlaceholder, getProductUnitByUnit, getVariantsByUnitId, numberUtils} from '@app/utils';
 import {initialPreviewProductForm, PreviewProductFormType, ProductPreviewSchema} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
@@ -61,15 +61,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   const [selectedUnit, setSelectedUnit] = useState<UnitDto>();
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>();
   const [selectedVariants, setSelectedVariants] = useState<ProductVariantDTO[]>([]);
+  const [selectedOrderType, setSelectedOrderType] = useState(orderTypes?.[0]);
   const [price, setPrice] = useState<number>(baseUnitPrice);
   const {bottom} = useSafeAreaInsets();
 
   const unitHasVariants = selectedUnit ? selectedVariants.length > 0 : false;
 
   // Generate display text for selected variant options
-  const variantPlaceholder = generateVariantPlaceholder(selectedOptions);
+  const variantPlaceholder = generateVariantPlaceholder(selectedOptions || {});
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -181,7 +182,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
    * Add item to cart with form data.
    */
   const handleFormSubmit = (formData: PreviewProductFormType) => {
-    const currentFormData = {
+    const currentFormData: CartItem = {
       product: data!!,
       quantity: formData.quantity!!,
       unit: formData.product_unit!!,
@@ -189,7 +190,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
       selectecVariantOptions: selectedOptions,
       price: priceRef.current,
       note: formData.note,
+      order_type_id: formData.order_type_id,
     };
+
+    console.log(JSON.stringify(currentFormData));
 
     if (isUpdate) {
       useCartStore.getState().updateItem(cartItem, currentFormData);
@@ -219,6 +223,11 @@ export const ProductView: React.FC<Props> = ({route}) => {
    */
   const setFieldValue = <T extends keyof PreviewProductFormType>(field: T, value: PreviewProductFormType[T]) => {
     formRef.current?.setFieldValue(field, value);
+  };
+
+  const handleSelectOrderType = (selectedItems: OrderTypeDTO[]) => {
+    setSelectedOrderType(selectedItems[0]);
+    setFieldValue('order_type_id', selectedItems[0].id);
   };
 
   // ————————————————————————————————————————————————
@@ -292,7 +301,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
                     onPress={() => orderTypeSheetRef.current?.present()}
                     trailingIcon="chevron_right"
                     label="Tipe order"
-                    placeholder="Pilih tipe order"
+                    placeholderTextColor={selectedOrderType ? colors.gray[800] : undefined}
+                    placeholder={selectedOrderType ? selectedOrderType.label : 'Pilih tipe order'}
                   />
 
                   {/* Unit & Variant Selection */}
@@ -367,9 +377,8 @@ export const ProductView: React.FC<Props> = ({route}) => {
       <SelectionSheet
         ref={orderTypeSheetRef}
         title="Pilih Tipe Order"
-        onSelect={e => {
-          console.log(e);
-        }}
+        selected={selectedOrderType ? [selectedOrderType] : []}
+        onSelect={handleSelectOrderType}
         items={orderTypes}
       />
     </View>
