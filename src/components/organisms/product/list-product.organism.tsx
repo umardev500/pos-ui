@@ -16,8 +16,10 @@ type Props = {
 
 export const ListProducts: React.FC<Props> = props => {
   const {data, onRefresh, isRefreshing, onAddToCart, onPress} = props;
-  const {width} = useWindowDimensions();
-  const itemWidth = (width - PADDING_X) / NUM_COL;
+  const {width, height} = useWindowDimensions();
+  const isLandscape = width > height;
+  const numberOfColumns = isLandscape ? 4 : 2;
+  const itemWidth = (width - PADDING_X) / numberOfColumns;
 
   const renderItem: ListRenderItem<ProductDto> = ({item}) => {
     return <ProductItem onAddToCart={onAddToCart} width={itemWidth} product={item} onPress={onPress} />;
@@ -26,9 +28,10 @@ export const ListProducts: React.FC<Props> = props => {
   return (
     <>
       <FlatList
+        key={numberOfColumns} // 🔑 Force remount when number of columns changes
         contentContainerStyle={{paddingHorizontal: PADDING_X / 2, paddingBottom: 45, paddingTop: 16}}
         ItemSeparatorComponent={() => <View className="h-4" />}
-        numColumns={2}
+        numColumns={numberOfColumns}
         keyExtractor={item => `${item.id}`}
         data={data}
         onRefresh={onRefresh}
