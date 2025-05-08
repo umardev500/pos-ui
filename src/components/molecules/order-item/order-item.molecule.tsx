@@ -21,7 +21,7 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
   const {product, quantity, unit: productUnit, selectecVariantOptions, price} = item;
 
   // Generate the variant placeholder text
-  const variantPlaceholder = `Unit: ${productUnit?.unit.name}${selectecVariantOptions ? generateVariantPlaceholder(selectecVariantOptions) : ''}`;
+  const variantPlaceholder = `Unit: ${productUnit?.unit.name}, ${selectecVariantOptions ? generateVariantPlaceholder(selectecVariantOptions) : ''}`;
 
   // Handlers
   const handleIncrement = (num: number) => onIncrement?.(num, item);
