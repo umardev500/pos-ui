@@ -1,5 +1,5 @@
 import {CategoryDto} from '@app/types/category';
-import {DiscountDto} from '@app/types/discount';
+import {DiscountDTO} from '@app/types/discount';
 import {UnitDto} from '@app/types/unit';
 import {VariantTypeDTO} from '@app/types/variant';
 
@@ -55,7 +55,7 @@ export interface ProductDto {
   updated_at: string;
   category: CategoryDto | null;
   base_unit: UnitDto;
-  discount: DiscountDto | null;
+  discount: DiscountDTO | null;
   product_units: ProductUnitDto[];
   product_variants: ProductVariantDTO[];
 }

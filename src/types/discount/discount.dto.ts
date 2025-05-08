@@ -1,4 +1,4 @@
-export interface DiscountDto {
+export interface DiscountDTO {
   id: number;
   merchant_id: number;
   scope: string;
