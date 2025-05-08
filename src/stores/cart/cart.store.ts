@@ -32,6 +32,7 @@ export const useCartStore = create<CartState>((set, get) => ({
           i.product.id === item.product.id &&
           i.unit.unit_id === item.unit.unit_id &&
           i.variant?.id === item.variant?.id &&
+          i.order_type_id === item.order_type_id &&
           lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions),
       );
 
@@ -40,6 +41,7 @@ export const useCartStore = create<CartState>((set, get) => ({
           items: state.items.map(i =>
             i.product.id === item.product.id &&
             i.unit.unit_id === item.unit.unit_id &&
+            i.order_type_id === item.order_type_id &&
             i.variant?.id === item.variant?.id
               ? {...i, quantity: i.quantity + item.quantity}
               : i,
@@ -56,6 +58,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         const isSameItem =
           i.product.id === item.product.id &&
           i.unit.unit_id === item.unit.unit_id &&
+          i.order_type_id === item.order_type_id &&
           i.variant?.id === item.variant?.id &&
           lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions);
 
@@ -74,6 +77,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         items: state.items.map(i =>
           i.product.id === item.product.id &&
           i.unit.unit_id === item.unit.unit_id &&
+          i.order_type_id === item.order_type_id &&
           i.variant?.id === item.variant?.id &&
           lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
             ? {...i, quantity: i.quantity + 1}
@@ -91,6 +95,7 @@ export const useCartStore = create<CartState>((set, get) => ({
         items: state.items.map(i =>
           i.product.id === item.product.id &&
           i.unit.unit_id === item.unit.unit_id &&
+          i.order_type_id === item.order_type_id &&
           i.variant?.id === item.variant?.id &&
           lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
             ? {...i, quantity: Math.max(i.quantity - 1, 1)} // prevent going below 1
@@ -109,6 +114,7 @@ export const useCartStore = create<CartState>((set, get) => ({
           !(
             i.product.id === item.product.id &&
             i.unit.unit_id === item.unit.unit_id &&
+            i.order_type_id === item.order_type_id &&
             i.variant?.id === item.variant?.id &&
             lodash.isEqual(i.selectecVariantOptions, item.selectecVariantOptions)
           ),
