@@ -1,7 +1,7 @@
 import {SelectableItemType} from '@app/components/molecules';
 import {SelectableList} from '@app/components/organisms';
 import React, {useEffect, useState} from 'react';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 
 type SelectableListProps<T extends SelectableItemType> = {
   title?: string;
@@ -45,11 +45,11 @@ export const SelectableListTemplate = <T extends SelectableItemType>({
   };
 
   return (
-    <>
+    <ScrollView>
       <Text className="text-sm text-gray-700">{title}</Text>
       <View className="mt-4">
         <SelectableList items={items} selectedItems={localSelected} onSelect={handleSelect} />
       </View>
-    </>
+    </ScrollView>
   );
 };
