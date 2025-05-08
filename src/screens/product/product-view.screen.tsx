@@ -75,6 +75,14 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   // 🧪 Effects
   // ————————————————————————————————————————————————
+  /**
+   * Automatically selects an order type when the list of order types is available.
+   */
+  useEffect(() => {
+    if (!orderTypes) return;
+
+    setSelectedOrderType(orderTypes[0]);
+  }, [orderTypes]);
 
   /**
    * Automatically selects a unit when the list of units is available.
