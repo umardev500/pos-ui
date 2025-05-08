@@ -1,8 +1,8 @@
 import {product7} from '@app/assets/images';
 import {Button, Icon, ProductTagIndicator, QuantityButton} from '@app/components/atoms';
 import {LabeledInput} from '@app/components/molecules';
-import {UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
-import {useProductById} from '@app/hooks';
+import {SelectionSheet, UnitSheet, VariantsSelectionSheet} from '@app/components/organisms';
+import {useOrders, useProductById} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {MainStackParamList, ProductVariantDTO, UnitDto} from '@app/types';
@@ -35,6 +35,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // ————————————————————————————————————————————————
   const unitSheetRef = useRef<TrueSheet>(null);
   const variantsRef = useRef<TrueSheet>(null);
+  const orderTypeSheetRef = useRef<TrueSheet>(null);
   const formRef = useRef<FormikProps<PreviewProductFormType>>(null);
   const priceRef = useRef<number>(0);
 
@@ -42,6 +43,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
   // 📡 Data Fetching
   // ————————————————————————————————————————————————
   const {data} = useProductById(id);
+  const {data: orderTypes} = useOrders();
 
   // ————————————————————————————————————————————————
   // 🧠 Data Transformation
@@ -287,7 +289,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
                   {/* Order Type (Placeholder) */}
                   <LabeledInput
                     isClickableOnly
-                    onPress={() => {}}
+                    onPress={() => orderTypeSheetRef.current?.present()}
                     trailingIcon="chevron_right"
                     label="Tipe order"
                     placeholder="Pilih tipe order"
@@ -359,6 +361,16 @@ export const ProductView: React.FC<Props> = ({route}) => {
         onSubmit={handleVariantSelected}
         variants={selectedVariants}
         ref={variantsRef}
+      />
+
+      {/* Order Type Selector Modal */}
+      <SelectionSheet
+        ref={orderTypeSheetRef}
+        title="Pilih Tipe Order"
+        onSelect={e => {
+          console.log(e);
+        }}
+        items={orderTypes}
       />
     </View>
   );
