@@ -1,3 +1,4 @@
+import {OrderTypeDTO} from '@app/types/order';
 import {ProductDto, ProductUnitDto, ProductVariantDTO} from '@app/types/product';
 
 export type CartItem = {
@@ -8,5 +9,5 @@ export type CartItem = {
   selectecVariantOptions?: Record<string, string>;
   price?: number;
   note?: string;
-  order_type_id?: number;
+  order_type?: OrderTypeDTO;
 };

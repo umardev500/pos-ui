@@ -1,8 +1,8 @@
-import {ProductUnitDto, ProductVariantDTO} from '@app/types';
+import {OrderTypeDTO, ProductUnitDto, ProductVariantDTO} from '@app/types';
 import * as yup from 'yup';
 
 export type PreviewProductFormType = {
-  order_type_id?: number;
+  order_type?: OrderTypeDTO;
   product_unit?: ProductUnitDto;
   note?: string;
   quantity?: number;
@@ -10,7 +10,7 @@ export type PreviewProductFormType = {
 };
 
 export const initialPreviewProductForm: PreviewProductFormType = {
-  order_type_id: undefined,
+  order_type: undefined,
   product_unit: undefined,
   note: undefined,
   quantity: 0,

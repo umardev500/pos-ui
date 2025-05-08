@@ -24,7 +24,7 @@ const isSameCartItem = (itemA: CartItem, itemB: CartItem) => {
   return (
     itemA.product.id === itemB.product.id &&
     itemA.unit.unit_id === itemB.unit.unit_id &&
-    itemA.order_type_id === itemB.order_type_id &&
+    itemA.order_type?.id === itemB?.order_type?.id &&
     itemA.variant?.id === itemB.variant?.id &&
     lodash.isEqual(itemA.selectecVariantOptions, itemB.selectecVariantOptions)
   );
@@ -42,14 +42,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
       if (isExists) {
         return {
-          items: state.items.map(i =>
-            i.product.id === item.product.id &&
-            i.unit.unit_id === item.unit.unit_id &&
-            i.order_type_id === item.order_type_id &&
-            i.variant?.id === item.variant?.id
-              ? {...i, quantity: i.quantity + item.quantity}
-              : i,
-          ),
+          items: state.items.map(i => (isSameCartItem(i, item) ? {...i, quantity: i.quantity + item.quantity} : i)),
         };
       }
 

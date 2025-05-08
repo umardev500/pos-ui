@@ -82,7 +82,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
     if (!orderTypes) return;
 
     setSelectedOrderType(orderTypes[0]);
-    setFieldValue('order_type_id', orderTypes[0].id);
+    setFieldValue('order_type', orderTypes[0]);
   }, [orderTypes]);
 
   /**
@@ -118,10 +118,10 @@ export const ProductView: React.FC<Props> = ({route}) => {
       setPrice(localPrice);
     }
 
-    if (cartItem.order_type_id) {
-      const orderType = orderTypes?.find(o => o.id === cartItem.order_type_id);
+    if (cartItem.order_type) {
+      const orderType = orderTypes?.find(o => o.id === cartItem.order_type?.id);
       setSelectedOrderType(orderType);
-      setFieldValue('order_type_id', orderType?.id);
+      setFieldValue('order_type', orderType);
     }
   }, [cartItem]);
 
@@ -204,7 +204,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
       selectecVariantOptions: selectedOptions,
       price: priceRef.current,
       note: formData.note,
-      order_type_id: formData.order_type_id,
+      order_type: formData.order_type,
     };
 
     if (isUpdate) {
@@ -239,7 +239,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
 
   const handleSelectOrderType = (selectedItems: OrderTypeDTO[]) => {
     setSelectedOrderType(selectedItems[0]);
-    setFieldValue('order_type_id', selectedItems[0].id);
+    setFieldValue('order_type', selectedItems[0]);
   };
 
   // ————————————————————————————————————————————————
