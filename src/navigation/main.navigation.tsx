@@ -49,6 +49,7 @@ export const MainNavigation = () => {
         options={{
           title: 'Pilih Diskon',
           headerShown: true,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
         }}
         name="VoucherList"
         component={VoucherListScreen}
