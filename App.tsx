@@ -1,4 +1,5 @@
 import {LoadingFull} from '@app/components/atoms';
+import {toastConfig} from '@app/config';
 import {AppNavigator} from '@app/navigation';
 import {sleep} from '@app/utils';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
@@ -36,7 +37,7 @@ export default function Wrapper() {
           <App />
         </QueryClientProvider>
       </KeyboardProvider>
-      <Toast />
+      <Toast autoHide={false} config={toastConfig} />
     </SafeAreaProvider>
   );
 }
