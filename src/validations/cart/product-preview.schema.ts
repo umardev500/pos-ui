@@ -13,7 +13,7 @@ export const initialPreviewProductForm: PreviewProductFormType = {
   order_type: undefined,
   product_unit: undefined,
   note: undefined,
-  quantity: 0,
+  quantity: 1,
   variant: undefined,
 };
 
