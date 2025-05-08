@@ -82,6 +82,7 @@ export const ProductView: React.FC<Props> = ({route}) => {
     if (!orderTypes) return;
 
     setSelectedOrderType(orderTypes[0]);
+    setFieldValue('order_type_id', orderTypes[0].id);
   }, [orderTypes]);
 
   /**
