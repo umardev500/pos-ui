@@ -6,4 +6,5 @@ export * from './liste-menu-item';
 export * from './order-item';
 export * from './product';
 export * from './quantity-controll';
+export * from './selectable-item';
 export * from './variant-item';

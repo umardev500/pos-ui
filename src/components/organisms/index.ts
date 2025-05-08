@@ -7,6 +7,7 @@ export * from './order-list';
 export * from './order-summary';
 export * from './product';
 export * from './product-form';
+export * from './selectable-list';
 export * from './selection-sheet';
 export * from './tab-view';
 export * from './unit-sheet';
