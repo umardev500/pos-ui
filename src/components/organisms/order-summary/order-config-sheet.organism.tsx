@@ -24,7 +24,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
           <Icon name="chevron_right" size={22} color={colors.gray[500]} />
         </TouchableOpacity>
 
-        <View className="h-[1px] bg-gray-200" />
+        <View className="h-[0.5px] bg-gray-200" />
 
         <TouchableOpacity
           onPress={toggleSwitch}
@@ -40,7 +40,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
           />
         </TouchableOpacity>
 
-        <View className="h-[1px] bg-gray-200" />
+        <View className="h-[0.5px] bg-gray-200" />
 
         <TouchableOpacity activeOpacity={0.4} onPress={() => {}} className="flex-row items-center justify-between py-4">
           <Text className="text-sm font-medium text-gray-800">Down Payment</Text>
