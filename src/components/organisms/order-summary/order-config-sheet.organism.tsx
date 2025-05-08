@@ -33,8 +33,8 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
           <Text className="text-sm font-medium text-gray-800">Point</Text>
 
           <Switch
-            trackColor={{false: undefined, true: colors.orange[200]}}
-            thumbColor={isEnabled ? colors.orange[300] : '#fff'}
+            trackColor={{false: undefined, true: colors.gray[400]}}
+            thumbColor={isEnabled ? colors.gray[500] : '#fff'}
             onValueChange={toggleSwitch}
             value={isEnabled}
           />
