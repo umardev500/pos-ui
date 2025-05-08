@@ -1,3 +1,4 @@
+import {DiscountDTO} from '@app/types/discount';
 import {OrderTypeDTO} from '@app/types/order';
 import {ProductDto, ProductUnitDto, ProductVariantDTO} from '@app/types/product';
 
@@ -10,4 +11,8 @@ export type CartItem = {
   price?: number;
   note?: string;
   order_type?: OrderTypeDTO;
+};
+
+export type CartAdditionalInfo = {
+  discount?: DiscountDTO;
 };

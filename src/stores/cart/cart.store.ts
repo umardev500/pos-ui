@@ -1,9 +1,10 @@
-import {CartItem} from '@app/types';
+import {CartAdditionalInfo, CartItem} from '@app/types';
 import lodash from 'lodash';
 import {create} from 'zustand';
 
 type CartState = {
   items: CartItem[];
+  additional_info?: CartAdditionalInfo;
 
   // Actions
   addItem: (item: CartItem) => void;
@@ -13,6 +14,9 @@ type CartState = {
   removeItem: (item: CartItem) => void;
   clearCart: () => void;
   getTotalDiscount: () => number;
+
+  // Additonal info action
+  setAdditionalInfo: (info: CartAdditionalInfo) => void;
 
   // Derived State
   getTotalPrice: () => number;
@@ -32,6 +36,7 @@ const isSameCartItem = (itemA: CartItem, itemB: CartItem) => {
 
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
+  additional_info: undefined,
 
   // ————————————————————————————————————————————————
   // 🛒 Add item to cart (merge if same unit/variant)
@@ -126,4 +131,12 @@ export const useCartStore = create<CartState>((set, get) => ({
     const discount = get().getTotalDiscount();
     return total - discount;
   },
+
+  setAdditionalInfo: (info: Partial<CartAdditionalInfo>) =>
+    set(state => ({
+      additional_info: {
+        ...state.additional_info,
+        ...info,
+      },
+    })),
 }));
