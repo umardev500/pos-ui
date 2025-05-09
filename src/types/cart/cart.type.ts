@@ -16,4 +16,5 @@ export type CartItem = {
 export type CartAdditionalInfo = {
   discount?: DiscountDTO;
   downPayment?: number;
+  orderType?: OrderTypeDTO;
 };

@@ -1,6 +1,6 @@
 import {cartAnim} from '@app/assets/anim';
 import {Icon, Input} from '@app/components/atoms';
-import {OrderConfigSheet, OrderList, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
+import {OrderConfigSheet, OrderList, OrderSummary, OrderSummarySheet, OrderTypeList} from '@app/components/organisms';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {CartItem} from '@app/types';
@@ -8,7 +8,7 @@ import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
 import clsx from 'clsx';
 import LottieView from 'lottie-react-native';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useMemo, useRef} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -77,11 +77,13 @@ export const CartScreen: React.FC = () => {
     navigation.navigate('ProductView', {id, cartItem});
   };
 
-  const renderHeader = () => {
+  const renderHeader = useMemo(() => {
     return (
       <>
-        <View className="px-4 flex-row items-center gap-3">
-          <View className="flex-1">
+        <OrderTypeList />
+
+        <View className="px-4 flex-row items-center gap-3 pt-4 ">
+          <View className="flex-1 py-1">
             <Input leadingIcon="person_plus_fill" size="sm" placeholder="Nama pelanggan..." />
           </View>
 
@@ -95,7 +97,7 @@ export const CartScreen: React.FC = () => {
         </View>
       </>
     );
-  };
+  }, []);
 
   return (
     <View className="flex-1 bg-white" style={{paddingBottom: bottom}}>
