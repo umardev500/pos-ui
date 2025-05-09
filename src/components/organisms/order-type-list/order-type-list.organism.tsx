@@ -38,5 +38,23 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
     useCartStore.getState().setAdditionalInfo({orderType: selectedOrderType});
   };
 
-  return <>{isHaveOrderTypes && <TabView onIndexChange={handleIndexChange} routes={routes} renderScene={scenes} />}</>;
+  // Get initial tab index
+  let initialTabIndex = 0;
+  if (orderTypes?.length) {
+    const selectedOrderType = useCartStore.getState().additionalInfo?.orderType;
+    initialTabIndex = orderTypes.findIndex((type: OrderTypeDTO) => type.name === selectedOrderType?.name);
+  }
+
+  return (
+    <>
+      {isHaveOrderTypes && (
+        <TabView
+          initialTabIndex={initialTabIndex}
+          onIndexChange={handleIndexChange}
+          routes={routes}
+          renderScene={scenes}
+        />
+      )}
+    </>
+  );
 };

@@ -9,14 +9,15 @@ type Props = {
   routes: Route[];
   renderScene: RenderScene;
   onIndexChange?: (index: number) => void;
+  initialTabIndex?: number;
 };
 
 const TAB_ITEM_W = 100;
 
 export const TabView: React.FC<Props> = props => {
-  const {routes, renderScene, onIndexChange} = props;
+  const {routes, renderScene, onIndexChange, initialTabIndex = 0} = props;
   const layout = useWindowDimensions();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState(initialTabIndex);
 
   const tabState: NavigationState<Route> = {
     index,
