@@ -47,10 +47,9 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
         <TouchableOpacity
           activeOpacity={0.4}
           onPress={handlePressDiscount}
-          className="flex-row items-center justify-between py-4">
+          className="flex-row items-center justify-between h-16">
           <Text className="text-sm font-medium text-gray-800">Pilih Diskon</Text>
 
-          {/* <View className="flex-row items-center gap-2"> */}
           <View
             className={clsx('flex-row items-center gap-2', {
               'bg-gray-200 px-2 py-0.5 rounded-full': additionalInfo?.discount,
@@ -67,7 +66,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
         <TouchableOpacity
           onPress={toggleSwitch}
           activeOpacity={0.4}
-          className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
+          className="flex-row items-center justify-between h-16 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm font-medium text-gray-800">Point</Text>
 
           <View className="flex-row items-center gap-2">
@@ -84,7 +83,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
         <TouchableOpacity
           activeOpacity={0.4}
           onPress={() => {}}
-          className="flex-row items-center justify-between py-4 border-t-[0.5px] border-t-gray-200">
+          className="flex-row items-center justify-between h-16 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm font-medium text-gray-800">Down Payment</Text>
           <View className="flex-row items-center gap-2">
             <Text className="text-sm font-medium text-gray-800">{additionalInfo?.downPayment}</Text>
