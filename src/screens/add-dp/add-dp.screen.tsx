@@ -12,6 +12,10 @@ type Props = {};
 export const AddDPScreen: React.FC<Props> = ({}) => {
   const formRef = useRef<FormikProps<AddDPFormValues>>(null);
   const setAdditionalInfo = useCartStore(state => state.setAdditionalInfo);
+  const additionalInfo = useCartStore(state => state.additionalInfo);
+  const defaultFormValues: AddDPFormValues = additionalInfo?.downPayment
+    ? {price: additionalInfo.downPayment}
+    : defaultAddDPFormValues;
 
   const onSubmit = () => {};
   const handleSubmit = () => {
@@ -43,7 +47,7 @@ export const AddDPScreen: React.FC<Props> = ({}) => {
           validationSchema={addDPSchema}
           initialValues={defaultAddDPFormValues}
           onSubmit={onSubmit}>
-          {({handleChange}) => {
+          {({values, handleChange}) => {
             return (
               <>
                 <View className="flex-1">
@@ -52,6 +56,7 @@ export const AddDPScreen: React.FC<Props> = ({}) => {
                     keyboardType="number-pad"
                     placeholder="Masukan jumlah"
                     size="sm"
+                    value={values.price > 0 ? values.price.toString() : ''}
                   />
                 </View>
               </>
