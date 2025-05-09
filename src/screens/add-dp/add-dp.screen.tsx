@@ -42,11 +42,7 @@ export const AddDPScreen: React.FC<Props> = ({}) => {
   return (
     <View className="flex-1 bg-white">
       <View className="p-4 flex-row items-center gap-2">
-        <Formik
-          innerRef={formRef}
-          validationSchema={addDPSchema}
-          initialValues={defaultAddDPFormValues}
-          onSubmit={onSubmit}>
+        <Formik innerRef={formRef} validationSchema={addDPSchema} initialValues={defaultFormValues} onSubmit={onSubmit}>
           {({values, handleChange}) => {
             return (
               <>

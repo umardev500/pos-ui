@@ -1,6 +1,7 @@
 import {Icon} from '@app/components/atoms';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
+import {numberUtils} from '@app/utils';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useNavigation} from '@react-navigation/native';
 import clsx from 'clsx';
@@ -91,7 +92,9 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
           className="flex-row items-center justify-between h-14 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm font-medium text-gray-800">Down Payment</Text>
           <View className="flex-row items-center gap-2">
-            <Text className="text-sm font-medium text-gray-800">{additionalInfo?.downPayment}</Text>
+            <Text className="text-sm font-medium text-gray-800">
+              {additionalInfo?.downPayment ? `Rp${numberUtils.toDecimal(additionalInfo.downPayment)}` : ''}
+            </Text>
             <Icon name="chevron_right" size={22} color={colors.gray[500]} />
           </View>
         </TouchableOpacity>
