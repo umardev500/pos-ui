@@ -1,5 +1,6 @@
 import {IconButton} from '@app/components/atoms';
 import {CartScreen, ProductView, VoucherListScreen} from '@app/screens';
+import {AddDPScreen} from '@app/screens/add-dp/add-dp.screen';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
@@ -53,6 +54,15 @@ export const MainNavigation = () => {
         }}
         name="VoucherList"
         component={VoucherListScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Down Payment',
+          headerShown: true,
+          ...TransitionPresets.ModalSlideFromBottomIOS,
+        }}
+        name="AddDP"
+        component={AddDPScreen}
       />
     </Stack.Navigator>
   );

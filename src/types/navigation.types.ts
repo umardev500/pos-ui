@@ -16,6 +16,7 @@ export type MainStackParamList = {
     cartItem?: CartItem;
   };
   VoucherList: undefined;
+  AddDP: undefined;
 };
 
 export type AuthStackParamList = {

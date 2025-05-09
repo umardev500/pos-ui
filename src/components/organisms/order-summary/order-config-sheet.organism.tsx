@@ -41,13 +41,18 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
     navigation.navigate('VoucherList');
   };
 
+  const handlePressDP = () => {
+    ref?.current?.dismiss();
+    navigation.navigate('AddDP');
+  };
+
   return (
     <TrueSheet keyboardMode="pan" edgeToEdge ref={ref} sizes={['auto', 'large']}>
       <View className="pt-6 px-4" style={{paddingBottom: bottom + 16}}>
         <TouchableOpacity
           activeOpacity={0.4}
           onPress={handlePressDiscount}
-          className="flex-row items-center justify-between h-16">
+          className="flex-row items-center justify-between h-14">
           <Text className="text-sm font-medium text-gray-800">Pilih Diskon</Text>
 
           <View
@@ -66,7 +71,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
         <TouchableOpacity
           onPress={toggleSwitch}
           activeOpacity={0.4}
-          className="flex-row items-center justify-between h-16 border-t-[0.5px] border-t-gray-200">
+          className="flex-row items-center justify-between h-14 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm font-medium text-gray-800">Point</Text>
 
           <View className="flex-row items-center gap-2">
@@ -82,8 +87,8 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
 
         <TouchableOpacity
           activeOpacity={0.4}
-          onPress={() => {}}
-          className="flex-row items-center justify-between h-16 border-t-[0.5px] border-t-gray-200">
+          onPress={handlePressDP}
+          className="flex-row items-center justify-between h-14 border-t-[0.5px] border-t-gray-200">
           <Text className="text-sm font-medium text-gray-800">Down Payment</Text>
           <View className="flex-row items-center gap-2">
             <Text className="text-sm font-medium text-gray-800">{additionalInfo?.downPayment}</Text>
