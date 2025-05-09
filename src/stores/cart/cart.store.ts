@@ -133,6 +133,8 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   getTotalOrderDiscount: () => {
+    if (!get().additionalInfo?.discount) return 0;
+
     const total = get().getTotalPrice();
     const discount = get().getTotalDiscount();
     let finalAmountWithoutOrderDiscount = total - discount;
@@ -153,16 +155,8 @@ export const useCartStore = create<CartState>((set, get) => ({
   getFinalAmount: () => {
     const total = get().getTotalPrice();
     const discount = get().getTotalDiscount();
-    const orderDiscount = get().additionalInfo?.discount;
-    const value = orderDiscount?.value || 0;
 
-    let finalAmount = total - discount; // initial is total price and product discount only
-
-    if (orderDiscount?.type === DiscountType.PERCENT) {
-      finalAmount -= (finalAmount * value) / 100;
-    } else {
-      finalAmount -= value;
-    }
+    let finalAmount = total - discount - get().getTotalOrderDiscount();
 
     return finalAmount;
   },
