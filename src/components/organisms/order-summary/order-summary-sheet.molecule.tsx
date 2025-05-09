@@ -13,7 +13,8 @@ export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
   const {bottom} = useSafeAreaInsets();
   const totalPrice = useCartStore(state => state.getTotalPrice());
   const totalDiscount = useCartStore.getState().getTotalDiscount();
-  const finalAmount = totalPrice - totalDiscount;
+  const totalOrderDiscount = useCartStore(state => state.getTotalOrderDiscount());
+  const finalAmount = useCartStore(state => state.getFinalAmount());
 
   const formatCurrency = (amount: number) => `Rp${numberUtils.toDecimal(amount)}`;
 
@@ -24,7 +25,7 @@ export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
         <Row label="Total" value={formatCurrency(totalPrice)} />
 
         {/* Voucher Discount Placeholder */}
-        <Row label="Voucher Diskon" value={formatCurrency(0)} bordered />
+        <Row label="Voucher Diskon" value={`-${formatCurrency(totalOrderDiscount)}`} bordered />
 
         {/* Product Discount */}
         <Row label="Diskon Produk" value={`-${formatCurrency(totalDiscount)}`} bordered />

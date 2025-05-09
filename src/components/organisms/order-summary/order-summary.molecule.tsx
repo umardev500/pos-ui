@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const OrderSummary: React.FC<Props> = ({onPressMoreSummary, onPressOrderConfig, haveItems = false}) => {
-  const finalAmount = useCartStore.getState().getFinalAmount();
+  const finalAmount = useCartStore(state => state.getFinalAmount());
   const finalAmountCurrency = numberUtils.formatCurrency(finalAmount);
 
   return (

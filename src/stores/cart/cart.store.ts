@@ -1,4 +1,4 @@
-import {CartAdditionalInfo, CartItem} from '@app/types';
+import {CartAdditionalInfo, CartItem, DiscountType} from '@app/types';
 import {CustomerDTO} from '@app/types/customer/customer.dto';
 import lodash from 'lodash';
 import {create} from 'zustand';
@@ -16,6 +16,7 @@ type CartState = {
   removeItem: (item: CartItem) => void;
   clearCart: () => void;
   getTotalDiscount: () => number;
+  getTotalOrderDiscount: () => number;
 
   // Additonal info action
   setAdditionalInfo: (info: CartAdditionalInfo) => void;
@@ -131,10 +132,39 @@ export const useCartStore = create<CartState>((set, get) => ({
     }, 0);
   },
 
+  getTotalOrderDiscount: () => {
+    const total = get().getTotalPrice();
+    const discount = get().getTotalDiscount();
+    let finalAmountWithoutOrderDiscount = total - discount;
+
+    const orderDiscount = get().additionalInfo?.discount;
+    const value = orderDiscount?.value || 0;
+    let result = 0;
+
+    if (orderDiscount?.type === DiscountType.PERCENT) {
+      result = (finalAmountWithoutOrderDiscount * value) / 100;
+    } else {
+      result = value;
+    }
+
+    return result;
+  },
+
   getFinalAmount: () => {
     const total = get().getTotalPrice();
     const discount = get().getTotalDiscount();
-    return total - discount;
+    const orderDiscount = get().additionalInfo?.discount;
+    const value = orderDiscount?.value || 0;
+
+    let finalAmount = total - discount; // initial is total price and product discount only
+
+    if (orderDiscount?.type === DiscountType.PERCENT) {
+      finalAmount -= (finalAmount * value) / 100;
+    } else {
+      finalAmount -= value;
+    }
+
+    return finalAmount;
   },
 
   setAdditionalInfo: (info: Partial<CartAdditionalInfo>) =>
