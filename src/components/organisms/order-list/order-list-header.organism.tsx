@@ -1,5 +1,6 @@
 import {Icon, Input} from '@app/components/atoms';
 import {OrderTypeList} from '@app/components/organisms/order-type-list';
+import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import React from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
@@ -7,13 +8,22 @@ import {Text, TouchableOpacity, View} from 'react-native';
 type Props = {};
 
 export const OrderListHeader: React.FC<Props> = ({}) => {
+  const handleChangeText = (text: string) => {
+    useCartStore.getState().setCustomer({name: text});
+  };
+
   return (
     <>
       <OrderTypeList />
 
       <View className="px-4 flex-row items-center gap-3 pt-4 ">
         <View className="flex-1 py-1">
-          <Input leadingIcon="person_plus_fill" size="sm" placeholder="Nama pelanggan..." />
+          <Input
+            onChangeText={handleChangeText}
+            leadingIcon="person_plus_fill"
+            size="sm"
+            placeholder="Nama pelanggan..."
+          />
         </View>
 
         <TouchableOpacity className="bg-gray-100 rounded-xl w-10 h-10 items-center justify-center">
