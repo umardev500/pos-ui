@@ -8,18 +8,32 @@ import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {AddDPFormValues, addDPSchema, defaultAddDPFormValues} from '@app/validations';
 
-export const AddDPScreen: React.FC = () => {
-  const formRef = useRef<FormikProps<AddDPFormValues>>(null);
+type Props = {};
 
+export const AddDPScreen: React.FC<Props> = () => {
+  // ————————————————————————————————————————————————
+  // 🔗 Store & State
+  // ————————————————————————————————————————————————
   const setAdditionalInfo = useCartStore(state => state.setAdditionalInfo);
   const additionalInfo = useCartStore(state => state.additionalInfo);
 
+  // ————————————————————————————————————————————————
+  // 🔗 Refs
+  // ————————————————————————————————————————————————
+  const formRef = useRef<FormikProps<AddDPFormValues>>(null);
+
+  // ————————————————————————————————————————————————
+  // 🧠 Initial Values
+  // ————————————————————————————————————————————————
   const initialValues: AddDPFormValues = additionalInfo?.downPayment
     ? {price: additionalInfo.downPayment}
     : defaultAddDPFormValues;
 
+  // ————————————————————————————————————————————————
+  // 🧠 Handlers
+  // ————————————————————————————————————————————————
   const onSubmit = () => {
-    // No-op since we manually trigger submission
+    // This is handled manually via formRef
   };
 
   const handleSubmit = () => {
@@ -45,6 +59,9 @@ export const AddDPScreen: React.FC = () => {
     }, 300);
   };
 
+  // ————————————————————————————————————————————————
+  // 🧱 Render
+  // ————————————————————————————————————————————————
   return (
     <View className="flex-1 bg-white">
       <View className="p-4 flex-row items-center gap-2">
