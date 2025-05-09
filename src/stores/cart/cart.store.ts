@@ -155,8 +155,9 @@ export const useCartStore = create<CartState>((set, get) => ({
   getFinalAmount: () => {
     const total = get().getTotalPrice();
     const discount = get().getTotalDiscount();
+    const dp = get().additionalInfo?.downPayment || 0;
 
-    let finalAmount = total - discount - get().getTotalOrderDiscount();
+    let finalAmount = total - discount - get().getTotalOrderDiscount() - dp;
 
     return finalAmount;
   },
