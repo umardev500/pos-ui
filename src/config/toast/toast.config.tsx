@@ -10,7 +10,7 @@ interface CustomToastProps extends BaseToastProps {
 
 export const toastConfig: ToastConfig = {
   success: (toast: CustomToastProps) => (
-    <View className="bg-white shadow-xl shadow-gray-800 flex-row items-center w-[85%] rounded-xl p-4 gap-2">
+    <View className="bg-white shadow-lg shadow-black flex-row items-center w-[85%] rounded-xl p-4 gap-2">
       <Icon name="earthquake" size={20} color={colors.green[500]} />
       <Text className="text-sm " numberOfLines={1} ellipsizeMode="tail">
         {toast.text1}
@@ -18,7 +18,7 @@ export const toastConfig: ToastConfig = {
     </View>
   ),
   error: (toast: CustomToastProps) => (
-    <View className="bg-white shadow-xl shadow-gray-800 flex-row items-center w-[85%] rounded-xl p-4 gap-2">
+    <View className="bg-white shadow-lg shadow-black flex-row items-center w-[85%] rounded-xl p-4 gap-2">
       <Icon name="x" size={20} color={colors.red[500]} />
       <Text className="text-sm text-gray-800" numberOfLines={1} ellipsizeMode="tail">
         {toast.text1}
