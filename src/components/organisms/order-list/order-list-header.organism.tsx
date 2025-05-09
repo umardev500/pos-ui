@@ -12,6 +12,8 @@ export const OrderListHeader: React.FC<Props> = ({}) => {
     useCartStore.getState().setCustomer({name: text});
   };
 
+  const customer = useCartStore(state => state.customer);
+
   return (
     <>
       <OrderTypeList />
@@ -19,6 +21,7 @@ export const OrderListHeader: React.FC<Props> = ({}) => {
       <View className="px-4 flex-row items-center gap-3 pt-4 ">
         <View className="flex-1 py-1">
           <Input
+            value={customer?.name}
             onChangeText={handleChangeText}
             leadingIcon="person_plus_fill"
             size="sm"
