@@ -13,6 +13,8 @@ jobs:
       # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # fetches all commit history
         
       - name: Generate commit log
         run: |
@@ -35,7 +37,7 @@ jobs:
               return { hash, author, date, message, clock };
             });
 
-            fs.writeFileSync('commits.json', JSON.stringify(commits, null, 2));
+            fs.writeFileSync('commits-ui.json', JSON.stringify(commits, null, 2));
           "
       
       - name: Upload commit log to VPS
@@ -44,8 +46,8 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USER }}
           key: ${{ secrets.VPS_SSH_KEY }}
-          source: commits.json
-          target: /var/www/html/apks/commits-ui.json
+          source: commits-ui.json
+          target: /var/www/html/apks
 
       # Step 2: Set up Java 21
       - name: Set up Java 21
