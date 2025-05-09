@@ -64,10 +64,10 @@ jobs:
             ${{ runner.os }}-gradle-
 
       # Step 9: Clean build
-      - name: Clean build
-        run: |
-          cd android
-          ./gradlew clean
+      # - name: Clean build
+      #   run: |
+      #     cd android
+      #     ./gradlew clean
 
       # Step 10: Build APK
       - name: Build APK
