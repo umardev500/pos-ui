@@ -17,20 +17,7 @@ type Props = {
 export const Loading: React.FC<Props> = props => {
   const {size = 24, source = require('@app/assets/anim/loading-primary.json')} = props;
 
-  return (
-    <LottieView
-      colorFilters={[
-        {
-          keypath: 'LayerName', // ← name of the layer you want to color
-          color: 'red', // ← color you want
-        },
-      ]}
-      source={source}
-      autoPlay
-      loop
-      style={{width: size, height: size}}
-    />
-  );
+  return <LottieView source={source} autoPlay loop style={{width: size, height: size}} />;
 };
 
 export const LoadingFull: React.FC<Props> = props => {

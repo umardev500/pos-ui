@@ -15,7 +15,7 @@ export const OrderSummary: React.FC<Props> = ({onPressMoreSummary, onPressOrderC
   const finalAmountCurrency = numberUtils.formatCurrency(finalAmount);
 
   return (
-    <View className="px-4 py-4 border-t border-gray-100">
+    <View className="px-4 py-4 border-t border-gray-100 bg-white">
       <View className="flex-row items-center justify-between">
         <TouchableOpacity activeOpacity={0.7} onPress={onPressMoreSummary} className="flex-row items-center gap-1">
           <Text className="text-base font-medium text-gray-600">Total:</Text>

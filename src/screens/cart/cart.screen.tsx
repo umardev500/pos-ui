@@ -1,3 +1,4 @@
+import {cartAnim} from '@app/assets/anim';
 import {Icon, Input} from '@app/components/atoms';
 import {OrderConfigSheet, OrderList, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
 import {useCartStore} from '@app/stores';
@@ -5,6 +6,8 @@ import {colors} from '@app/styles';
 import {CartItem} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useIsFocused, useNavigation} from '@react-navigation/native';
+import clsx from 'clsx';
+import LottieView from 'lottie-react-native';
 import React, {useEffect, useRef} from 'react';
 import {Text, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
@@ -23,6 +26,8 @@ export const CartScreen: React.FC = () => {
   const isFocused = useIsFocused();
   const cartItems = useCartStore(state => state.items);
   const {bottom} = useSafeAreaInsets();
+
+  const haveItems = cartItems.length > 0;
 
   // ————————————————————————————————————————————————
   // 🧭 Navigation
@@ -94,14 +99,26 @@ export const CartScreen: React.FC = () => {
 
   return (
     <View className="flex-1 bg-white" style={{paddingBottom: bottom}}>
-      <OrderList
-        data={cartItems}
-        onDecrement={handleDecrement}
-        onIncrement={handleIncrement}
-        onDelete={handleDelete}
-        onPress={handlePressItem}
-        header={renderHeader}
-      />
+      <View
+        className={clsx({
+          'flex-1': haveItems,
+        })}>
+        <OrderList
+          data={cartItems}
+          onDecrement={handleDecrement}
+          onIncrement={handleIncrement}
+          onDelete={handleDelete}
+          onPress={handlePressItem}
+          header={renderHeader}
+        />
+      </View>
+
+      {!haveItems && (
+        <View className="items-center justify-center flex-1">
+          <LottieView autoPlay source={cartAnim} style={{width: 150, height: 150}} />
+          <Text className="text-sm text-gray-500">Keranjang belanja kosong...</Text>
+        </View>
+      )}
 
       <OrderConfigSheet ref={orderConfigRef} />
       <OrderSummary onPressOrderConfig={handlePressConfig} onPressMoreSummary={handlePressMoreOnSummary} />
