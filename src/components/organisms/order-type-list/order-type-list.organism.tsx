@@ -39,10 +39,15 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
   };
 
   // Get initial tab index
-  let initialTabIndex = 0;
+  let initialTabIndex;
   if (orderTypes?.length) {
     const selectedOrderType = useCartStore.getState().additionalInfo?.orderType;
     initialTabIndex = orderTypes.findIndex((type: OrderTypeDTO) => type.name === selectedOrderType?.name);
+
+    // Fallback to 0 if no match is found (i.e., findIndex returns -1)
+    if (initialTabIndex === -1) {
+      initialTabIndex = 0;
+    }
   }
 
   return (

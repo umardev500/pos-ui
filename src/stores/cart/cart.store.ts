@@ -1,10 +1,12 @@
 import {CartAdditionalInfo, CartItem} from '@app/types';
+import {CustomerDTO} from '@app/types/customer/customer.dto';
 import lodash from 'lodash';
 import {create} from 'zustand';
 
 type CartState = {
   items: CartItem[];
   additionalInfo?: CartAdditionalInfo;
+  customer?: CustomerDTO;
 
   // Actions
   addItem: (item: CartItem) => void;
@@ -17,6 +19,9 @@ type CartState = {
 
   // Additonal info action
   setAdditionalInfo: (info: CartAdditionalInfo) => void;
+
+  // Customer action
+  setCustomer: (customer: CustomerDTO) => void;
 
   // Derived State
   getTotalPrice: () => number;
@@ -137,6 +142,14 @@ export const useCartStore = create<CartState>((set, get) => ({
       additionalInfo: {
         ...state.additionalInfo,
         ...info,
+      },
+    })),
+
+  setCustomer: (customer: Partial<CustomerDTO>) =>
+    set(state => ({
+      customer: {
+        ...state.customer,
+        ...customer,
       },
     })),
 }));

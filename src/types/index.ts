@@ -2,6 +2,7 @@ export * from './auth.types';
 export * from './cart';
 export * from './category';
 export * from './category.type';
+export * from './customer';
 export * from './discount';
 export * from './menu.type';
 export * from './navigation.types';
