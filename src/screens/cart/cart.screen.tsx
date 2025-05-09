@@ -38,9 +38,9 @@ export const CartScreen: React.FC = () => {
   // 📡 Effects
   // ————————————————————————————————————————————————
   /**
-   * Trigger the bottom sheet to be shown when returning to 'AddDP' screen.
+   * Trigger the bottom sheet to be shown when returning to 'AddDP' ...etc, screen.
    * This is controlled by the `needReshownConfigSheetRef` flag, which is set
-   * when the 'AddDP' screen becomes active.
+   * when the 'AddDP', 'VoucherList', ...etc screen becomes active.
    */
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -60,6 +60,10 @@ export const CartScreen: React.FC = () => {
   useEffect(() => {
     switch (activeRouteName) {
       case 'AddDP': {
+        needReshownConfigSheetRef.current = true;
+        break;
+      }
+      case 'VoucherList': {
         needReshownConfigSheetRef.current = true;
         break;
       }
