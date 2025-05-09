@@ -67,6 +67,7 @@ const glyphMap = {
   routine: 0xe93c,
   sunny: 0xe93d,
   more_horiz: 0xe93e,
+  person_plus_fill: 0xe93f,
   ...glyphMapFill,
 };
 

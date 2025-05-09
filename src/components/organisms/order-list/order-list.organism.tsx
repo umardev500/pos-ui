@@ -9,9 +9,10 @@ type Props = {
   onDecrement?: (num: number, item?: CartItem) => void;
   onDelete?: (item?: CartItem) => void;
   onPress?: (id: number, cartItem?: CartItem) => void;
+  header?: React.ReactElement<unknown, string | React.JSXElementConstructor<any>> | React.ComponentType<any> | null;
 };
 
-export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement, onDelete, onPress}) => {
+export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement, onDelete, onPress, header}) => {
   const renderItem: ListRenderItem<CartItem> = ({item}) => {
     return (
       <OrderItem
@@ -26,10 +27,11 @@ export const OrderList: React.FC<Props> = ({data, onIncrement, onDecrement, onDe
 
   return (
     <FlatList
-      contentContainerStyle={{paddingBottom: 16, paddingTop: 16}}
+      contentContainerStyle={{paddingBottom: 16, paddingTop: 8}}
       ItemSeparatorComponent={() => <View className="h-4" />}
       data={data}
       renderItem={renderItem}
+      ListHeaderComponent={header}
     />
   );
 };

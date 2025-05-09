@@ -48,7 +48,9 @@ export const OrderItem: React.FC<Props> = ({item, onIncrement, onDecrement, onDe
                 <Text className="text-base font-medium text-gray-800 leading-6">{product?.name}</Text>
                 <Text className="text-xs text-gray-400 mr-2.5">{item?.order_type?.label}</Text>
               </View>
-              <Text className="text-xs text-gray-400">{variantPlaceholder}</Text>
+              <Text className="text-xs text-gray-400" numberOfLines={1} ellipsizeMode="tail">
+                {variantPlaceholder}
+              </Text>
             </View>
 
             <View className="flex-row justify-between items-center">
