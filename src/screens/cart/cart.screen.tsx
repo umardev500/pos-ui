@@ -121,7 +121,11 @@ export const CartScreen: React.FC = () => {
       )}
 
       <OrderConfigSheet ref={orderConfigRef} />
-      <OrderSummary onPressOrderConfig={handlePressConfig} onPressMoreSummary={handlePressMoreOnSummary} />
+      <OrderSummary
+        haveItems={haveItems}
+        onPressOrderConfig={handlePressConfig}
+        onPressMoreSummary={handlePressMoreOnSummary}
+      />
       <OrderSummarySheet ref={orderSummaryRef} />
     </View>
   );
