@@ -19,6 +19,8 @@ export type MainStackParamList = {
   AddDP: undefined;
 };
 
+export type MainStackRouteNames = keyof MainStackParamList;
+
 export type AuthStackParamList = {
   Login: undefined;
   SignUp: undefined;

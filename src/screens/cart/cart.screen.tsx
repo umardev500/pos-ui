@@ -1,9 +1,9 @@
 import {cartAnim} from '@app/assets/anim';
 import {OrderConfigSheet, OrderList, OrderListHeader, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
 import {useCartStore} from '@app/stores';
-import {CartItem} from '@app/types';
+import {CartItem, MainStackRouteNames} from '@app/types';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation/native';
 import clsx from 'clsx';
 import LottieView from 'lottie-react-native';
 import React, {useEffect, useMemo, useRef} from 'react';
@@ -16,7 +16,7 @@ export const CartScreen: React.FC = () => {
   // ————————————————————————————————————————————————
   const orderSummaryRef = useRef<TrueSheet>(null);
   const orderConfigRef = useRef<TrueSheet>(null);
-  const configHasbeenShownBefore = useRef(false);
+  const needReshownConfigSheetRef = useRef(false);
 
   // ————————————————————————————————————————————————
   // 📦 Hooks
@@ -24,6 +24,8 @@ export const CartScreen: React.FC = () => {
   const isFocused = useIsFocused();
   const cartItems = useCartStore(state => state.items);
   const {bottom} = useSafeAreaInsets();
+  const navstate = useNavigationState(state => state);
+  const activeRouteName = navstate.routes[navstate.index].name as MainStackRouteNames;
 
   const haveItems = cartItems.length > 0;
 
@@ -35,15 +37,34 @@ export const CartScreen: React.FC = () => {
   // ————————————————————————————————————————————————
   // 📡 Effects
   // ————————————————————————————————————————————————
+  /**
+   * Trigger the bottom sheet to be shown when returning to 'AddDP' screen.
+   * This is controlled by the `needReshownConfigSheetRef` flag, which is set
+   * when the 'AddDP' screen becomes active.
+   */
   useEffect(() => {
     const timer = setTimeout(() => {
-      if (isFocused && configHasbeenShownBefore.current) {
+      if (isFocused && needReshownConfigSheetRef.current) {
         orderConfigRef.current?.present();
+
+        needReshownConfigSheetRef.current = false;
       }
     }, 200);
 
     return () => clearTimeout(timer);
   }, [isFocused]);
+
+  /**
+   * Set the flag to show the bottom sheet when navigating to 'AddDP' screen.
+   */
+  useEffect(() => {
+    switch (activeRouteName) {
+      case 'AddDP': {
+        needReshownConfigSheetRef.current = true;
+        break;
+      }
+    }
+  }, [activeRouteName]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
@@ -65,14 +86,15 @@ export const CartScreen: React.FC = () => {
   };
 
   const handlePressConfig = () => {
-    if (!configHasbeenShownBefore.current) {
-      configHasbeenShownBefore.current = true;
-    }
     orderConfigRef.current?.present();
   };
 
   const handlePressItem = (id: number, cartItem?: CartItem) => {
     navigation.navigate('ProductView', {id, cartItem});
+  };
+
+  const handleConfigSeetDismiss = () => {
+    // configHasbeenShownBefore.current = false;
   };
 
   const renderHeader = useMemo(() => {
@@ -106,7 +128,7 @@ export const CartScreen: React.FC = () => {
         </View>
       )}
 
-      <OrderConfigSheet ref={orderConfigRef} />
+      <OrderConfigSheet ref={orderConfigRef} onDismiss={handleConfigSeetDismiss} />
       <OrderSummary
         haveItems={haveItems}
         onPressOrderConfig={handlePressConfig}

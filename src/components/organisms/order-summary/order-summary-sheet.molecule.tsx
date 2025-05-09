@@ -7,9 +7,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   ref?: React.RefObject<TrueSheet | null>;
+  onDismiss?: () => void;
 };
 
-export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
+export const OrderSummarySheet: React.FC<Props> = ({ref, onDismiss}) => {
   const {bottom} = useSafeAreaInsets();
   const totalPrice = useCartStore(state => state.getTotalPrice());
   const totalDiscount = useCartStore.getState().getTotalDiscount();
@@ -19,7 +20,7 @@ export const OrderSummarySheet: React.FC<Props> = ({ref}) => {
   const formatCurrency = (amount: number) => `Rp${numberUtils.toDecimal(amount)}`;
 
   return (
-    <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
+    <TrueSheet onDismiss={onDismiss} edgeToEdge ref={ref} sizes={['auto', 'large']}>
       <View className="pt-6 px-4" style={{paddingBottom: bottom + 16}}>
         {/* Total Before Discount */}
         <Row label="Total" value={formatCurrency(totalPrice)} />

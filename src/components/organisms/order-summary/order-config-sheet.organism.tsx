@@ -11,9 +11,10 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type Props = {
   ref?: React.RefObject<TrueSheet | null>;
+  onDismiss?: () => void;
 };
 
-export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
+export const OrderConfigSheet: React.FC<Props> = ({ref, onDismiss}) => {
   // ————————————————————————————————————————————————
   // 🧭 Navigation
   // ————————————————————————————————————————————————
@@ -48,7 +49,7 @@ export const OrderConfigSheet: React.FC<Props> = ({ref}) => {
   };
 
   return (
-    <TrueSheet keyboardMode="pan" edgeToEdge ref={ref} sizes={['auto', 'large']}>
+    <TrueSheet onDismiss={onDismiss} edgeToEdge ref={ref} sizes={['auto', 'large']}>
       <View className="pt-6 px-4" style={{paddingBottom: bottom + 16}}>
         <TouchableOpacity
           activeOpacity={0.4}
