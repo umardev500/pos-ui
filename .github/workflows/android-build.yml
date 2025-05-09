@@ -3,67 +3,91 @@ name: Build and Upload APK to VPS
 on:
   push:
     branches:
-      - main    # Trigger on push to the main branch
+      - main
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
+    runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout the repository to get the source code
+      # Step 1: Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Set up Java 21 for React Native build
+      # Step 2: Set up Java 21
       - name: Set up Java 21
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '21'
 
-      # Step 3: Set up Node.js v22 for React Native
+      # Step 3: Set up Node.js v22
       - name: Set up Node.js v22
         uses: actions/setup-node@v3
         with:
           node-version: '22'
-          yarn: true  # Install Yarn
+          yarn: true
 
-      # Step 4: Install dependencies using Yarn
+      # Step 4: Cache Yarn dependencies
+      - name: Cache Yarn dependencies
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/yarn
+            node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # Step 5: Install dependencies
       - name: Install dependencies with Yarn
         run: yarn install --ignore-engines
 
-      # Step 5: Set up environment variables for React Native build
+      # Step 6: Set up environment variables
       - name: Set up .env file
         run: |
           echo "API_URL=http://46.250.237.92:3000/api" > .env
 
-      # Step 6: List all files to verify the .env file is created
+      # Step 7: List files (debugging)
       - name: List all files
-        run: ls -a  # This will list all files, including hidden files like .env
+        run: ls -a
 
+      # Step 8: Cache Gradle dependencies
+      - name: Cache Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Step 9: Clean build
       - name: Clean build
         run: |
           cd android
           ./gradlew clean
 
-      # Step 7: Build the APK
+      # Step 10: Build APK
       - name: Build APK
         run: |
           cd android
           ./gradlew assembleRelease
 
-      # Step 8: Set up the SSH private key from GitHub secrets
+      # Step 11: Set up SSH private key
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
 
-      # Step 9: Upload the APK file to the VPS using SCP
+      # Step 12: Upload APK to VPS
       - name: Upload APK to VPS
         run: |
           scp -o StrictHostKeyChecking=no android/app/build/outputs/apk/release/*-release.apk root@46.250.237.92:/var/www/html/apks/
 
+      # Step 13: Deploy to VPS via SSH
       - name: Deploy to VPS via SSH
         uses: appleboy/ssh-action@master
         with:
@@ -73,19 +97,15 @@ jobs:
           script: |
             export PATH=$PATH:/usr/local/bin:/root/.nvm/versions/node/v22.14.0/bin
 
-            # ✅ Generate Git commit history JSON with clock
             node -e "
               const fs = require('fs');
               const { execSync } = require('child_process');
-              
-              // Run git log to get the commit history with ISO date format
-              const log = execSync('git log --pretty=format:\\'%h|%an|%ad|%s\\' --date=iso').toString();  // --date=iso for detailed timestamps
 
-              // Parse each line of the log and extract the commit details
+              const log = execSync('git log --pretty=format:\\'%h|%an|%ad|%s\\' --date=iso').toString();
+
               const commits = log.split('\\n').map(l => {
                 const [hash, author, date, message] = l.split('|');
-                
-                // Add a clock field using the actual commit date and format it to a readable time
+
                 const clock = new Date(date).toLocaleTimeString('en-US', {
                   hour: '2-digit',
                   minute: '2-digit',
@@ -96,10 +116,7 @@ jobs:
                 return { hash, author, date, message, clock };
               });
 
-              // Write the commit data to a JSON file
               fs.writeFileSync('commits.json', JSON.stringify(commits, null, 2));
             "
 
-
-            # ✅ Copy to web-accessible directory
             cp commits.json /var/www/html/apks/commits-ui.json
