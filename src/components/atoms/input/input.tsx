@@ -70,13 +70,18 @@ export const Input: React.FC<Props> = ({
 
   return (
     <View
-      className={clsx('flex-row w-full border rounded-xl', isTextArea ? textAreaMinHeight : height, paddingHorizontal, {
-        'items-start': isTextArea,
-        'items-center': !isTextArea,
-        'border-gray-400': !isFocused,
-        'border-orange-500': isFocused,
-        'bg-gray-100': disabled,
-      })}>
+      className={clsx(
+        'flex-row w-full border-[0.5px] rounded-xl',
+        isTextArea ? textAreaMinHeight : height,
+        paddingHorizontal,
+        {
+          'items-start': isTextArea,
+          'items-center': !isTextArea,
+          'border-gray-400': !isFocused,
+          'border-orange-500': isFocused,
+          'bg-gray-100': disabled,
+        },
+      )}>
       {leadingIcon && (
         <View className={clsx('mr-2', isTextArea && 'mt-3')}>
           <Icon name={leadingIcon} size={icon} color={colors.gray[500]} />
