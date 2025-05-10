@@ -1,4 +1,4 @@
-import {DiscountType} from '@app/types/discount';
+import {Level} from '@app/types/customer/customer-level.dto';
 
 export type CustomerDTO = {
   id: number;
@@ -9,17 +9,6 @@ export type CustomerDTO = {
   address: string | null;
   points: number;
   level?: Level;
-  created_at: string;
-  updated_at: string;
-};
-
-export type Level = {
-  id: number;
-  merchant_id: number;
-  name: string;
-  description: string;
-  discount_type: DiscountType;
-  discount: number;
   created_at: string;
   updated_at: string;
 };
