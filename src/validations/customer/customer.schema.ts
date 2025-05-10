@@ -28,7 +28,7 @@ export const createCustomerSchema = Yup.object({
   phone: Yup.string()
     .optional()
     .nullable()
-    .matches(/^(\+62|0)[1-9][0-9]{7,9}$/, 'Invalid phone number format for Indonesia.'),
+    .matches(/^(\+62|0)[1-9][0-9]{7,10}$/, 'Invalid phone number format for Indonesia.'),
 
   address: Yup.string().optional().nullable(),
 });
@@ -62,7 +62,7 @@ export const updateCustomerSchema = Yup.object({
   phone: Yup.string()
     .optional()
     .nullable()
-    .matches(/^(\+62|0)[1-9][0-9]{7,9}$/, 'Invalid phone number format for Indonesia.'),
+    .matches(/^(\+62|0)[1-9][0-9]{7,10}$/, 'Invalid phone number format for Indonesia.'),
 
   address: Yup.string().optional().nullable(),
 
