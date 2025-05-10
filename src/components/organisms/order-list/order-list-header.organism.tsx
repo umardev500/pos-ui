@@ -9,10 +9,10 @@ type Props = {};
 
 export const OrderListHeader: React.FC<Props> = ({}) => {
   const handleChangeText = (text: string) => {
-    useCartStore.getState().setCustomer({name: text});
+    useCartStore.getState().setCustomerName(text);
   };
 
-  const customer = useCartStore(state => state.customer);
+  const customerName = useCartStore(state => state.customerName);
 
   return (
     <>
@@ -21,7 +21,7 @@ export const OrderListHeader: React.FC<Props> = ({}) => {
       <View className="px-4 flex-row items-center gap-3 pt-4 ">
         <View className="flex-1 py-1">
           <Input
-            value={customer?.name}
+            value={customerName}
             onChangeText={handleChangeText}
             leadingIcon="person_plus_fill"
             size="sm"

@@ -1,5 +1,5 @@
 import {IconButton} from '@app/components/atoms';
-import {CartScreen, ProductView, VoucherListScreen} from '@app/screens';
+import {CartScreen, CustomerListScreen, ProductView, VoucherListScreen} from '@app/screens';
 import {AddDPScreen} from '@app/screens/add-dp/add-dp.screen';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
@@ -63,6 +63,14 @@ export const MainNavigation = () => {
         }}
         name="AddDP"
         component={AddDPScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Customers',
+          headerShown: true,
+        }}
+        name="CustomerList"
+        component={CustomerListScreen}
       />
     </Stack.Navigator>
   );

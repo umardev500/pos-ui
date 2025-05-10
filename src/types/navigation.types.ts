@@ -17,6 +17,7 @@ export type MainStackParamList = {
   };
   VoucherList: undefined;
   AddDP: undefined;
+  CustomerList: undefined;
 };
 
 export type MainStackRouteNames = keyof MainStackParamList;

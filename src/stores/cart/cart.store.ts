@@ -6,7 +6,8 @@ import {create} from 'zustand';
 type CartState = {
   items: CartItem[];
   additionalInfo?: CartAdditionalInfo;
-  customer?: CustomerDTO;
+  selectedCustomer?: CustomerDTO;
+  customerName?: string; // used when manual input name
 
   // Actions
   addItem: (item: CartItem) => void;
@@ -22,7 +23,8 @@ type CartState = {
   setAdditionalInfo: (info: CartAdditionalInfo) => void;
 
   // Customer action
-  setCustomer: (customer: CustomerDTO) => void;
+  setCustomerName: (name: string) => void;
+  setSelectedCustomer: (customer: CustomerDTO) => void;
 
   // Derived State
   getTotalPrice: () => number;
@@ -175,11 +177,13 @@ export const useCartStore = create<CartState>((set, get) => ({
       },
     })),
 
-  setCustomer: (customer: Partial<CustomerDTO>) =>
-    set(state => ({
-      customer: {
-        ...state.customer,
-        ...customer,
-      },
+  setCustomerName: (name: string) =>
+    set(() => ({
+      customerName: name,
+    })),
+
+  setSelectedCustomer: (customer: CustomerDTO) =>
+    set(() => ({
+      selectedCustomer: customer,
     })),
 }));

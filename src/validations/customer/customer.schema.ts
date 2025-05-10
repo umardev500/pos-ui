@@ -1,13 +1,6 @@
 import * as Yup from 'yup';
 
 export const createCustomerSchema = Yup.object({
-  merchant_id: Yup.number()
-    .optional()
-    .notRequired()
-    .test('is-not-user-input', 'Merchant ID should not be provided by the user.', function (value) {
-      return value === undefined || value === null;
-    }),
-
   name: Yup.string().required('Name is required.').min(1, 'Name cannot be empty.'),
 
   email: Yup.string().required('Email is required.').email('Invalid email format.'),
