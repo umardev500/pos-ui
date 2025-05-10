@@ -4,6 +4,7 @@ import {MainStackParamList} from '@app/types';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
 import {View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 // ————————————————————————————————————————————————
 // Types
@@ -16,6 +17,11 @@ type Props = StackScreenProps<MainStackParamList, 'CustomerList'>;
 export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
   const {data: customers = []} = useCustomers();
   const {params} = route;
+
+  // ————————————————————————————————————————————————
+  // 📦 Hooks
+  // ————————————————————————————————————————————————
+  const {bottom} = useSafeAreaInsets();
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -40,7 +46,7 @@ export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
   // ————————————————————————————————————————————————
   return (
     <View className="flex-1 bg-white">
-      <CustomerList data={customers} />
+      <CustomerList data={customers} paddingBottom={bottom + 16} />
     </View>
   );
 };
