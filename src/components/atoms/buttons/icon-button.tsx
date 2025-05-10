@@ -10,6 +10,7 @@ type Props = TouchableOpacityProps & {
   color?: string;
   roundedSize?: number;
   size?: 'xs' | 'sm' | 'md' | 'lg';
+  iconSize?: number;
 };
 
 // Size configuration
@@ -26,9 +27,10 @@ export const IconButton: React.FC<Props> = ({
   color = colors.gray[700],
   roundedSize,
   size = 'md',
+  iconSize,
   ...props
 }) => {
-  const {width, height, iconSize} = SIZE_STYLES[size];
+  const {width, height, iconSize: predefinedIconSize} = SIZE_STYLES[size];
 
   return (
     <TouchableOpacity
@@ -36,7 +38,7 @@ export const IconButton: React.FC<Props> = ({
       className={clsx('items-center justify-center overflow-hidden', width, height, !roundedSize && 'rounded-full', {})}
       onPress={props.onPress}
       style={[{backgroundColor}, roundedSize ? {borderRadius: roundedSize} : null]}>
-      <Icon name={icon} size={iconSize} color={color} />
+      <Icon name={icon} size={iconSize || predefinedIconSize} color={color} />
     </TouchableOpacity>
   );
 };
