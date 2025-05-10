@@ -43,7 +43,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
     setSelectedLevels([]); // ✅ Clear level selection UI
     Toast.show({
       type: 'success',
-      text1: 'Customer created successfully 🎉',
+      text1: isUpdate ? 'Customer updated successfully 🎉' : 'Customer created successfully 🎉',
     });
   };
 
