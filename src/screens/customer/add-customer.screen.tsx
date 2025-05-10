@@ -185,7 +185,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                   isClickableOnly
                   trailingIcon="chevron_right"
                   placeholder={values.level.name || 'Pilih level customer'}
-                  placeholderTextColor={values.level ? colors.gray[800] : undefined}
+                  placeholderTextColor={values.level.name ? colors.gray[800] : undefined}
                   onPress={() => levelSheetRef.current?.present()}
                 />
                 <LabeledInput
