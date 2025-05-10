@@ -49,7 +49,7 @@ export const AddDPScreen: React.FC<Props> = () => {
       } else {
         const price = formRef.current?.values.price;
         if (price) {
-          setAdditionalInfo({downPayment: price});
+          setAdditionalInfo({downPayment: parseFloat(price.toString())});
           Toast.show({
             type: 'success',
             text1: 'Data added successfully 🎉',

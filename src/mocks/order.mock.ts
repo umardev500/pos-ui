@@ -99,5 +99,5 @@ const orderTypeId = 1; // DINE_IN, for example
 const discountId = 123; // Optional discount ID
 const downPayment = 50; // Optional down payment
 
-const createOrderDTO = mapCartToCreateOrderDTO(cartWithVariants, orderTypeId, discountId, downPayment);
+const createOrderDTO = mapCartToCreateOrderDTO(cartWithVariants);
 console.log(createOrderDTO);

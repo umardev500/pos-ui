@@ -8,10 +8,16 @@ import {Text, TouchableOpacity, View} from 'react-native';
 type Props = {
   onPressMoreSummary?: () => void;
   onPressOrderConfig?: () => void;
+  onPressPayment?: () => void;
   haveItems?: boolean;
 };
 
-export const OrderSummary: React.FC<Props> = ({onPressMoreSummary, onPressOrderConfig, haveItems = false}) => {
+export const OrderSummary: React.FC<Props> = ({
+  onPressMoreSummary,
+  onPressOrderConfig,
+  onPressPayment,
+  haveItems = false,
+}) => {
   const finalAmount = useCartStore(state => state.getFinalAmount());
   const finalAmountCurrency = numberUtils.formatCurrency(finalAmount);
 
@@ -34,7 +40,13 @@ export const OrderSummary: React.FC<Props> = ({onPressMoreSummary, onPressOrderC
       </View>
 
       <View className="pt-4">
-        <Button disabled={!haveItems} title="Payment" containerColor={colors.orange[500]} textColor={colors.white} />
+        <Button
+          onPress={onPressPayment}
+          disabled={!haveItems}
+          title="Payment"
+          containerColor={colors.orange[500]}
+          textColor={colors.white}
+        />
       </View>
     </View>
   );

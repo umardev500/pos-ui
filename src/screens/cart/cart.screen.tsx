@@ -2,6 +2,7 @@ import {cartAnim} from '@app/assets/anim';
 import {OrderConfigSheet, OrderList, OrderListHeader, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
 import {useCartStore} from '@app/stores';
 import {CartItem, MainStackRouteNames} from '@app/types';
+import {mapCartToCreateOrderDTO} from '@app/utils';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {useIsFocused, useNavigation, useNavigationState} from '@react-navigation/native';
 import clsx from 'clsx';
@@ -101,6 +102,13 @@ export const CartScreen: React.FC = () => {
     // configHasbeenShownBefore.current = false;
   };
 
+  const handlePressPayment = () => {
+    const items = useCartStore.getState().items;
+    const additionalInfo = useCartStore.getState().additionalInfo;
+    const orderData = mapCartToCreateOrderDTO(items, additionalInfo);
+    console.log(orderData);
+  };
+
   const renderHeader = useMemo(() => {
     return (
       <>
@@ -137,6 +145,7 @@ export const CartScreen: React.FC = () => {
         haveItems={haveItems}
         onPressOrderConfig={handlePressConfig}
         onPressMoreSummary={handlePressMoreOnSummary}
+        onPressPayment={handlePressPayment}
       />
       <OrderSummarySheet ref={orderSummaryRef} />
     </View>

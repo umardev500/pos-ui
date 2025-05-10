@@ -12,6 +12,11 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
   const {data: orderTypes} = useOrderTypes() || {data: []};
   const isHaveOrderTypes = (orderTypes?.length || 0) > 0;
 
+  // ————————————————————————————————————————————————
+  // 📦 Global State Store
+  // ————————————————————————————————————————————————
+  const setAdditionalInfo = useCartStore(state => state.setAdditionalInfo);
+
   // Parse routes from orderTypes
   const routes =
     orderTypes?.map((type: OrderTypeDTO) => ({
@@ -47,6 +52,7 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
     // Fallback to 0 if no match is found (i.e., findIndex returns -1)
     if (initialTabIndex === -1) {
       initialTabIndex = 0;
+      setAdditionalInfo({orderType: orderTypes[0]});
     }
   }
 
