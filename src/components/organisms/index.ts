@@ -1,5 +1,6 @@
 export * from './bottom-sheets';
 export * from './category-sheet';
+export * from './customer-list';
 export * from './drawer-content';
 export * from './header';
 export * from './list-menu';

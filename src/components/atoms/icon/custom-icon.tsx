@@ -71,6 +71,15 @@ const glyphMap = {
   check_small: 0xe940,
   search_activity: 0xe941,
   task_alt: 0xe942,
+  call: 0xe943,
+  person_fill: 0xe944,
+  draw: 0xe945,
+  edit: 0xe946,
+  edit_fill: 0xe947,
+  edit_note: 0xe948,
+  edit_note_fill: 0xe949,
+  stylus_note: 0xe94a,
+  stylus_note_fill: 0xe94b,
   ...glyphMapFill,
 };
 
