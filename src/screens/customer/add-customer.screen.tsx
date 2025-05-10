@@ -1,4 +1,4 @@
-import {LabeledInput, SelectableItemType} from '@app/components/molecules';
+import {LabeledInput} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
 import {useCreateCustomer} from '@app/hooks';
 import {colors} from '@app/styles';
@@ -20,12 +20,6 @@ import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = StackScreenProps<MainStackParamList, 'AddCustomer'>;
-
-const LEVELS: SelectableItemType[] = [
-  {id: 1, label: 'Level 1'},
-  {id: 2, label: 'Level 2'},
-  {id: 3, label: 'Level 3'},
-];
 
 export const dummyLevels: Level[] = [
   {
