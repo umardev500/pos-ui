@@ -11,15 +11,22 @@ import {ManageProductStackNavigator} from './manage-product.navigation';
 
 const Stack = createStackNavigator<MainStackParamList>();
 
+// ————————————————————————————————————————————————
+// Types for the header rendering
+// ————————————————————————————————————————————————
 interface RenderHeaderProps extends StackHeaderProps {
-  headerRight?:
-    | ((props: {tintColor?: string; pressColor?: string; pressOpacity?: number; canGoBack: boolean}) => React.ReactNode)
-    | undefined;
+  headerRight?: (props: {
+    tintColor?: string;
+    pressColor?: string;
+    pressOpacity?: number;
+    canGoBack: boolean;
+  }) => React.ReactNode;
 }
 
-const renderHeader = (props: RenderHeaderProps) => {
-  const {back, options, route, ...etc} = props;
-
+// ————————————————————————————————————————————————
+// Header Render Function
+// ————————————————————————————————————————————————
+const renderHeader = ({back, options, route, ...etc}: RenderHeaderProps) => {
   return <Header headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} {...etc} />;
 };
 
@@ -104,9 +111,7 @@ export const MainNavigation = () => {
           header: props => {
             return renderHeader({
               ...props,
-              headerRight: () => {
-                return <IconButton icon="check" iconSize={20} color={colors.gray[600]} />;
-              },
+              headerRight: () => <IconButton icon="check" iconSize={20} color={colors.gray[600]} />,
             });
           },
         }}
