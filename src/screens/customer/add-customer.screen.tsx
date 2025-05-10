@@ -6,89 +6,85 @@ import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@a
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
-import lodash from 'lodash';
+import {isEmpty} from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = StackScreenProps<MainStackParamList, 'AddCustomer'>;
 
+const LEVELS: SelectableItemType[] = [
+  {id: 1, label: 'Level 1'},
+  {id: 2, label: 'Level 2'},
+  {id: 3, label: 'Level 3'},
+];
+
 export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   const formRef = useRef<FormikProps<CreateCustomerDTO>>(null);
-  const levelSelectionSheetReff = useRef<TrueSheet>(null);
-
-  const {params} = route;
-  const selectionData: SelectableItemType[] = [
-    {
-      id: 1,
-      label: 'Level 1',
-    },
-    {
-      id: 2,
-      label: 'Level 2',
-    },
-    {
-      id: 3,
-      label: 'Level 3',
-    },
-  ];
-
-  // ————————————————————————————————————————————————
-  // 🧠 State
-  // ————————————————————————————————————————————————
+  const levelSheetRef = useRef<TrueSheet>(null);
   const [selectedLevels, setSelectedLevels] = useState<SelectableItemType[]>([]);
+  const selectedLabel = selectedLevels.map(sl => sl.label).join(', ');
 
-  const selectedLevelPlaceholder = selectedLevels.map(sl => sl.label).join(', ');
+  // ————————————————————————————————————————————————
+  // 📦 Submit + Validation
+  // ————————————————————————————————————————————————
+  const submitForm = () => {
+    formRef.current?.submitForm();
+    validateForm();
+  };
+
+  const validateForm = async () => {
+    const errors = await formRef.current?.validateForm();
+    if (!isEmpty(errors)) {
+      Toast.show({
+        type: 'error',
+        text1: 'Please enter valid data',
+        onShow: () => {
+          setTimeout(() => {
+            setOffTrigger();
+          }, 100);
+        },
+      });
+    }
+  };
+
+  const handleSubmit = (values: CreateCustomerDTO) => {
+    console.log('Submitted values:', values);
+
+    Toast.show({
+      type: 'success',
+      text1: 'Customer added successfully 🎉',
+      onShow: () => {
+        setTimeout(() => {
+          setOffTrigger();
+        }, 100);
+      },
+    });
+  };
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
   // ————————————————————————————————————————————————
   useEffect(() => {
-    if (params?.triggerSave) {
-      formRef.current?.submitForm();
-
-      navigation.setParams({triggerSave: false});
-      handleValidateForm();
+    if (route.params?.triggerSave) {
+      submitForm();
     }
-  }, [params?.triggerSave]);
+  }, [route.params?.triggerSave]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
   // ————————————————————————————————————————————————
-  const handleSubmit = (values: CreateCustomerDTO) => {
-    console.log('values:', values);
-  };
-
-  const handleValidateForm = async () => {
-    const errors = await formRef.current?.validateForm();
-    if (!lodash.isEmpty(errors)) {
-      Toast.show({
-        type: 'error',
-        text1: 'Please fill all required fields',
-      });
-      return;
-    }
-
-    Toast.show({
-      type: 'success',
-      text1: 'Data added successfully 🎉',
-    });
-  };
-
-  const handlePressLevel = () => {
-    levelSelectionSheetReff.current?.present();
-  };
-
   const handleSelectLevel = (items: SelectableItemType[]) => {
     setSelectedLevels(items);
     setFieldValue('level_id', items[0].id as number);
   };
 
-  /**
-   * Safely set Formik field value with correct type.
-   */
-  const setFieldValue = <T extends keyof CreateCustomerDTO>(field: T, value: CreateCustomerDTO[T]) => {
+  const setFieldValue = <K extends keyof CreateCustomerDTO>(field: K, value: CreateCustomerDTO[K]) => {
     formRef.current?.setFieldValue(field, value);
+  };
+
+  const setOffTrigger = () => {
+    navigation.setParams({triggerSave: false});
   };
 
   return (
@@ -96,57 +92,55 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
       <View className="flex-1 bg-white p-4">
         <Formik
           validationSchema={createCustomerSchema}
-          innerRef={formRef}
           initialValues={defaultCustomerValues}
-          onSubmit={handleSubmit}>
-          {({handleChange}) => {
-            return (
-              <View className="gap-2.5">
-                <LabeledInput
-                  onChange={handleChange('name')}
-                  icon="person_fill"
-                  label="Nama*"
-                  placeholder="Masukan nama customer"
-                />
-                <LabeledInput
-                  isClickableOnly
-                  trailingIcon="chevron_right"
-                  icon="layers"
-                  label="Level*"
-                  placeholder={selectedLevelPlaceholder || 'Pilih level'}
-                  placeholderTextColor={selectedLevelPlaceholder ? colors.gray[800] : undefined}
-                  onPress={handlePressLevel}
-                />
-                <LabeledInput
-                  onChange={handleChange('email')}
-                  icon="alternate_email"
-                  label="Email*"
-                  placeholder="umar......@...com"
-                />
-                <LabeledInput
-                  onChange={handleChange('phone')}
-                  icon="call"
-                  label="Nomor Telepon"
-                  placeholder="+628..........n"
-                />
-                <LabeledInput
-                  onChange={handleChange('address')}
-                  isTextArea
-                  icon="edit_note"
-                  label="Alamat"
-                  placeholder="Masukan alamat"
-                />
-              </View>
-            );
-          }}
+          onSubmit={handleSubmit}
+          innerRef={formRef}>
+          {({handleChange}) => (
+            <View className="gap-2.5">
+              <LabeledInput
+                icon="person_fill"
+                label="Nama*"
+                placeholder="Contoh: Alex Wijaya"
+                onChange={handleChange('name')}
+              />
+              <LabeledInput
+                icon="layers"
+                label="Level*"
+                isClickableOnly
+                trailingIcon="chevron_right"
+                placeholder={selectedLabel || 'Pilih level customer'}
+                placeholderTextColor={selectedLabel ? colors.gray[800] : undefined}
+                onPress={() => levelSheetRef.current?.present()}
+              />
+              <LabeledInput
+                icon="alternate_email"
+                label="Email*"
+                placeholder="Contoh: alex@email.com"
+                onChange={handleChange('email')}
+              />
+              <LabeledInput
+                icon="call"
+                label="Nomor Telepon"
+                placeholder="Contoh: +6281234567890"
+                onChange={handleChange('phone')}
+              />
+              <LabeledInput
+                icon="edit_note"
+                label="Alamat"
+                isTextArea
+                placeholder="Masukkan alamat lengkap"
+                onChange={handleChange('address')}
+              />
+            </View>
+          )}
         </Formik>
       </View>
 
       <SelectionSheet
-        items={selectionData}
-        selected={selectedLevels}
-        ref={levelSelectionSheetReff}
+        ref={levelSheetRef}
         title="Pilih Level"
+        items={LEVELS}
+        selected={selectedLevels}
         onSelect={handleSelectLevel}
       />
     </>

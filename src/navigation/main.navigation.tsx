@@ -1,4 +1,5 @@
-import {IconButton} from '@app/components/atoms';
+import {loadingOrange} from '@app/assets/anim';
+import {IconButton, Loading} from '@app/components/atoms';
 import {AddCustomerScreen, CartScreen, CustomerListScreen, ProductView, VoucherListScreen} from '@app/screens';
 import {AddDPScreen} from '@app/screens/add-dp/add-dp.screen';
 import {colors} from '@app/styles';
@@ -105,19 +106,29 @@ export const MainNavigation = () => {
         component={CustomerListScreen}
       />
       <Stack.Screen
-        options={({navigation}) => ({
+        options={({navigation, route}) => ({
           title: 'Add Customer',
           headerShown: true,
           header: props => {
+            const {triggerSave} = route.params || {};
+
             return renderHeader({
               ...props,
               headerRight: () => (
-                <IconButton
-                  onPress={() => navigation.setParams({triggerSave: true})}
-                  icon="check"
-                  iconSize={20}
-                  color={colors.gray[600]}
-                />
+                <>
+                  {triggerSave ? (
+                    <View className="px-4 text-orange-500">
+                      <Loading source={loadingOrange} size={22} />
+                    </View>
+                  ) : (
+                    <IconButton
+                      onPress={() => navigation.setParams({triggerSave: true})}
+                      icon="check"
+                      iconSize={20}
+                      color={colors.gray[600]}
+                    />
+                  )}
+                </>
               ),
             });
           },
