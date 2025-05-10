@@ -47,12 +47,15 @@ export const createCustomer = async (payload: CreateCustomerDTO): Promise<void> 
 
 // Update existing customer
 export const updateCustomer = async (id: number, payload: UpdateCustomerDTO): Promise<void> => {
+  const {level, ...rest} = payload;
+  const transformedPayload = {...rest, level_id: level?.id};
+
   const res = await fetch(`${API_URL}/customers/${id}`, {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(transformedPayload),
   });
 
   if (!res.ok) {
