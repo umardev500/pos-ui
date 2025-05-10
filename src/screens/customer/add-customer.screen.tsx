@@ -1,5 +1,6 @@
 import {LabeledInput, SelectableItemType} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
+import {useCreateCustomer} from '@app/hooks';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@app/validations';
@@ -26,6 +27,24 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   const selectedLabel = selectedLevels.map(sl => sl.label).join(', ');
 
   // ————————————————————————————————————————————————
+  // 📦 Handle Success
+  // ————————————————————————————————————————————————
+  const handleOnSuccess = () => {
+    setOffTrigger();
+    formRef.current?.resetForm(); // ✅ Reset form values
+    setSelectedLevels([]); // ✅ Clear level selection UI
+    Toast.show({
+      type: 'success',
+      text1: 'Customer created successfully 🎉',
+    });
+  };
+
+  // ————————————————————————————————————————————————
+  // 📦 Hooks
+  // ————————————————————————————————————————————————
+  const {mutate: createCustomer} = useCreateCustomer(handleOnSuccess);
+
+  // ————————————————————————————————————————————————
   // 📦 Submit + Validation
   // ————————————————————————————————————————————————
   const submitForm = () => {
@@ -49,17 +68,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleSubmit = (values: CreateCustomerDTO) => {
-    console.log('Submitted values:', values);
-
-    Toast.show({
-      type: 'success',
-      text1: 'Customer added successfully 🎉',
-      onShow: () => {
-        setTimeout(() => {
-          setOffTrigger();
-        }, 100);
-      },
-    });
+    createCustomer(values);
   };
 
   // ————————————————————————————————————————————————
@@ -95,13 +104,14 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
           initialValues={defaultCustomerValues}
           onSubmit={handleSubmit}
           innerRef={formRef}>
-          {({handleChange}) => (
+          {({values, handleChange}) => (
             <View className="gap-2.5">
               <LabeledInput
                 icon="person_fill"
                 label="Nama*"
                 placeholder="Contoh: Alex Wijaya"
                 onChange={handleChange('name')}
+                value={values.name}
               />
               <LabeledInput
                 icon="layers"
@@ -117,12 +127,14 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                 label="Email*"
                 placeholder="Contoh: alex@email.com"
                 onChange={handleChange('email')}
+                value={values.email}
               />
               <LabeledInput
                 icon="call"
                 label="Nomor Telepon"
                 placeholder="Contoh: +6281234567890"
                 onChange={handleChange('phone')}
+                value={values.phone}
               />
               <LabeledInput
                 icon="edit_note"
@@ -130,6 +142,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                 isTextArea
                 placeholder="Masukkan alamat lengkap"
                 onChange={handleChange('address')}
+                value={values.address || ''}
               />
             </View>
           )}

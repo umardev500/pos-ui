@@ -21,6 +21,4 @@ export const defaultCustomerValues: CreateCustomerDTO = {
   name: '',
   level_id: 0,
   email: '',
-  phone: '',
-  address: '',
 };
