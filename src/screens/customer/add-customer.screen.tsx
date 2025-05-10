@@ -1,12 +1,13 @@
 import {LabeledInput, SelectableItemType} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
+import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
 import lodash from 'lodash';
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 
@@ -31,6 +32,13 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
       label: 'Level 3',
     },
   ];
+
+  // ————————————————————————————————————————————————
+  // 🧠 State
+  // ————————————————————————————————————————————————
+  const [selectedLevels, setSelectedLevels] = useState<SelectableItemType[]>([]);
+
+  const selectedLevelPlaceholder = selectedLevels.map(sl => sl.label).join(', ');
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -71,6 +79,18 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
     levelSelectionSheetReff.current?.present();
   };
 
+  const handleSelectLevel = (items: SelectableItemType[]) => {
+    setSelectedLevels(items);
+    setFieldValue('level_id', items[0].id as number);
+  };
+
+  /**
+   * Safely set Formik field value with correct type.
+   */
+  const setFieldValue = <T extends keyof CreateCustomerDTO>(field: T, value: CreateCustomerDTO[T]) => {
+    formRef.current?.setFieldValue(field, value);
+  };
+
   return (
     <>
       <View className="flex-1 bg-white p-4">
@@ -93,7 +113,8 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                   trailingIcon="chevron_right"
                   icon="layers"
                   label="Level*"
-                  placeholder="Pilih level"
+                  placeholder={selectedLevelPlaceholder || 'Pilih level'}
+                  placeholderTextColor={selectedLevelPlaceholder ? colors.gray[800] : undefined}
                   onPress={handlePressLevel}
                 />
                 <LabeledInput
@@ -123,10 +144,10 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
 
       <SelectionSheet
         items={selectionData}
-        selected={[]}
+        selected={selectedLevels}
         ref={levelSelectionSheetReff}
         title="Pilih Level"
-        onSelect={() => {}}
+        onSelect={handleSelectLevel}
       />
     </>
   );
