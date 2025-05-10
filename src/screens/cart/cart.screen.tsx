@@ -1,5 +1,6 @@
 import {cartAnim} from '@app/assets/anim';
 import {OrderConfigSheet, OrderList, OrderListHeader, OrderSummary, OrderSummarySheet} from '@app/components/organisms';
+import {useCreateOrder} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {CartItem, MainStackRouteNames} from '@app/types';
 import {mapCartToCreateOrderDTO} from '@app/utils';
@@ -27,6 +28,7 @@ export const CartScreen: React.FC = () => {
   const {bottom} = useSafeAreaInsets();
   const navstate = useNavigationState(state => state);
   const activeRouteName = navstate.routes[navstate.index].name as MainStackRouteNames;
+  const {mutate: createOrder} = useCreateOrder();
 
   const haveItems = cartItems.length > 0;
 
@@ -102,11 +104,12 @@ export const CartScreen: React.FC = () => {
     // configHasbeenShownBefore.current = false;
   };
 
-  const handlePressPayment = () => {
+  const handlePressSaveOrder = () => {
     const items = useCartStore.getState().items;
     const additionalInfo = useCartStore.getState().additionalInfo;
     const orderData = mapCartToCreateOrderDTO(items, additionalInfo);
-    console.log(orderData);
+
+    createOrder(orderData);
   };
 
   const renderHeader = useMemo(() => {
@@ -145,7 +148,7 @@ export const CartScreen: React.FC = () => {
         haveItems={haveItems}
         onPressOrderConfig={handlePressConfig}
         onPressMoreSummary={handlePressMoreOnSummary}
-        onPressPayment={handlePressPayment}
+        onPressPayment={handlePressSaveOrder}
       />
       <OrderSummarySheet ref={orderSummaryRef} />
     </View>
