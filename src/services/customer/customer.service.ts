@@ -28,12 +28,15 @@ export const fetchCustomerById = async (id: number): Promise<CustomerDTO> => {
 
 // Create new customer
 export const createCustomer = async (payload: CreateCustomerDTO): Promise<void> => {
+  const {level, ...rest} = payload;
+  const transformedPayload = {...rest, level_id: level.id};
+
   const res = await fetch(`${API_URL}/customers`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(transformedPayload),
   });
 
   if (!res.ok) {
