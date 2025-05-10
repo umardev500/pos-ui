@@ -32,7 +32,7 @@ export const CustomerListing: React.FC<Props> = props => {
           <View>
             <View className="flex-row items-center gap-1.5">
               <Icon name="call" size={14} color={colors.gray[600]} />
-              <Text className="text-sm text-gray-500">{phone}</Text>
+              <Text className="text-sm text-gray-500">{phone || '-'}</Text>
             </View>
             <View className="flex-row items-center gap-1.5 justify-between">
               <View className="flex-row items-center gap-1.5 flex-1">
