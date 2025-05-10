@@ -16,7 +16,9 @@ export type MainStackParamList = {
   VoucherList: undefined;
   AddDP: undefined;
   CustomerList: {triggerAdd?: boolean};
-  AddCustomer: undefined;
+  AddCustomer: {
+    triggerSave?: boolean;
+  };
 };
 
 // ————————————————————————————————————————————————

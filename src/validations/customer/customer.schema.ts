@@ -13,4 +13,11 @@ export const createCustomerSchema = Yup.object({
 });
 
 // Infer TypeScript type from the Yup schema
-export type CreateCustomerDto = Yup.InferType<typeof createCustomerSchema>;
+export type CreateCustomerDTO = Yup.InferType<typeof createCustomerSchema>;
+
+export const defaultCustomerValues: CreateCustomerDTO = {
+  name: '',
+  email: '',
+  phone: '',
+  address: '',
+};

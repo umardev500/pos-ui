@@ -21,7 +21,7 @@ export const OrderListHeader: React.FC<Props> = ({}) => {
   // 🛠 Handlers
   // ————————————————————————————————————————————————
   const handleNavigateToCustomerList = () => {
-    navigation.navigate('CustomerList');
+    navigation.navigate('CustomerList', {});
   };
 
   return (

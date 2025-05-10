@@ -105,16 +105,23 @@ export const MainNavigation = () => {
         component={CustomerListScreen}
       />
       <Stack.Screen
-        options={{
+        options={({navigation}) => ({
           title: 'Add Customer',
           headerShown: true,
           header: props => {
             return renderHeader({
               ...props,
-              headerRight: () => <IconButton icon="check" iconSize={20} color={colors.gray[600]} />,
+              headerRight: () => (
+                <IconButton
+                  onPress={() => navigation.setParams({triggerSave: true})}
+                  icon="check"
+                  iconSize={20}
+                  color={colors.gray[600]}
+                />
+              ),
             });
           },
-        }}
+        })}
         name="AddCustomer"
         component={AddCustomerScreen}
       />
