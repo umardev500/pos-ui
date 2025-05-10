@@ -2,10 +2,11 @@ import {SelectableListTemplate} from '@app/components/templates';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import React from 'react';
 import {View} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 type SelectableItem = {
   id: number | string;
-  label: string;
+  label?: string;
 };
 
 type Props<T extends SelectableItem> = {
@@ -25,9 +26,11 @@ export const SelectionSheet = <T extends SelectableItem>({
   ref,
   multiSelect = false,
 }: Props<T>) => {
+  const {bottom} = useSafeAreaInsets();
+
   return (
     <TrueSheet edgeToEdge ref={ref} sizes={['auto', 'large']}>
-      <View className="pt-8 px-4 pb-10">
+      <View className="pt-8 px-4" style={{paddingBottom: bottom + 16}}>
         <SelectableListTemplate
           onSelect={onSelect}
           multiSelect={multiSelect}

@@ -1,6 +1,8 @@
-import {LabeledInput} from '@app/components/molecules';
+import {LabeledInput, SelectableItemType} from '@app/components/molecules';
+import {SelectionSheet} from '@app/components/organisms';
 import {MainStackParamList} from '@app/types';
 import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@app/validations';
+import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
 import lodash from 'lodash';
@@ -12,7 +14,23 @@ type Props = StackScreenProps<MainStackParamList, 'AddCustomer'>;
 
 export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   const formRef = useRef<FormikProps<CreateCustomerDTO>>(null);
+  const levelSelectionSheetReff = useRef<TrueSheet>(null);
+
   const {params} = route;
+  const selectionData: SelectableItemType[] = [
+    {
+      id: 1,
+      label: 'Level 1',
+    },
+    {
+      id: 2,
+      label: 'Level 2',
+    },
+    {
+      id: 3,
+      label: 'Level 3',
+    },
+  ];
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -49,6 +67,10 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
     });
   };
 
+  const handlePressLevel = () => {
+    levelSelectionSheetReff.current?.present();
+  };
+
   return (
     <>
       <View className="flex-1 bg-white p-4">
@@ -72,6 +94,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                   icon="layers"
                   label="Level*"
                   placeholder="Pilih level"
+                  onPress={handlePressLevel}
                 />
                 <LabeledInput
                   onChange={handleChange('email')}
@@ -97,6 +120,14 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
           }}
         </Formik>
       </View>
+
+      <SelectionSheet
+        items={selectionData}
+        selected={[]}
+        ref={levelSelectionSheetReff}
+        title="Pilih Level"
+        onSelect={() => {}}
+      />
     </>
   );
 };
