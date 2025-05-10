@@ -2,9 +2,15 @@ import {LabeledInput, SelectableItemType} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
 import {useCreateCustomer} from '@app/hooks';
 import {colors} from '@app/styles';
-import {MainStackParamList} from '@app/types';
+import {CustomerDTO, DiscountType, Level, MainStackParamList} from '@app/types';
 import {isFormValidAndChanged} from '@app/utils';
-import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@app/validations';
+import {
+  CreateCustomerDTO,
+  createCustomerSchema,
+  defaultCustomerValues,
+  defaultUpdateCustomerValues,
+  UpdateCustomerDTO,
+} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
@@ -21,11 +27,50 @@ const LEVELS: SelectableItemType[] = [
   {id: 3, label: 'Level 3'},
 ];
 
+export const dummyLevels: Level[] = [
+  {
+    id: 1,
+    merchant_id: 1,
+    name: 'Silver',
+    description: 'Basic membership tier with limited benefits',
+    discount_type: DiscountType.PERCENT,
+    discount: 5,
+    created_at: '2025-01-01T08:00:00Z',
+    updated_at: '2025-01-01T08:00:00Z',
+  },
+  {
+    id: 2,
+    merchant_id: 1,
+    name: 'Gold',
+    description: 'Premium membership with more benefits',
+    discount_type: DiscountType.PERCENT,
+    discount: 10,
+    created_at: '2025-02-15T10:30:00Z',
+    updated_at: '2025-02-15T10:30:00Z',
+  },
+  {
+    id: 3,
+    merchant_id: 1,
+    name: 'Platinum',
+    description: 'Elite membership with maximum benefits',
+    discount_type: DiscountType.FIXED,
+    discount: 20000,
+    created_at: '2025-03-10T12:00:00Z',
+    updated_at: '2025-03-10T12:00:00Z',
+  },
+];
+
 export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   const formRef = useRef<FormikProps<CreateCustomerDTO>>(null);
   const levelSheetRef = useRef<TrueSheet>(null);
-  const [selectedLevels, setSelectedLevels] = useState<SelectableItemType[]>([]);
-  const selectedLabel = selectedLevels.map(sl => sl.label).join(', ');
+  const [selectedLevels, setSelectedLevels] = useState<Level[]>([]);
+  const selectedLabel = selectedLevels.map(sl => sl.name).join(', ');
+
+  // ————————————————————————————————————————————————
+  // 🧠 State
+  // ————————————————————————————————————————————————
+  const {params} = route;
+  const {item, triggerSave} = params || {};
 
   // ————————————————————————————————————————————————
   // 📦 Handle Success
@@ -76,21 +121,36 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   // 🧪 Effects
   // ————————————————————————————————————————————————
   useEffect(() => {
-    if (route.params?.triggerSave?.pressed) {
+    if (triggerSave?.pressed) {
       submitForm();
     }
-  }, [route.params?.triggerSave?.pressed]);
+  }, [triggerSave?.pressed]);
+
+  useEffect(() => {
+    if (!item) return;
+
+    Object.keys(defaultUpdateCustomerValues).forEach(key => {
+      const value = item[key as keyof CustomerDTO];
+      if (key === 'level') {
+        setFieldValue<UpdateCustomerDTO>('level', item.level);
+        return;
+      }
+      setFieldValue<UpdateCustomerDTO>(key as keyof UpdateCustomerDTO, value);
+    });
+
+    setSelectedLevels(item?.level ? [item.level] : []);
+  }, [item]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
   // ————————————————————————————————————————————————
-  const handleSelectLevel = (items: SelectableItemType[]) => {
+  const handleSelectLevel = (items: Level[]) => {
     setSelectedLevels(items);
-    setFieldValue('level_id', items[0].id as number);
+    setFieldValue<CreateCustomerDTO>('level', items[0]);
   };
 
-  const setFieldValue = <K extends keyof CreateCustomerDTO>(field: K, value: CreateCustomerDTO[K]) => {
-    formRef.current?.setFieldValue(field, value);
+  const setFieldValue = <T,>(field: keyof T, value: T[keyof T]) => {
+    formRef.current?.setFieldValue(field as string, value); // Using Formik's `setFieldValue`
   };
 
   const setOffTrigger = () => {
@@ -102,7 +162,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleValidInput = lodash.debounce((isValid: boolean) => {
-    if (!isValid) return;
+    if (!isValid || triggerSave?.ready) return;
 
     navigation.setParams({
       triggerSave: {
@@ -172,7 +232,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
       <SelectionSheet
         ref={levelSheetRef}
         title="Pilih Level"
-        items={LEVELS}
+        items={dummyLevels}
         selected={selectedLevels}
         onSelect={handleSelectLevel}
       />

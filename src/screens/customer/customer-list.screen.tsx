@@ -44,7 +44,10 @@ export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
   // ————————————————————————————————————————————————
   // 🛠 Handlers
   // ————————————————————————————————————————————————
-  const handlePressEdit = (item: CustomerDTO) => {};
+  const handlePressEdit = (item: CustomerDTO) => {
+    navigation.navigate('AddCustomer', {item});
+  };
+
   const handlePressDelete = (item: CustomerDTO) => {
     Alert.alert('Delete item', 'Are you sure you want to delete this?', [
       {text: 'Cancel', style: 'cancel'},

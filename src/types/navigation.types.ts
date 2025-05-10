@@ -2,6 +2,7 @@
 // Cart Types
 // ————————————————————————————————————————————————
 import {CartItem} from '@app/types/cart';
+import {CustomerDTO} from '@app/types/customer';
 
 // ————————————————————————————————————————————————
 // Main Stack Parameter Types
@@ -21,6 +22,7 @@ export type MainStackParamList = {
       pressed?: boolean;
       ready?: boolean;
     };
+    item?: CustomerDTO;
   };
 };
 

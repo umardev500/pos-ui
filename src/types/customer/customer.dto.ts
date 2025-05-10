@@ -1,3 +1,5 @@
+import {DiscountType} from '@app/types/discount';
+
 export type CustomerDTO = {
   id: number;
   merchant_id: number;
@@ -6,6 +8,18 @@ export type CustomerDTO = {
   phone: string | null;
   address: string | null;
   points: number;
-  created_at: string; // or Date if you'd prefer to work with Date objects
-  updated_at: string; // or Date if you'd prefer to work with Date objects
+  level?: Level;
+  created_at: string;
+  updated_at: string;
+};
+
+export type Level = {
+  id: number;
+  merchant_id: number;
+  name: string;
+  description: string;
+  discount_type: DiscountType;
+  discount: number;
+  created_at: string;
+  updated_at: string;
 };
