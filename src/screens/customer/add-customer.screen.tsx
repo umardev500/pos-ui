@@ -1,8 +1,8 @@
 import {LabeledInput} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
-import {useCreateCustomer} from '@app/hooks';
+import {useCreateCustomer, useCustomerLevels} from '@app/hooks';
 import {colors} from '@app/styles';
-import {CustomerDTO, DiscountType, Level, MainStackParamList} from '@app/types';
+import {CustomerDTO, Level, MainStackParamList} from '@app/types';
 import {isFormValidAndChanged} from '@app/utils';
 import {
   CreateCustomerDTO,
@@ -20,39 +20,6 @@ import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
 
 type Props = StackScreenProps<MainStackParamList, 'AddCustomer'>;
-
-export const dummyLevels: Level[] = [
-  {
-    id: 1,
-    merchant_id: 1,
-    name: 'Silver',
-    description: 'Basic membership tier with limited benefits',
-    discount_type: DiscountType.PERCENT,
-    discount: 5,
-    created_at: '2025-01-01T08:00:00Z',
-    updated_at: '2025-01-01T08:00:00Z',
-  },
-  {
-    id: 2,
-    merchant_id: 1,
-    name: 'Gold',
-    description: 'Premium membership with more benefits',
-    discount_type: DiscountType.PERCENT,
-    discount: 10,
-    created_at: '2025-02-15T10:30:00Z',
-    updated_at: '2025-02-15T10:30:00Z',
-  },
-  {
-    id: 3,
-    merchant_id: 1,
-    name: 'Platinum',
-    description: 'Elite membership with maximum benefits',
-    discount_type: DiscountType.FIXED,
-    discount: 20000,
-    created_at: '2025-03-10T12:00:00Z',
-    updated_at: '2025-03-10T12:00:00Z',
-  },
-];
 
 export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   const formRef = useRef<FormikProps<CreateCustomerDTO>>(null);
@@ -83,6 +50,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   // 📦 Hooks
   // ————————————————————————————————————————————————
   const {mutate: createCustomer} = useCreateCustomer(handleOnSuccess);
+  const {data: customerLevels} = useCustomerLevels();
 
   // ————————————————————————————————————————————————
   // 📦 Submit + Validation
@@ -226,7 +194,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
       <SelectionSheet
         ref={levelSheetRef}
         title="Pilih Level"
-        items={dummyLevels}
+        items={customerLevels}
         selected={selectedLevels}
         onSelect={handleSelectLevel}
       />
