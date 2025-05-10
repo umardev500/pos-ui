@@ -106,41 +106,46 @@ export const MainNavigation = () => {
         component={CustomerListScreen}
       />
       <Stack.Screen
-        options={({navigation, route}) => ({
-          title: 'Add Customer',
-          headerShown: true,
-          header: props => {
-            const {triggerSave} = route.params || {};
-            const isReady = triggerSave?.ready || false;
+        options={({navigation, route}) => {
+          const {params} = route;
+          const isUpdate = !!params?.item;
 
-            return renderHeader({
-              ...props,
-              headerRight: () => (
-                <>
-                  {triggerSave?.pressed ? (
-                    <View className="px-4 text-orange-500">
-                      <Loading source={loadingOrange} size={22} />
-                    </View>
-                  ) : (
-                    <IconButton
-                      disabled={!isReady}
-                      onPress={() =>
-                        navigation.setParams({
-                          triggerSave: {
-                            pressed: true,
-                          },
-                        })
-                      }
-                      icon="check"
-                      iconSize={20}
-                      color={isReady ? colors.gray[600] : colors.gray[400]}
-                    />
-                  )}
-                </>
-              ),
-            });
-          },
-        })}
+          return {
+            title: isUpdate ? 'Ubah Customer' : 'Tambah Customer',
+            headerShown: true,
+            header: props => {
+              const {triggerSave} = route.params || {};
+              const isReady = triggerSave?.ready || false;
+
+              return renderHeader({
+                ...props,
+                headerRight: () => (
+                  <>
+                    {triggerSave?.pressed ? (
+                      <View className="px-4 text-orange-500">
+                        <Loading source={loadingOrange} size={22} />
+                      </View>
+                    ) : (
+                      <IconButton
+                        disabled={!isReady}
+                        onPress={() =>
+                          navigation.setParams({
+                            triggerSave: {
+                              pressed: true,
+                            },
+                          })
+                        }
+                        icon="check"
+                        iconSize={20}
+                        color={isReady ? colors.gray[600] : colors.gray[400]}
+                      />
+                    )}
+                  </>
+                ),
+              });
+            },
+          };
+        }}
         name="AddCustomer"
         component={AddCustomerScreen}
       />
