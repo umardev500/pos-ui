@@ -5,3 +5,4 @@ export * from './add-product-variant';
 export * from './add-unit';
 export * from './auth';
 export * from './cart';
+export * from './customer';
