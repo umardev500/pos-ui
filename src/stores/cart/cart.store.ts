@@ -106,7 +106,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     set(() => ({
       items: [],
       additionalInfo: undefined,
-      customer: undefined,
+      selectedCustomer: undefined,
+      customerName: undefined,
     })),
 
   // ————————————————————————————————————————————————
