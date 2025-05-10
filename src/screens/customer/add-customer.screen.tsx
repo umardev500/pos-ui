@@ -1,6 +1,6 @@
 import {LabeledInput} from '@app/components/molecules';
 import {SelectionSheet} from '@app/components/organisms';
-import {useCreateCustomer, useCustomerLevels} from '@app/hooks';
+import {useCreateCustomer, useCustomerLevels, useUpdateCustomer} from '@app/hooks';
 import {colors} from '@app/styles';
 import {CustomerDTO, Level, MainStackParamList} from '@app/types';
 import {isFormValidAndChanged} from '@app/utils';
@@ -10,6 +10,7 @@ import {
   defaultCustomerValues,
   defaultUpdateCustomerValues,
   UpdateCustomerDTO,
+  updateCustomerSchema,
 } from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
@@ -22,16 +23,16 @@ import Toast from 'react-native-toast-message';
 type Props = StackScreenProps<MainStackParamList, 'AddCustomer'>;
 
 export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
-  const formRef = useRef<FormikProps<CreateCustomerDTO>>(null);
+  const formRef = useRef<FormikProps<UpdateCustomerDTO>>(null);
   const levelSheetRef = useRef<TrueSheet>(null);
   const [selectedLevels, setSelectedLevels] = useState<Level[]>([]);
-  const selectedLabel = selectedLevels.map(sl => sl.name).join(', ');
 
   // ————————————————————————————————————————————————
   // 🧠 State
   // ————————————————————————————————————————————————
   const {params} = route;
   const {item, triggerSave} = params || {};
+  const isUpdate = !!item;
 
   // ————————————————————————————————————————————————
   // 📦 Handle Success
@@ -50,6 +51,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   // 📦 Hooks
   // ————————————————————————————————————————————————
   const {mutate: createCustomer} = useCreateCustomer(handleOnSuccess);
+  const {mutate: updateCustomer} = useUpdateCustomer(handleOnSuccess);
   const {data: customerLevels} = useCustomerLevels();
 
   // ————————————————————————————————————————————————
@@ -57,6 +59,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   // ————————————————————————————————————————————————
   const submitForm = () => {
     formRef.current?.submitForm();
+
     validateForm();
   };
 
@@ -75,8 +78,12 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
     }
   };
 
-  const handleSubmit = (values: CreateCustomerDTO) => {
-    createCustomer(values);
+  const handleSubmit = async (values: CreateCustomerDTO | UpdateCustomerDTO) => {
+    if (isUpdate) {
+      updateCustomer({id: item!.id, data: values});
+      return;
+    }
+    createCustomer(values as CreateCustomerDTO);
   };
 
   // ————————————————————————————————————————————————
@@ -124,7 +131,20 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const handleValidInput = lodash.debounce((isValid: boolean) => {
-    if (!isValid || triggerSave?.ready) return;
+    console.log(isValid);
+    if (!isValid) {
+      if (!triggerSave?.ready) return;
+
+      navigation.setParams({
+        triggerSave: {
+          ready: false,
+        },
+      });
+
+      return;
+    }
+
+    if (triggerSave?.ready) return;
 
     navigation.setParams({
       triggerSave: {
@@ -137,12 +157,17 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
     <>
       <View className="flex-1 bg-white p-4">
         <Formik
-          validationSchema={createCustomerSchema}
-          initialValues={defaultCustomerValues}
+          validationSchema={isUpdate ? updateCustomerSchema : createCustomerSchema}
+          initialValues={isUpdate ? defaultUpdateCustomerValues : defaultCustomerValues}
           onSubmit={handleSubmit}
           innerRef={formRef}>
-          {({values, handleChange, isValid}) => {
-            const isValidInput = isFormValidAndChanged(values, defaultCustomerValues, isValid);
+          {({values, handleChange, isValid, errors}) => {
+            console.log('erros', errors);
+            const isValidInput = isFormValidAndChanged(
+              values,
+              isUpdate ? defaultUpdateCustomerValues : defaultCustomerValues,
+              isValid,
+            );
             handleValidInput(isValidInput);
 
             return (
@@ -159,8 +184,8 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                   label="Level*"
                   isClickableOnly
                   trailingIcon="chevron_right"
-                  placeholder={selectedLabel || 'Pilih level customer'}
-                  placeholderTextColor={selectedLabel ? colors.gray[800] : undefined}
+                  placeholder={values.level.name || 'Pilih level customer'}
+                  placeholderTextColor={values.level ? colors.gray[800] : undefined}
                   onPress={() => levelSheetRef.current?.present()}
                 />
                 <LabeledInput
@@ -175,7 +200,7 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
                   label="Nomor Telepon"
                   placeholder="Contoh: +6281234567890"
                   onChange={handleChange('phone')}
-                  value={values.phone}
+                  value={values.phone || ''}
                 />
                 <LabeledInput
                   icon="edit_note"

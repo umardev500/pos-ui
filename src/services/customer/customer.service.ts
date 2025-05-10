@@ -47,8 +47,12 @@ export const createCustomer = async (payload: CreateCustomerDTO): Promise<void> 
 
 // Update existing customer
 export const updateCustomer = async (id: number, payload: UpdateCustomerDTO): Promise<void> => {
-  const {level, ...rest} = payload;
-  const transformedPayload = {...rest, level_id: level?.id};
+  const {level, address, ...rest} = payload;
+  const transformedPayload = {
+    ...rest,
+    level_id: level?.id,
+    address: address?.trim() || null,
+  };
 
   const res = await fetch(`${API_URL}/customers/${id}`, {
     method: 'PATCH',

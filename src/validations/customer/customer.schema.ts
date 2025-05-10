@@ -27,6 +27,7 @@ export const createCustomerSchema = Yup.object({
 
   phone: Yup.string()
     .optional()
+    .nullable()
     .matches(/^(\+62|0)[1-9][0-9]{7,9}$/, 'Invalid phone number format for Indonesia.'),
 
   address: Yup.string().optional().nullable(),
@@ -44,7 +45,7 @@ export const defaultCustomerValues: CreateCustomerDTO = {
 // update
 
 export const updateCustomerSchema = Yup.object({
-  name: Yup.string().optional().min(1, 'Name cannot be empty.'),
+  name: Yup.string().required().min(1, 'Name cannot be empty.'),
 
   level: Yup.object({
     id: Yup.number().required('Level ID is required'),
@@ -54,12 +55,13 @@ export const updateCustomerSchema = Yup.object({
     discount: Yup.number().optional(),
     created_at: Yup.string().optional(),
     updated_at: Yup.string().optional(),
-  }).optional(), // Level can be optional
+  }).required(), // Level can be optional
 
-  email: Yup.string().optional().email('Invalid email format.'),
+  email: Yup.string().required().email('Invalid email format.'),
 
   phone: Yup.string()
     .optional()
+    .nullable()
     .matches(/^(\+62|0)[1-9][0-9]{7,9}$/, 'Invalid phone number format for Indonesia.'),
 
   address: Yup.string().optional().nullable(),
@@ -72,7 +74,7 @@ export type UpdateCustomerDTO = Yup.InferType<typeof updateCustomerSchema>;
 
 export const defaultUpdateCustomerValues: UpdateCustomerDTO = {
   name: '',
-  level: undefined,
+  level: defaultLevel,
   email: '',
   phone: undefined,
   address: undefined,
