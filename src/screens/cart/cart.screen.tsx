@@ -148,7 +148,7 @@ export const CartScreen: React.FC = () => {
         haveItems={haveItems}
         onPressOrderConfig={handlePressConfig}
         onPressMoreSummary={handlePressMoreOnSummary}
-        onPressPayment={handlePressSaveOrder}
+        onPressSave={handlePressSaveOrder}
       />
       <OrderSummarySheet ref={orderSummaryRef} />
     </View>

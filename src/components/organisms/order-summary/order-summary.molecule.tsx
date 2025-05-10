@@ -1,4 +1,4 @@
-import {Button, Icon} from '@app/components/atoms';
+import {Button, Icon, IconButton} from '@app/components/atoms';
 import {useCartStore} from '@app/stores';
 import {colors} from '@app/styles';
 import {numberUtils} from '@app/utils';
@@ -9,6 +9,7 @@ type Props = {
   onPressMoreSummary?: () => void;
   onPressOrderConfig?: () => void;
   onPressPayment?: () => void;
+  onPressSave?: () => void;
   haveItems?: boolean;
 };
 
@@ -16,6 +17,7 @@ export const OrderSummary: React.FC<Props> = ({
   onPressMoreSummary,
   onPressOrderConfig,
   onPressPayment,
+  onPressSave,
   haveItems = false,
 }) => {
   const finalAmount = useCartStore(state => state.getFinalAmount());
@@ -39,13 +41,25 @@ export const OrderSummary: React.FC<Props> = ({
         </TouchableOpacity>
       </View>
 
-      <View className="pt-4">
-        <Button
-          onPress={onPressPayment}
+      <View className="pt-4 gap-2 flex-row-reverse items-center">
+        <View className="flex-1">
+          <Button
+            onPress={onPressPayment}
+            disabled={!haveItems}
+            title="Payment"
+            containerColor={colors.orange[500]}
+            textColor={colors.white}
+          />
+        </View>
+        <IconButton
+          onPress={onPressSave}
+          activeOpacity={0.7}
+          icon="check_small"
+          backgroundColor={colors.gray[100]}
+          roundedSize={12}
+          iconSize={24}
           disabled={!haveItems}
-          title="Payment"
-          containerColor={colors.orange[500]}
-          textColor={colors.white}
+          color={colors.gray[600]}
         />
       </View>
     </View>

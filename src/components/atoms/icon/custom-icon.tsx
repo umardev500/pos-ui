@@ -68,6 +68,9 @@ const glyphMap = {
   sunny: 0xe93d,
   more_horiz: 0xe93e,
   person_plus_fill: 0xe93f,
+  check_small: 0xe940,
+  search_activity: 0xe941,
+  task_alt: 0xe942,
   ...glyphMapFill,
 };
 
