@@ -17,7 +17,10 @@ export type MainStackParamList = {
   };
   VoucherList: undefined;
   AddDP: undefined;
-  CustomerList: undefined;
+  CustomerList: {
+    triggerAdd?: boolean;
+  };
+  AddCustomer: undefined;
 };
 
 export type MainStackRouteNames = keyof MainStackParamList;

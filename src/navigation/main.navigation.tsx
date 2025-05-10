@@ -1,10 +1,9 @@
 import {IconButton} from '@app/components/atoms';
-import {CartScreen, CustomerListScreen, ProductView, VoucherListScreen} from '@app/screens';
+import {AddCustomerScreen, CartScreen, CustomerListScreen, ProductView, VoucherListScreen} from '@app/screens';
 import {AddDPScreen} from '@app/screens/add-dp/add-dp.screen';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
-import {useNavigation} from '@react-navigation/native';
 import {createStackNavigator, StackHeaderProps, TransitionPresets} from '@react-navigation/stack';
 import {View} from 'react-native';
 import {DrawerNavigation} from './drawer.navigation';
@@ -25,12 +24,6 @@ const renderHeader = (props: RenderHeaderProps) => {
 };
 
 export const MainNavigation = () => {
-  const navigation = useNavigation();
-
-  const handlePressAddCustomerBtn = () => {
-    // navigation.navigate('')
-  };
-
   return (
     <Stack.Navigator
       screenOptions={{
@@ -82,7 +75,7 @@ export const MainNavigation = () => {
         component={AddDPScreen}
       />
       <Stack.Screen
-        options={{
+        options={({navigation}) => ({
           title: 'Customers',
           headerShown: true,
           header: props => {
@@ -90,14 +83,35 @@ export const MainNavigation = () => {
               ...props,
               headerRight: () => {
                 return (
-                  <IconButton onPress={handlePressAddCustomerBtn} icon="add" iconSize={20} color={colors.gray[600]} />
+                  <IconButton
+                    onPress={() => navigation.setParams({triggerAdd: true})}
+                    icon="add"
+                    iconSize={20}
+                    color={colors.gray[600]}
+                  />
                 );
               },
             });
           },
-        }}
+        })}
         name="CustomerList"
         component={CustomerListScreen}
+      />
+      <Stack.Screen
+        options={{
+          title: 'Add Customer',
+          headerShown: true,
+          header: props => {
+            return renderHeader({
+              ...props,
+              headerRight: () => {
+                return <IconButton icon="check" iconSize={20} color={colors.gray[600]} />;
+              },
+            });
+          },
+        }}
+        name="AddCustomer"
+        component={AddCustomerScreen}
       />
     </Stack.Navigator>
   );
