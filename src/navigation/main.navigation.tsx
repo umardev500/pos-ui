@@ -111,21 +111,29 @@ export const MainNavigation = () => {
           headerShown: true,
           header: props => {
             const {triggerSave} = route.params || {};
+            const isReady = triggerSave?.ready || false;
 
             return renderHeader({
               ...props,
               headerRight: () => (
                 <>
-                  {triggerSave ? (
+                  {triggerSave?.pressed ? (
                     <View className="px-4 text-orange-500">
                       <Loading source={loadingOrange} size={22} />
                     </View>
                   ) : (
                     <IconButton
-                      onPress={() => navigation.setParams({triggerSave: true})}
+                      disabled={!isReady}
+                      onPress={() =>
+                        navigation.setParams({
+                          triggerSave: {
+                            pressed: true,
+                          },
+                        })
+                      }
                       icon="check"
                       iconSize={20}
-                      color={colors.gray[600]}
+                      color={isReady ? colors.gray[600] : colors.gray[400]}
                     />
                   )}
                 </>

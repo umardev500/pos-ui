@@ -28,7 +28,7 @@ export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
   useEffect(() => {
     if (params?.triggerAdd) {
       // Navigate to the AddCustomer screen
-      navigation.navigate('AddCustomer');
+      navigation.navigate('AddCustomer', {});
 
       // Reset the triggerAdd parameter
       navigation.setParams({triggerAdd: false});

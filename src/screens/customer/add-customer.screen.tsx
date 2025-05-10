@@ -3,11 +3,12 @@ import {SelectionSheet} from '@app/components/organisms';
 import {useCreateCustomer} from '@app/hooks';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
+import {isFormValidAndChanged} from '@app/utils';
 import {CreateCustomerDTO, createCustomerSchema, defaultCustomerValues} from '@app/validations';
 import {TrueSheet} from '@lodev09/react-native-true-sheet';
 import {StackScreenProps} from '@react-navigation/stack';
 import {Formik, FormikProps} from 'formik';
-import {isEmpty} from 'lodash';
+import lodash, {isEmpty} from 'lodash';
 import React, {useEffect, useRef, useState} from 'react';
 import {View} from 'react-native';
 import Toast from 'react-native-toast-message';
@@ -75,10 +76,10 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   // 🧪 Effects
   // ————————————————————————————————————————————————
   useEffect(() => {
-    if (route.params?.triggerSave) {
+    if (route.params?.triggerSave?.pressed) {
       submitForm();
     }
-  }, [route.params?.triggerSave]);
+  }, [route.params?.triggerSave?.pressed]);
 
   // ————————————————————————————————————————————————
   // 🛠 Handlers
@@ -93,8 +94,22 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
   };
 
   const setOffTrigger = () => {
-    navigation.setParams({triggerSave: false});
+    navigation.setParams({
+      triggerSave: {
+        pressed: false,
+      },
+    });
   };
+
+  const handleValidInput = lodash.debounce((isValid: boolean) => {
+    if (!isValid) return;
+
+    navigation.setParams({
+      triggerSave: {
+        ready: true,
+      },
+    });
+  }, 500);
 
   return (
     <>
@@ -104,48 +119,53 @@ export const AddCustomerScreen: React.FC<Props> = ({navigation, route}) => {
           initialValues={defaultCustomerValues}
           onSubmit={handleSubmit}
           innerRef={formRef}>
-          {({values, handleChange}) => (
-            <View className="gap-2.5">
-              <LabeledInput
-                icon="person_fill"
-                label="Nama*"
-                placeholder="Contoh: Alex Wijaya"
-                onChange={handleChange('name')}
-                value={values.name}
-              />
-              <LabeledInput
-                icon="layers"
-                label="Level*"
-                isClickableOnly
-                trailingIcon="chevron_right"
-                placeholder={selectedLabel || 'Pilih level customer'}
-                placeholderTextColor={selectedLabel ? colors.gray[800] : undefined}
-                onPress={() => levelSheetRef.current?.present()}
-              />
-              <LabeledInput
-                icon="alternate_email"
-                label="Email*"
-                placeholder="Contoh: alex@email.com"
-                onChange={handleChange('email')}
-                value={values.email}
-              />
-              <LabeledInput
-                icon="call"
-                label="Nomor Telepon"
-                placeholder="Contoh: +6281234567890"
-                onChange={handleChange('phone')}
-                value={values.phone}
-              />
-              <LabeledInput
-                icon="edit_note"
-                label="Alamat"
-                isTextArea
-                placeholder="Masukkan alamat lengkap"
-                onChange={handleChange('address')}
-                value={values.address || ''}
-              />
-            </View>
-          )}
+          {({values, handleChange, isValid}) => {
+            const isValidInput = isFormValidAndChanged(values, defaultCustomerValues, isValid);
+            handleValidInput(isValidInput);
+
+            return (
+              <View className="gap-2.5">
+                <LabeledInput
+                  icon="person_fill"
+                  label="Nama*"
+                  placeholder="Contoh: Alex Wijaya"
+                  onChange={handleChange('name')}
+                  value={values.name}
+                />
+                <LabeledInput
+                  icon="layers"
+                  label="Level*"
+                  isClickableOnly
+                  trailingIcon="chevron_right"
+                  placeholder={selectedLabel || 'Pilih level customer'}
+                  placeholderTextColor={selectedLabel ? colors.gray[800] : undefined}
+                  onPress={() => levelSheetRef.current?.present()}
+                />
+                <LabeledInput
+                  icon="alternate_email"
+                  label="Email*"
+                  placeholder="Contoh: alex@email.com"
+                  onChange={handleChange('email')}
+                  value={values.email}
+                />
+                <LabeledInput
+                  icon="call"
+                  label="Nomor Telepon"
+                  placeholder="Contoh: +6281234567890"
+                  onChange={handleChange('phone')}
+                  value={values.phone}
+                />
+                <LabeledInput
+                  icon="edit_note"
+                  label="Alamat"
+                  isTextArea
+                  placeholder="Masukkan alamat lengkap"
+                  onChange={handleChange('address')}
+                  value={values.address || ''}
+                />
+              </View>
+            );
+          }}
         </Formik>
       </View>
 

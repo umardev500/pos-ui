@@ -17,7 +17,10 @@ export type MainStackParamList = {
   AddDP: undefined;
   CustomerList: {triggerAdd?: boolean};
   AddCustomer: {
-    triggerSave?: boolean;
+    triggerSave?: {
+      pressed?: boolean;
+      ready?: boolean;
+    };
   };
 };
 

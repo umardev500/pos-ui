@@ -6,4 +6,5 @@ export * from './order.util';
 export * from './pretty-log.util';
 export * from './product';
 export * from './remap-variants';
+export * from './validaton.util';
 export * from './variant.util';
