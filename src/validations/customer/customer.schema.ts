@@ -22,3 +22,24 @@ export const defaultCustomerValues: CreateCustomerDTO = {
   level_id: 0,
   email: '',
 };
+
+// update
+
+export const updateCustomerSchema = Yup.object({
+  name: Yup.string().optional().min(1, 'Name cannot be empty.'),
+
+  level_id: Yup.number().optional().min(1, 'Level cannot be empty.'),
+
+  email: Yup.string().optional().email('Invalid email format.'),
+
+  phone: Yup.string()
+    .optional()
+    .matches(/^(\+62|0)[1-9][0-9]{7,9}$/, 'Invalid phone number format for Indonesia.'),
+
+  address: Yup.string().optional().nullable(),
+
+  points: Yup.number().optional().min(0, 'Points cannot be negative.'),
+});
+
+// Infer TypeScript type from the Yup schema
+export type UpdateCustomerDTO = Yup.InferType<typeof updateCustomerSchema>;

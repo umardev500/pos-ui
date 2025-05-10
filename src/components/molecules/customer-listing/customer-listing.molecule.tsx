@@ -8,14 +8,24 @@ import {Text, TouchableOpacity, View} from 'react-native';
 type Props = {
   item: CustomerDTO;
   onPress?: (customer: CustomerDTO) => void;
+  onPressDelete?: (customer: CustomerDTO) => void;
+  onPressEdit?: (customer: CustomerDTO) => void;
 };
 
 export const CustomerListing: React.FC<Props> = props => {
-  const {item, onPress} = props;
+  const {item, onPress, onPressDelete, onPressEdit} = props;
   const {name, email, phone, points} = item;
 
   const handlePress = () => {
     onPress?.(item);
+  };
+
+  const handlePressEdit = () => {
+    onPressEdit?.(item);
+  };
+
+  const handlePressDelete = () => {
+    onPressDelete?.(item);
   };
 
   return (
@@ -43,10 +53,10 @@ export const CustomerListing: React.FC<Props> = props => {
               </View>
 
               <View className="flex-row items-center gap-3">
-                <TouchableOpacity activeOpacity={0.7}>
+                <TouchableOpacity onPress={handlePressEdit} activeOpacity={0.7}>
                   <Icon name="stylus_note_fill" size={18} color={colors.gray[400]} />
                 </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.7}>
+                <TouchableOpacity onPress={handlePressDelete} activeOpacity={0.7}>
                   <Icon name="delete" size={18} color={colors.gray[400]} />
                 </TouchableOpacity>
               </View>

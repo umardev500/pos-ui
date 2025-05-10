@@ -7,11 +7,15 @@ type Props = {
   data: CustomerDTO[];
   onItemPress?: (customer: CustomerDTO) => void;
   paddingBottom?: number;
+  onPressDelete?: (customer: CustomerDTO) => void;
+  onPressEdit?: (customer: CustomerDTO) => void;
 };
 
-export const CustomerList: React.FC<Props> = ({data, paddingBottom, onItemPress}) => {
+export const CustomerList: React.FC<Props> = ({data, paddingBottom, onItemPress, onPressDelete, onPressEdit}) => {
   const renderItem: ListRenderItem<CustomerDTO> = ({item}) => {
-    return <CustomerListing item={item} onPress={onItemPress} />;
+    return (
+      <CustomerListing item={item} onPress={onItemPress} onPressDelete={onPressDelete} onPressEdit={onPressEdit} />
+    );
   };
 
   return (
