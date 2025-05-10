@@ -4,20 +4,37 @@ import {AddDPScreen} from '@app/screens/add-dp/add-dp.screen';
 import {colors} from '@app/styles';
 import {MainStackParamList} from '@app/types';
 import {getHeaderTitle, Header} from '@react-navigation/elements';
-import {createStackNavigator, TransitionPresets} from '@react-navigation/stack';
+import {useNavigation} from '@react-navigation/native';
+import {createStackNavigator, StackHeaderProps, TransitionPresets} from '@react-navigation/stack';
 import {View} from 'react-native';
 import {DrawerNavigation} from './drawer.navigation';
 import {ManageProductStackNavigator} from './manage-product.navigation';
 
 const Stack = createStackNavigator<MainStackParamList>();
 
+interface RenderHeaderProps extends StackHeaderProps {
+  headerRight?:
+    | ((props: {tintColor?: string; pressColor?: string; pressOpacity?: number; canGoBack: boolean}) => React.ReactNode)
+    | undefined;
+}
+
+const renderHeader = (props: RenderHeaderProps) => {
+  const {back, options, route, ...etc} = props;
+
+  return <Header headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} {...etc} />;
+};
+
 export const MainNavigation = () => {
+  const navigation = useNavigation();
+
+  const handlePressAddCustomerBtn = () => {
+    // navigation.navigate('')
+  };
+
   return (
     <Stack.Navigator
       screenOptions={{
-        header: ({back, route, options}) => (
-          <Header headerStyle={{elevation: 0}} back={back} title={getHeaderTitle(options, route.name)} />
-        ),
+        header: renderHeader,
         ...TransitionPresets.ModalSlideFromBottomIOS,
       }}>
       <Stack.Screen name="Drawer" component={DrawerNavigation} options={{headerShown: false}} />
@@ -68,6 +85,16 @@ export const MainNavigation = () => {
         options={{
           title: 'Customers',
           headerShown: true,
+          header: props => {
+            return renderHeader({
+              ...props,
+              headerRight: () => {
+                return (
+                  <IconButton onPress={handlePressAddCustomerBtn} icon="add" iconSize={20} color={colors.gray[600]} />
+                );
+              },
+            });
+          },
         }}
         name="CustomerList"
         component={CustomerListScreen}
