@@ -1,5 +1,5 @@
 import {CustomerList} from '@app/components/organisms';
-import {useCustomers} from '@app/hooks';
+import {useCustomers, useDeleteCustomer} from '@app/hooks';
 import {CustomerDTO, MainStackParamList} from '@app/types';
 import {StackScreenProps} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
@@ -15,13 +15,13 @@ type Props = StackScreenProps<MainStackParamList, 'CustomerList'>;
 // Screen Component
 // ————————————————————————————————————————————————
 export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
-  const {data: customers = []} = useCustomers();
-  const {params} = route;
-
   // ————————————————————————————————————————————————
   // 📦 Hooks
   // ————————————————————————————————————————————————
   const {bottom} = useSafeAreaInsets();
+  const {mutate: deleteCustomer} = useDeleteCustomer();
+  const {data: customers = []} = useCustomers();
+  const {params} = route;
 
   // ————————————————————————————————————————————————
   // 🧪 Effects
@@ -48,7 +48,7 @@ export const CustomerListScreen: React.FC<Props> = ({navigation, route}) => {
   const handlePressDelete = (item: CustomerDTO) => {
     Alert.alert('Delete item', 'Are you sure you want to delete this?', [
       {text: 'Cancel', style: 'cancel'},
-      {text: 'Delete', onPress: () => {}, style: 'destructive'},
+      {text: 'Delete', onPress: () => deleteCustomer(item.id), style: 'destructive'},
     ]);
   };
 
