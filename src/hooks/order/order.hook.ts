@@ -1,4 +1,5 @@
 import {createOrder, fetchOrderTypes} from '@app/services/order';
+import {useCartStore} from '@app/stores';
 import {CreateOrderDTO} from '@app/types';
 import {useMutation, useQuery} from '@tanstack/react-query';
 import Toast from 'react-native-toast-message';
@@ -12,6 +13,8 @@ export const useOrderTypes = () => {
 
 // Hook for creating an order
 export const useCreateOrder = () => {
+  const clearCart = useCartStore(state => state.clearCart);
+
   return useMutation({
     mutationFn: (orderData: CreateOrderDTO) => createOrder(orderData),
     onSuccess: () => {
@@ -20,6 +23,9 @@ export const useCreateOrder = () => {
         type: 'success',
         text1: 'Order created successfully 🎉',
       });
+      setTimeout(() => {
+        clearCart();
+      }, 1000);
     },
     onError: (error: Error) => {
       // Handle error appropriately

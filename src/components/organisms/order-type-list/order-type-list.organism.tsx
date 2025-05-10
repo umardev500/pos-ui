@@ -2,7 +2,7 @@ import {TabView} from '@app/components/organisms/tab-view';
 import {useOrderTypes} from '@app/hooks';
 import {useCartStore} from '@app/stores';
 import {OrderTypeDTO} from '@app/types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Text} from 'react-native';
 import {SceneMap} from 'react-native-tab-view';
 
@@ -13,9 +13,15 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
   const isHaveOrderTypes = (orderTypes?.length || 0) > 0;
 
   // ————————————————————————————————————————————————
+  // 🧠 State
+  // ————————————————————————————————————————————————
+  const [initialTabIndex, setInitialTabIndex] = useState(0);
+
+  // ————————————————————————————————————————————————
   // 📦 Global State Store
   // ————————————————————————————————————————————————
   const setAdditionalInfo = useCartStore(state => state.setAdditionalInfo);
+  const additionalInfo = useCartStore(state => state.additionalInfo);
 
   // Parse routes from orderTypes
   const routes =
@@ -38,23 +44,31 @@ export const OrderTypeList: React.FC<Props> = ({}) => {
     ),
   );
 
+  // ————————————————————————————————————————————————
+  // 🛠 Handlers
+  // ————————————————————————————————————————————————
   const handleIndexChange = (idx: number) => {
     const selectedOrderType = orderTypes?.[idx];
     useCartStore.getState().setAdditionalInfo({orderType: selectedOrderType});
   };
 
-  // Get initial tab index
-  let initialTabIndex;
-  if (orderTypes?.length) {
-    const selectedOrderType = useCartStore.getState().additionalInfo?.orderType;
-    initialTabIndex = orderTypes.findIndex((type: OrderTypeDTO) => type.name === selectedOrderType?.name);
+  // ————————————————————————————————————————————————
+  // 🧪 Effects
+  // ————————————————————————————————————————————————
+  useEffect(() => {
+    const selectedOrderType = additionalInfo?.orderType;
 
-    // Fallback to 0 if no match is found (i.e., findIndex returns -1)
-    if (initialTabIndex === -1) {
-      initialTabIndex = 0;
-      setAdditionalInfo({orderType: orderTypes[0]});
+    if (orderTypes?.length) {
+      const foundIndex = orderTypes.findIndex((type: OrderTypeDTO) => type.name === selectedOrderType?.name);
+
+      if (foundIndex !== -1) {
+        setInitialTabIndex(foundIndex);
+      } else {
+        setInitialTabIndex(0);
+        setAdditionalInfo({orderType: orderTypes[0]});
+      }
     }
-  }
+  }, [orderTypes]);
 
   return (
     <>
